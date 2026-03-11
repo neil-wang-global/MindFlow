@@ -1,428 +1,502 @@
-# MAMAS — 多自适应多智能体系统
+# MindFlow
 
 [English](README.md) | 简体中文
 
-一个 AI 原生的编排框架，将单个提示词转化为结构化的多专家协作流程。提供原始素材，指定任务目标——报告、代码、合同、文章——系统自动完成其余工作。
+MindFlow 是一个面向知识管理、认知演化与任务执行的 AI-native 自主决策系统。
 
-## 问题
+它不是单纯的多智能体编排器，也不是一个普通知识库。它更像一个可被持续编辑的数字人格系统：你可以给它定义 `Soul`，让它吸收符合自身标准的方法论与工作方式，把学习内化成 `Capability`，再用这些能力去执行任务、反省结果、强化认知，并持续自我迭代。
 
-AI 助手运行在扁平的、无状态的循环中：一个提示，一个响应，不记忆过程。当任务变得复杂——需要研究、规划、起草和审查时——你最终需要手动编排每一步。
+当前这个代码仓库承载的是：
 
-## 解决方案
+- 运行协议
+- 目录规范
+- 模块说明
+- 文件模板
+- 学习与审核链路
 
-MAMAS 将**流程架构**引入 AI 协作。它将**输入内容**、**AI 工作方式**和**输出结果**分离为清晰、可复现的结构。
+它不是一个已经内置自动执行器的成品应用，但它本身就是一个完整的系统设计。
 
-```
-     你                          MAMAS                           你
-  ┌─────────┐    ┌──────────────────────────────────┐    ┌────────────────┐
-  │ source/ │───▶│  摘要 → 规划 → 执行 → 质检          │───▶│   output/      │
-  │ (输入)   │    │         (全自动化)                │    │  (交付物)       │
-  └─────────┘    └──────────────────────────────────┘    └────────────────┘
-```
+## 它解决什么问题
 
-你只需关注两个界面：**输入**和**输出**。中间的一切都由系统管理。
+个人和企业在知识管理与知识处理场景中，通常有这些共同问题：
 
-## 架构
+- 方法论无法真正进入系统
+  - 很多偏好、原则、工作办法只存在于人脑或零散文档里
+- AI 很容易跑偏
+  - 没有稳定约束时，AI 的输出会脱离个人或企业的标准
+- 知识不会自动转成能力
+  - 学到的内容常常停留在文档层，不能稳定复用
+- 任务执行和知识沉淀是分裂的
+  - 做完任务有结果，但没有把经验真正转成下次可调用的能力
+- 普通 agent workflow 只会做事，不会按自身理念修正自己
+  - 缺少可持续的学习、反省和认知强化机制
+
+## 它是怎么解决的
+
+MindFlow 的设计把整套系统拆成几个稳定层：
+
+- `Soul`
+  - 定义个人或企业的长期标准、偏好、禁忌和方法论取向
+- `Learning`
+  - 读取正式知识，并在任务后把候选知识推进到审核与固化链
+- `Mind`
+  - 负责识别、分析、执行、执行控制、反省、推衍等系统级认知过程
+- `Capability`
+  - 把学习结果内化成可执行能力组件
+- `Plan + Step`
+  - 把一次任务落成明确执行文件，并通过文件交接运行
+- `Task State`
+  - 把运行状态显式落盘，支撑失败恢复、并行汇合与断点续跑
+
+所以它不是“先做任务，再顺便记点笔记”，而是要求系统按这套结构运行：
+
+1. 先按自身 `Soul` 读取正式知识
+2. 再由 `Mind` 识别并分析任务
+3. 再生成正式 `Plan`
+4. 再调用 `Capability` 执行
+5. 最后复盘、学习、审核、固化，并形成能力升级
+
+为了让真实运行稳定，MindFlow 还要求任务运行时维护一个正式状态面：
+
+- 当前阶段是什么
+- 当前 step 是什么
+- 哪个 step 已完成、失败或阻塞
+- 并行分支卡在哪个同步点
+- 当前是否允许进入 `Reflection`
+
+这里的 `Step` 不只支持顺序执行，也支持并行执行：
+
+- 某些 `Step` 顺序运行
+- 某些 `Step` 可以并行运行
+- 并行时可以展开为多个并行 `Tasks` 或 `Subagents`
+- 并行分支的结果仍然通过文件交接汇合
+
+## 设计哲学
+
+### 1. 先有 `Soul`，再有智能
+
+MindFlow 不预设具体人格内容，但它要求你先定义一个 `Soul` 结构。
+
+这样做的目的不是“做人格设定”，而是给系统一个不跑偏的最高约束层：
+
+- 什么是好结果
+- 什么方法更被偏好
+- 什么不能做
+- 什么值得学
+- 什么结论不能进入系统
+
+### 2. 学习不是存资料，而是内化为能力
+
+在 MindFlow 里，学习的目标不是堆文档，而是让符合标准的知识最终变成 `Capability` 可调用的内容。
+
+也就是说：
+
+- 文档只是中间状态
+- `Capability` 才是学习被执行化后的正式形态
+
+### 3. 执行不是自由发挥，而是文件驱动
+
+MindFlow 不依赖隐式上下文传递。
+
+它要求：
+
+- 任务有正式 `Plan`
+- `Plan` 内部有多个 `Step`
+- `Step` 之间通过 `cache/` 交接
+- 最终结果进入 `_output/`
+
+这样才能让任务可复盘、可审计、可重跑、可约束。
+
+### 4. 反省不是总结，而是认知强化
+
+执行完成后，系统必须进入 `Reflection -> Learning`。
+
+这一步的目标不是写一篇总结，而是：
+
+- 发现问题
+- 识别值得学习的内容
+- 发现能力缺口
+- 强化认知与能力
+- 防止系统脱离现实后持续放飞自我
+
+所以 MindFlow 本质上是一个带自我修行机制的任务系统。
+
+## 为什么这里要用 MAS
+
+MindFlow 的执行层本质上是 MAS。
+
+原因不是为了“多智能体看起来更高级”，而是因为很多真实任务天然是多能力协同问题：
+
+- 有的能力负责研究
+- 有的能力负责结构化整理
+- 有的能力负责执行具体动作
+- 有的能力负责检查结果
+
+把这些能力拆成多个 `Capability`，并由 `Plan + Step` 去调度，有几个优势：
+
+- 能力边界清楚
+- 单个能力更容易维护
+- 任务拆解后更稳定
+- 能通过文件交接避免上下文污染
+- 更适合在任务后做局部反省和能力升级
+
+同时，`Plan` 并不要求所有 `Step` 都串行。
+当任务适合并行时，`Step` 可以并行展开，从而提升复杂任务的执行效率。
+
+所以，MindFlow 不是“先有 MAS，再找场景”，而是“因为知识问题和复杂任务天然需要能力分工，所以执行层采用 MAS”。
+
+## 主流程
+
+如果你按 MindFlow 的协议运行任务，每个任务都必须经过这条主流程：
+
+`Task -> Learning(Read) -> Recognition -> Analysis -> Execution -> Plan -> Execution Control -> Reflection -> Learning`
+
+含义如下：
+
+- `Learning(Read)`
+  - 读取经过审核并固化的正式知识
+- `Recognition`
+  - 识别任务并产出 `Task Profile`
+- `Analysis`
+  - 拆解任务并产出 `Analysis Output`
+- `Execution`
+  - 产出正式 `Plan`
+- `Execution Control`
+  - 按 `Plan` 推进 `Step`
+  - 管理串行、并行、汇合与失败处理
+- `Plan`
+  - 组织多个 `Step`
+- `Step`
+  - 调用不同 `Capability` 执行
+  - 可以顺序执行，也可以并行执行
+- `Reflection`
+  - 对本次任务进行复盘，产出 `Reflection Report`
+- `Learning`
+  - 把任务经验推进到学习链，最终固化为正式知识或能力升级
+
+## 流程图
 
 ```mermaid
-flowchart TB
-    subgraph INPUT ["source/ — 原始素材"]
-        S1[聊天记录]
-        S2[会议笔记]
-        S3[参考文档]
-        S4[...]
-    end
+flowchart LR
+    T["Task"] --> LR["Learning(Read)"]
+    LR --> R["Recognition"]
+    R --> A["Analysis"]
+    A --> E["Execution"]
+    E --> P["Plan"]
+    P --> EC["Execution Control"]
+    EC --> S["Step"]
+    S --> C["Capabilities"]
+    C --> O["tasks/{task-id}/_output/"]
+    O --> RF["Reflection"]
+    RF --> L["Learning"]
+    L --> KB["Approved Knowledge / Capability Update"]
+    KB --> LR
 
-    subgraph DIGEST ["source/.meta/ — 自动维护的摘要"]
-        D1["汇总与索引<br/>(按需生成)"]
-    end
-
-    subgraph PATTERNS ["patterns/ — 行为约束"]
-        direction LR
-        PT1["领域模式<br/>academic-writing<br/>legal-contract"]
-        PT2["质量模式<br/>evidence-based<br/>consistency"]
-        PT3["格式模式<br/>structured-report<br/>api-docs"]
-    end
-
-    subgraph ROUTING ["智能路由"]
-        R{{"复杂度<br/>评估"}}
-        R -->|简单| NANO["轻量专家<br/>(直接执行)"]
-        R -->|复杂| MAMAS_MODE["MAMAS 模式"]
-    end
-
-    subgraph MAMAS_MODE ["MAMAS 编排"]
-        direction TB
-        P["规划师<br/>━━━━━━━━━━<br/>分析任务<br/>选择或创建剧本<br/>识别专家<br/>选择模式"]
-        C["协调员<br/>━━━━━━━━━━<br/>读取剧本<br/>调度专家<br/>验证模式合规性"]
-        E["领域专家<br/>━━━━━━━━━━<br/>读取指定模式<br/>应用约束<br/>生成交付物"]
-        P --> C --> E
-    end
-
-    subgraph NOTES ["notes/ — 流程隔离"]
-        N1["notes/task-A/<br/>├── playbook.md<br/>├── patterns.md<br/>└── cache/"]
-        N2["notes/task-B/<br/>├── playbook.md<br/>├── patterns.md<br/>└── cache/"]
-    end
-
-    subgraph OUTPUT ["output/ — 交付物"]
-        O1[报告]
-        O2[代码]
-        O3[合同]
-        O4[...]
-    end
-
-    subgraph OUTPUT_DIGEST ["output/.meta/ — 自动维护的摘要"]
-        OD1["交付物汇总<br/>(输出时生成)"]
-    end
-
-    INPUT --> DIGEST
-    DIGEST --> ROUTING
-    ROUTING --> NOTES
-    NOTES --> OUTPUT
-    OUTPUT --> OUTPUT_DIGEST
-
-    PATTERNS -.->|"模式选择"| P
-    P -.->|"模式引用"| NOTES
-    E -.->|"模式合规"| C
-
-    subgraph EVOLUTION ["自我进化"]
-        TA["人才架构师<br/>━━━━━━━━━━<br/>创建缺失专家<br/>升级表现不佳者<br/>维护能力注册表"]
-    end
-
-    P -.->|"无匹配专家"| TA
-    TA -.->|"新专家就绪"| P
-
-    PATTERNS -.->|"模式优化"| TA
-    TA -.->|"更新模式"| PATTERNS
-
-    style INPUT fill:#e8f5e9,stroke:#2e7d32
-    style OUTPUT fill:#e3f2fd,stroke:#1565c0
-    style MAMAS_MODE fill:#fff3e0,stroke:#ef6c00
-    style EVOLUTION fill:#fce4ec,stroke:#c62828
-    style NOTES fill:#f3e5f5,stroke:#7b1fa2
-    style PATTERNS fill:#e0f7fa,stroke:#006064
+    SOUL["Soul"] -.约束.-> LR
+    SOUL -.约束.-> R
+    SOUL -.约束.-> A
+    SOUL -.约束.-> RF
+    SOUL -.约束.-> L
 ```
 
-## 核心概念
+上图描述的是任务如何流经系统，所以它是流程图，不是架构图。
 
-### 1. 源材料 → 摘要 → 执行 → 输出
+## 输出与资料
 
-每个任务遵循相同的流水线：
+按当前仓库定义，MindFlow 使用两个不同的落点：
 
-1. **源材料**：你将原始素材放入 `source/` ——聊天记录、会议笔记、参考文档，任何内容
-2. **摘要**：在任何专家读取源文件之前，系统在 `source/.meta/` 生成并缓存摘要。在后续任务中，摘要被重用——原始文件不会被不必要地重新读取
-3. **执行**：专家在 `notes/` 下的隔离流程目录中工作，读取摘要（而非原始文件），在自己的 `cache/` 中生成中间产物
-4. **输出**：最终交付物进入 `output/`。系统自动维护 `output/.meta/` 摘要层，使下游任务能够高效引用先前的交付物
+- 默认任务结果目录：`tasks/{task-id}/_output/`
+- 可选回填目录：`sources/`
 
-**你只需处理 `source/` 和 `output/`。** 其余部分是基础设施。
+规则是：
 
-### 2. 剧本驱动的流程
+- 系统流程默认依赖 `_output/`
+- `Reflection` 默认读取 `_output/`
+- 只有当 `Plan` 明确声明时，结果才允许同步写回 `sources/`
 
-当任务进入 MAMAS 模式时，**规划师**生成（或重用）一个**剧本** —— 存储在 `notes/{task}/playbook.md` 的 Markdown 文件。剧本定义：
+这意味着：
 
-- 涉及哪些专家及其各自职责
-- 执行顺序（并行或串行）
-- 文档更新规则
-- 质量标准
-
-**协调员**读取剧本并执行。这意味着：
-
-- **可重用模式**：用于"分析聊天记录并提取利益相关者动机"的剧本可以在类似任务到达时重用
-- **上下文隔离**：每个任务获得自己的 `notes/` 子目录。任务 A 的专家永远看不到任务 B 的缓存
-
-### 3. 三层路由
-
-并非每个任务都需要完整编排。系统首先评估复杂度：
-
-| 层级 | 何时使用 | 执行方式 | 成本 |
-|------|---------|---------|------|
-| **直接模式** | 简单的单领域任务 | 轻量专家立即处理 | 最小 |
-| **完整专家** | 中等复杂度 | 具有完整方法论的全功能专家 | 中等 |
-| **MAMAS 模式** | 多专家、跨领域 | 规划师 → 协调员 → 专家团队 | 完整 |
-
-### 4. 自我进化
-
-系统自我扩展。三个基础设施专家使其成为可能：
-
-| 角色 | 职责 |
-|------|------|
-| **规划师** | 分析每个传入任务。当没有现有专家或剧本匹配时，触发创建新专家或剧本 |
-| **协调员** | 执行剧本。评估专家输出质量。标记表现不佳者 |
-| **人才架构师** | 按需设计新专家。当表现下降时升级现有专家。维护能力注册表 |
-
-这创建了一个闭环：**任务 → 发现缺口 → 创建专家 → 完成任务 → 能力永久扩展**。
-
-### 5. 模式驱动的约束
-
-AI 生成的内容可能偏离业务需求或用户期望。MAMAS 通过**可重用的行为模式**解决这个问题：
-
-- **是什么**: 预定义的约束，指定专家应如何执行任务（格式规则、质量标准、流程要求）
-- **如何工作**: 规划师识别适用模式 → 协调员确保专家读取 → 专家应用约束 → 协调员验证合规性
-- **模式类型**:
-  - **领域模式**: 学术写作、法律合同、技术规格
-  - **质量模式**: 基于证据的论证、一致性检查
-  - **格式模式**: 结构化报告、API 文档
-  - **流程模式**: 迭代优化、多轮审查
-
-**结果**: 输出符合真实工作流程和标准，无需手动后期编辑。
-
-### 6. Token 经济
-
-AI 上下文窗口是有限的。MAMAS 将 token 视为稀缺资源：
-
-- **摘要优先**：专家接收摘要，而非原始文件
-- **轻量偏好**：70% 的任务使用轻量专家（每个 < 250 tokens）
-- **缓存重用**：摘要跨任务持久化——无冗余处理
-- **流程隔离**：每个任务仅加载所需内容
+- `_output/` 是任务内部正式结果位
+- `sources/` 是业务资料和对外沉淀位
 
 ## 目录结构
 
-```
-MAMAS/
-├── CLAUDE.md                  # AI 行为规范
-├── SYSTEM.md                  # 路由规则与协议
-├── README.md                  # 英文说明
-├── README-CN.md              # 中文说明（本文件）
-│
-├── specialists/               # 专家智能体定义
-│   ├── planner.md            # 任务分析与剧本创建
-│   ├── coordinator.md        # 执行调度与质量保证
-│   ├── talent-architect.md   # 专家生命周期管理
-│   ├── {domain}.md           # 领域专家（可扩展）
-│   └── .nano/                # 轻量变体（< 250 tokens）
-│       └── {domain}.md
-│
-├── patterns/                  # 行为约束库
-│   ├── README.md             # Pattern 系统文档
-│   ├── .index.json           # Pattern 选择指南
-│   ├── academic-writing.md   # 学术写作规范
-│   ├── evidence-based.md     # 基于证据的论证
-│   ├── structured-report.md  # 结构化报告模板
-│   └── {pattern}.md          # 可扩展的模式定义
-│
-├── .claude/
-│   └── experts-index.json    # 能力路由注册表
-│
-├── source/                    # 你的输入 — 原始素材
-│   └── .meta/                # 自动维护的摘要
-│       ├── index.json
-│       └── summaries/
-│
-├── output/                    # 你的输出 — 交付物
-│   └── .meta/                # 自动维护的交付物摘要
-│       └── summaries/
-│
-└── notes/                     # 流程隔离工作空间
-    └── {task}/
-        ├── playbook.md       # 规划师生成的执行计划
-        └── cache/            # 中间产物（仅限本任务）
-            └── .context/     # 专家间上下文摘要
+```text
+MindFlow/
+├── README.md
+├── README-CN.md
+├── SYSTEM.md
+├── CLAUDE.md
+├── mind/
+│   ├── soul/
+│   ├── recognition/
+│   ├── analysis/
+│   ├── execution/
+│   ├── execution-control/
+│   ├── reflection/
+│   ├── learning/
+│   │   ├── learning-read/
+│   │   ├── knowledge-base/
+│   │   │   ├── approved/
+│   │   │   ├── drafts/
+│   │   │   └── archived/
+│   │   ├── task-learning/
+│   │   ├── reviews/
+│   │   └── capability-updates/
+│   └── inference/
+├── capabilities/
+├── sources/
+└── tasks/
 ```
 
-## 快速开始
+## 架构图
 
-```bash
-# 1. 克隆到你的项目中
-cp -r MAMAS/ your-project/MAMAS/
+```mermaid
+flowchart TB
+    subgraph ENTRY["入口层"]
+        USER["User / External Trigger"]
+    end
 
-# 2. 添加原始素材
-cp meeting-notes.md your-project/MAMAS/source/
-cp chat-log.md your-project/MAMAS/source/
+    subgraph CORE["MindFlow Core"]
+        MIND["Mind"]
+        SOUL["Soul"]
+        LREAD["Learning(Read)"]
+        REC["Recognition"]
+        ANA["Analysis"]
+        EXE["Execution"]
+        ECTRL["Execution Control"]
+        REF["Reflection"]
+        LEARN["Learning"]
+        INF["Inference"]
+    end
 
-# 3. 提出任何需求
-# "撰写竞争分析报告"
-# "起草技术架构文档"
-# "生成项目提案"
-# 系统自动路由、规划、执行并交付。
-```
+    subgraph TASKSYS["Task System"]
+        TASK["Task"]
+        PLAN["Plan"]
+        STEP["Step"]
+        CACHE["Task Cache"]
+        OUTPUT["Task Output"]
+        REFREPORT["Reflection Report"]
+    end
 
-## 使用指南
+    subgraph KNOWLEDGE["Learning System"]
+        APPROVED["Approved Knowledge"]
+        TL["Task Learning"]
+        DRAFT["Draft Knowledge"]
+        REVIEW["Review"]
+        CU["Capability Update"]
+        ARCHIVED["Archived Knowledge"]
+    end
 
-### 如何使用 MAMAS
+    subgraph SOURCESBOX["资料层"]
+        SRC["Sources"]
+    end
 
-MAMAS 设计为与支持 Claude Code 框架的任何 AI 助手配合使用。你只需用自然语言交互，系统自动处理编排。
+    subgraph CAPS["Capability System"]
+        CAP["Capabilities"]
+    end
 
-#### 第一步：准备素材
+    USER ==> MIND
 
-将相关材料放入 `source/` 目录：
+    MIND --> SOUL
+    MIND --> LREAD
+    MIND --> REC
+    MIND --> ANA
+    MIND --> EXE
+    MIND --> ECTRL
+    MIND --> REF
+    MIND --> LEARN
+    MIND --> INF
 
-```bash
-# 可以添加的素材示例：
-source/
-├── 会议记录-2024-01.md
-├── 客户聊天记录.md
-├── 竞品分析.pdf
-├── 技术需求文档.md
-└── 项目简介.docx
-```
+    APPROVED --> REC
+    APPROVED --> ANA
 
-系统自动生成这些文件的摘要并缓存在 `source/.meta/summaries/` 中，以便高效重用。
-
-#### 第二步：描述任务
-
-直接告诉 AI 你需要什么。系统会自动：
-- 路由到合适的专家
-- 应用相关的行为模式
-- 生成剧本（针对复杂任务）
-- 在 `output/` 中生成交付物
-
-**任务示例**：
-
-```
-简单任务（直接模式）：
-"总结 source/ 中的会议记录"
-→ 上下文合成器直接处理
-
-中等任务（完整专家）：
-"基于 source/竞品分析.pdf 分析竞争格局"
-→ 研究分析师使用完整方法论执行
-
-复杂任务（MAMAS 模式）：
-"创建一份完整的商业提案，包括市场分析、技术架构、
-成本评估和实施计划"
-→ 规划师 → 协调员 → 多个专家协作
-```
-
-#### 第三步：查看交付物
-
-所有输出出现在 `output/` 目录：
-
-```
-output/
-├── 商业提案.md
-├── 技术架构.md
-└── 实施计划.md
-```
-
-每个输出自动在 `output/.meta/summaries/` 中生成摘要，供下游任务使用。
-
-### 理解路由机制
-
-MAMAS 使用智能路由来优化成本和延迟：
-
-**当你提出请求时，系统评估：**
-
-1. **这是简单的单领域任务吗？**
-   - 是 → 直接模式（轻量专家，约 150-200 tokens）
-   - 示例："总结这份文档"
-
-2. **需要深度方法论但只需单个专家？**
-   - 是 → 完整专家模式（约 1500-2500 tokens）
-   - 示例："进行竞争分析"
-
-3. **需要多个专家或跨领域工作？**
-   - 是 → MAMAS 模式（规划师 + 协调员 + 专家团队）
-   - 示例："创建完整的项目提案"
-
-你无需指定模式 — 系统根据任务复杂度自动决策。
-
-### 使用模式（Patterns）
-
-模式确保你的输出符合现实世界的标准和要求。
-
-**自动模式应用**：
-
-当你请求任务时，规划师自动识别适用的模式：
+    MIND ==> TASK
+    TASK ==> LREAD
+    LREAD ==> REC
+    REC ==> ANA
+    ANA ==> EXE
+    EXE ==> PLAN
+    PLAN ==> ECTRL
+    ECTRL ==> STEP
+    STEP ==> CAP
+    CAP --> CACHE
+    CAP ==> OUTPUT
+    OUTPUT ==> REF
+    CACHE --> REF
+    REF ==> REFREPORT
+    REFREPORT ==> LEARN
+    LEARN ==> TL
+    TL ==> DRAFT
+    DRAFT ==> REVIEW
+    REVIEW ==> APPROVED
+    REVIEW --> CU
+    CU --> CAP
+    SRC --> MIND
+    DRAFT --> ARCHIVED
+    PLAN -.可选回填.-> SRC
+    INF -.条件触发.-> ANA
+    INF -.条件触发.-> REF
+    INF -.条件触发.-> LEARN
 
 ```
-请求："撰写关于多智能体系统的学术论文"
 
-规划师选择：
-- patterns/academic-writing.md（确保学术结构）
-- patterns/evidence-based.md（要求引用支持）
-- patterns/structured-report.md（强制标准章节）
+这张图描述的是系统里的核心概念层如何组成整体结构，以及 `Mind` 如何统领各核心模块并与任务系统、能力系统、学习系统和资料层发生关系，所以它才是架构图。
 
-结果：输出遵循学术规范，无需你指定细节
-```
+## 目录说明
 
-**可用模式**：
+### `mind/`
 
-- `academic-writing.md` — 学术论文、研究报告
-- `evidence-based.md` — 任何需要可信论证的文档
-- `structured-report.md` — 正式报告、提案
+定义整个系统的运行模块：
 
-**扩展模式**：
+- `soul/`
+  - 系统最高约束层
+- `recognition/`
+  - 识别任务
+- `analysis/`
+  - 拆解任务与能力需求
+- `execution/`
+  - 生成正式 `Plan`
+- `execution-control/`
+  - 按 `Plan` 推进 `Step`、管理并行与汇合
+- `reflection/`
+  - 任务后复盘
+- `learning/`
+  - 知识读取、知识沉淀、审核、能力更新
+- `inference/`
+  - 条件触发的推衍模块
 
-按照 `patterns/README.md` 中的模板在 `patterns/` 创建新模式。系统将自动发现并使用它们。
+### `capabilities/`
 
-### 高级用法
+定义动作能力。
 
-#### 重用剧本
+每个 `Capability` 只负责一个核心动作，并通过文件输入输出工作。
 
-当 MAMAS 模式为任务创建剧本时，它存储在 `notes/{task}/playbook.md`。类似的未来任务自动重用经过验证的剧本：
+### `sources/`
 
-```
-首次："分析聊天记录以提取客户痛点"
-→ 创建 notes/chat-analysis/playbook.md
+存放工程资料：
 
-下次："分析这些新的聊天记录提取痛点"
-→ 重用现有剧本（无规划开销）
-```
+- 原始资料
+- 参考资料
+- 外部输入
+- 按 `Plan` 回填的最终交付物
 
-#### 迭代工作流
+### `tasks/`
 
-基于先前输出构建：
+存放任务实例目录。
 
-```
-步骤 1："基于 source/市场数据.csv 分析市场"
-→ 生成 output/市场分析.md
+每个任务至少包含：
 
-步骤 2："基于市场分析，提出商业策略"
-→ 读取 output/市场分析.md 的摘要
-→ 生成 output/商业策略.md
+- `learning-read.md`
+- `state.md`
+- `task-profile.md`
+- `analysis.md`
+- `plan.md`
+- `reflection-report.md`
+- `_output/`
+- `cache/`
 
-步骤 3："为商业策略创建实施路线图"
-→ 基于先前输出构建
-```
+当存在并行 `Step` 时：
 
-每一步都重用缓存的摘要 — 无冗余重读。
+- 并行 `Step` 仍然属于同一个 `Plan`
+- 各并行分支仍然共享同一个任务目录
+- 分支之间不能依赖隐式上下文，仍然必须通过文件交接
 
-#### 自定义专家
+## 知识如何进入系统
 
-系统可以通过人才架构师按需创建新专家：
+知识不能直接写入正式知识区。
 
-```
-请求："分析法律合同的合规风险"
+必须按这条路径推进：
 
-系统检测到：
-- 没有现有专家匹配"法律合同分析"
-- 调用人才架构师
-- 创建 specialists/legal-analyst.md
-- 更新 .claude/experts-index.json
-- 执行任务
+`reflection-report.md -> tl-{task-id}.md -> draft-*.md -> review-*.md -> kb-*.md -> cu-*.md`
 
-未来任务：
-- "法律合同"关键词现在路由到新专家
-```
+含义：
 
-### 最佳实践
+- `tl-*`
+  - 任务级学习记录
+- `draft-*`
+  - 待审核知识草稿
+- `review-*`
+  - 审核记录
+- `kb-*`
+  - 已批准正式知识
+- `cu-*`
+  - 能力更新记录
 
-1. **清晰组织源材料**：使用描述性文件名，如 `客户反馈-2024-Q1.md` 而非 `笔记.md`
+只有进入 `mind/learning/knowledge-base/approved/` 的知识，才允许被未来任务读取。
 
-2. **从简单开始，逐步扩展**：从简单任务开始理解路由，然后处理复杂的多专家工作流
+## 它和普通系统有什么不同
 
-3. **查看剧本**：MAMAS 模式任务后，检查 `notes/{task}/playbook.md` 了解系统如何分解你的请求
+MindFlow 不是：
 
-4. **利用模式**：当输出不符合预期时，考虑创建自定义模式而非反复修正
+- 普通知识库
+- 普通 workflow 引擎
+- 普通 agent prompt 集合
+- 纯粹的 MAS 编排器
 
-5. **信任摘要**：系统的摘要缓存（`source/.meta/` 和 `output/.meta/`）显著减少 token 使用 — 不要绕过它
+它的区别在于：
 
-### 故障排除
+- 有 `Soul`
+  - 能承载个人或企业标准
+- 有正式学习链
+  - 不是把经验随便记下来
+- 有能力内化机制
+  - 学习最终会转成 `Capability`
+- 有反省机制
+  - 执行完成后会复盘并强化认知与能力
+- 有自主决策能力
+  - 不是只按单次命令响应，而是按系统标准持续演化
 
-**"输出不符合我的要求"**
-- 检查 `patterns/` 中是否存在合适的模式
-- 创建定义你具体要求的自定义模式
-- 规划师将自动应用于未来类似任务
+## 这个仓库当前实现了什么
 
-**"任务似乎使用了错误的专家"**
-- 路由决策基于 `.claude/experts-index.json` 中的关键词
-- 你可以在请求中包含特定术语来引导路由
-- 示例："作为技术架构师，设计..." vs "设计..."
+当前仓库已经实现的是：
 
-**"想看过程，不只是结果"**
-- 查看 `notes/{task}/playbook.md` 了解执行计划
-- 查看 `notes/{task}/cache/` 了解中间产物
-- 这些展示系统如何分解和执行你的任务
+- `README*`
+  - 面向使用者的总览文档
+- `SYSTEM.md`
+  - 面向 AI 的系统协议
+- `CLAUDE.md`
+  - 面向 AI 的运行约束
+- `mind/*`
+  - 各模块说明与模板
+- `capabilities/*`
+  - `Capability` 定义规范
+- `tasks/*`
+  - 任务目录规范
+- `sources/*`
+  - 工程资料规范
+- `mind/learning/*`
+  - 学习、审核、批准、能力更新的固定链路
 
-## 许可证
+当前仓库没有内置的是：
 
-[MIT](LICENSE)
+- 自动执行器代码
+- 调度程序
+- 实际模型调用实现
+
+所以这份仓库现在更准确地说，是 MindFlow 这套系统的协议层、结构层和运行层定义。
+
+## 如何开始使用
+
+1. 定义你的 `Soul`
+   - 进入 `mind/soul/` 按模板填写
+2. 定义你的 `Capabilities`
+   - 进入 `capabilities/` 按模板编写
+3. 放入你的资料
+   - 放入 `sources/`
+4. 创建任务目录
+   - 在 `tasks/{task-id}/` 中生成任务产物
+5. 按主流程运行
+   - 从 `Learning(Read)` 开始，走完整条链
+   - 由你的 AI 运行环境或执行器去遵守这些协议
+
+## 入口文件分别做什么
+
+- [README-CN.md](/Users/weili.wang/workspace/mamas/README-CN.md)
+  - 面向使用者的中文总览
+- [README.md](/Users/weili.wang/workspace/mamas/README.md)
+  - 面向使用者的英文总览
+- [SYSTEM.md](/Users/weili.wang/workspace/mamas/SYSTEM.md)
+  - 面向 AI 的系统协议
+- [CLAUDE.md](/Users/weili.wang/workspace/mamas/CLAUDE.md)
+  - 面向 AI 的运行约束

@@ -1,427 +1,352 @@
-# MAMAS — Multi-Adaptive-Multi-Agent System
+# MindFlow
 
-English | [简体中文](README-CN.md)
+[Simplified Chinese](README-CN.md) | English
 
-An AI-native orchestration framework that turns a single prompt into structured, multi-specialist workflows. Feed it raw materials, give it a task — reports, code, contracts, articles — it handles the rest.
+MindFlow is an AI-native autonomous decision system for knowledge management, cognitive evolution, and task execution.
+
+It is not just a multi-agent orchestrator, and it is not just a knowledge base. It is closer to an editable digital persona system: you define a `Soul`, let the system absorb methodology and working styles that match your standards, internalize them into `Capability` components, execute work through those capabilities, reflect on outcomes, strengthen cognition, and keep evolving without drifting away from your own principles.
+
+This repository currently provides:
+
+- runtime protocol
+- directory rules
+- module documentation
+- file templates
+- learning and review promotion paths
+
+It is not a finished application with a built-in automatic executor, but it is still a complete system design.
 
 ## The Problem
 
-AI assistants operate in a flat, stateless loop: one prompt, one response, no memory of process. When tasks grow complex — requiring research, planning, drafting, and review — you end up manually orchestrating every step.
+Individuals and organizations usually face the same problems in knowledge work:
+
+- methodology never truly enters the system
+  - important preferences, principles, and ways of working stay in people’s heads or scattered documents
+- AI drifts easily
+  - without stable constraints, output drifts away from personal or organizational standards
+- knowledge does not automatically become capability
+  - what gets learned often remains documentation instead of becoming reusable execution units
+- task execution and knowledge accumulation are disconnected
+  - work gets done, but the experience does not become the next stable capability
+- ordinary agent workflows can execute, but they do not self-correct under a stable philosophy
+  - there is no durable mechanism for learning, reflection, and cognitive strengthening
 
 ## The Solution
 
-MAMAS introduces **process architecture** into AI collaboration. It separates **what you put in**, **how AI works**, and **what comes out** into a clean, reproducible structure.
+MindFlow is designed as a set of stable layers:
 
-```
-     You                          MAMAS                           You
-  ┌─────────┐    ┌──────────────────────────────────┐    ┌────────────────┐
-  │ source/ │───▶│  Digest → Plan → Execute → QA    │───▶│   output/      │
-  │ (input) │    │         (fully automated)        │    │ (deliverables) │
-  └─────────┘    └──────────────────────────────────┘    └────────────────┘
+- `Soul`
+  - defines long-term standards, preferences, taboos, and methodological direction
+- `Learning`
+  - reads formal knowledge before work and pushes new knowledge through a reviewed promotion path after work
+- `Mind`
+  - owns system-level cognition such as recognition, analysis, execution, execution control, reflection, and inference
+- `Capability`
+  - turns learning outcomes into executable components
+- `Plan + Step`
+  - turns a task into a formal execution file and runs through file-based handoff
+- `Task State`
+  - persists runtime state so recovery, parallel merge, and resumption are controllable
+
+So the intended system behavior is not “do a task and maybe write some notes after.”
+
+Instead it works like this:
+
+1. read formal knowledge under the guidance of `Soul`
+2. recognize and analyze the task through `Mind`
+3. generate a formal `Plan`
+4. execute through `Capability` units
+5. reflect, learn, review, consolidate, and upgrade capability
+
+For stable real execution, MindFlow also requires a formal runtime state surface:
+
+- what phase the task is currently in
+- which step is currently active
+- which steps are completed, failed, or blocked
+- where parallel branches are waiting to merge
+- whether the task is ready to enter `Reflection`
+
+`Step` does not only support sequential execution. It also supports parallel execution:
+
+- some `Step`s run sequentially
+- some `Step`s may run in parallel
+- parallel branches may expand into multiple concurrent `Tasks` or `Subagents`
+- the results of parallel branches still converge through file-based handoff
+
+## Design Philosophy
+
+### 1. `Soul` comes before intelligence
+
+MindFlow does not pre-fill a worldview, but it requires a `Soul` structure first.
+
+The purpose is not roleplay. The purpose is to give the system a highest constraint layer:
+
+- what counts as a good result
+- which methods are preferred
+- what must not be done
+- what is worth learning
+- what must never be promoted into the system
+
+### 2. Learning is not document storage, it becomes capability
+
+In MindFlow, the goal of learning is not to pile up documents.
+The goal is for approved knowledge to eventually become callable capability.
+
+That means:
+
+- documents are intermediate states
+- `Capability` is the formal executable shape of learning
+
+### 3. Execution is file-driven, not improvisational
+
+MindFlow does not rely on implicit context passing.
+
+It requires:
+
+- a formal `Plan`
+- multiple `Step`s inside the plan
+- file handoff through `cache/`
+- final results written into `_output/`
+
+This makes tasks reviewable, auditable, reproducible, and constrainable.
+
+### 4. Reflection is cognitive strengthening, not just summary
+
+After execution, the system must enter `Reflection -> Learning`.
+
+This is not just for writing a summary. It is for:
+
+- detecting problems
+- identifying what is worth learning
+- discovering capability gaps
+- strengthening cognition and capability
+- preventing the system from drifting away from reality over time
+
+MindFlow is therefore a task system with a built-in self-cultivation loop.
+
+## Why MAS Matters Here
+
+The execution layer of MindFlow is effectively MAS.
+
+Not because “multi-agent” sounds advanced, but because real knowledge work naturally requires multiple kinds of capability:
+
+- some capabilities research
+- some structure information
+- some perform concrete actions
+- some evaluate outputs
+
+Breaking work into multiple `Capability` units coordinated by `Plan + Step` gives practical advantages:
+
+- clear capability boundaries
+- easier maintenance of each unit
+- more stable task decomposition
+- less context contamination through file-based handoff
+- better local reflection and capability upgrade after each task
+
+`Plan` therefore does not require all `Step`s to be serial.
+When the task fits parallelization, `Step`s may run in parallel to improve execution efficiency for complex work.
+
+So MindFlow is not “MAS first, then find a use case.”
+It is “knowledge work naturally requires capability division, so the execution layer uses MAS.”
+
+## Core Flow
+
+When a task is run under the MindFlow protocol, it must follow this flow:
+
+`Task -> Learning(Read) -> Recognition -> Analysis -> Execution -> Plan -> Execution Control -> Reflection -> Learning`
+
+This means:
+
+- `Learning(Read)`
+  - reads approved and consolidated formal knowledge
+- `Recognition`
+  - identifies the task and produces `Task Profile`
+- `Analysis`
+  - decomposes the task and produces `Analysis Output`
+- `Execution`
+  - produces the formal `Plan`
+- `Execution Control`
+  - advances `Step`s according to the formal `Plan`
+  - manages serial execution, parallel execution, merge, and failure handling
+- `Plan`
+  - organizes multiple `Step`s
+- `Step`
+  - calls different `Capability` units
+  - may run sequentially or in parallel
+- `Reflection`
+  - reviews the completed task and produces `Reflection Report`
+- `Learning`
+  - moves task experience into the learning pipeline, eventually forming formal knowledge or capability updates
+
+## Flow Diagram
+
+```mermaid
+flowchart LR
+    T["Task"] --> LR["Learning(Read)"]
+    LR --> R["Recognition"]
+    R --> A["Analysis"]
+    A --> E["Execution"]
+    E --> P["Plan"]
+    P --> EC["Execution Control"]
+    EC --> S["Step"]
+    S --> C["Capabilities"]
+    C --> O["tasks/{task-id}/_output/"]
+    O --> RF["Reflection"]
+    RF --> L["Learning"]
+    L --> KB["Approved Knowledge / Capability Update"]
+    KB --> LR
+
+    SOUL["Soul"] -.constraints.-> LR
+    SOUL -.constraints.-> R
+    SOUL -.constraints.-> A
+    SOUL -.constraints.-> RF
+    SOUL -.constraints.-> L
 ```
 
-You focus on two surfaces: **input** and **output**. Everything in between is managed.
+The diagram above shows how a task flows through the system, so it is a flow diagram, not the architecture diagram.
+
+## Outputs and Materials
+
+Under the current repository rules, MindFlow uses two different result locations:
+
+- default task result directory: `tasks/{task-id}/_output/`
+- optional publish-back directory: `sources/`
+
+Rules:
+
+- the system flow depends on `_output/`
+- `Reflection` reads `_output/` by default
+- writing back to `sources/` is only allowed when explicitly declared in `Plan`
+
+That means:
+
+- `_output/` is the formal internal task result location
+- `sources/` is the business material and publication location
+
+## Directory Structure
+
+```text
+MindFlow/
+├── README.md
+├── README-CN.md
+├── SYSTEM.md
+├── CLAUDE.md
+├── mind/
+│   ├── soul/
+│   ├── recognition/
+│   ├── analysis/
+│   ├── execution/
+│   ├── execution-control/
+│   ├── reflection/
+│   ├── learning/
+│   │   ├── learning-read/
+│   │   ├── knowledge-base/
+│   │   │   ├── approved/
+│   │   │   ├── drafts/
+│   │   │   └── archived/
+│   │   ├── task-learning/
+│   │   ├── reviews/
+│   │   └── capability-updates/
+│   └── inference/
+├── capabilities/
+├── sources/
+└── tasks/
+```
 
 ## Architecture
 
 ```mermaid
 flowchart TB
-    subgraph INPUT ["source/ — Raw Materials"]
-        S1[Chat logs]
-        S2[Meeting notes]
-        S3[Reference docs]
-        S4[...]
+    subgraph ENTRY["Entry Layer"]
+        USER["User / External Trigger"]
     end
 
-    subgraph DIGEST ["source/.meta/ — Auto-Maintained Digests"]
-        D1["Summaries & indexes<br/>(generated on demand)"]
+    subgraph CORE["MindFlow Core"]
+        MIND["Mind"]
+        TASK["Task"]
+        LR["Learning(Read)"]
+        REC["Recognition"]
+        ANA["Analysis"]
+        EXE["Execution"]
+        PLAN["Plan"]
+        CTRL["Execution Control"]
+        REFL["Reflection"]
+        LEARN["Learning"]
+        INF["Inference"]
+        SOUL["Soul"]
     end
 
-    subgraph PATTERNS ["patterns/ — Behavior Constraints"]
-        direction LR
-        PT1["Domain<br/>academic-writing<br/>legal-contract"]
-        PT2["Quality<br/>evidence-based<br/>consistency"]
-        PT3["Format<br/>structured-report<br/>api-docs"]
+    subgraph EXEC["Capability Layer"]
+        CAP["Capabilities"]
+        STEP["Step"]
     end
 
-    subgraph ROUTING ["Intelligent Routing"]
-        R{{"Complexity<br/>assessment"}}
-        R -->|Simple| NANO["Nano specialist<br/>(direct execution)"]
-        R -->|Complex| MAMAS_MODE["MAMAS mode"]
+    subgraph KNOW["Material Layer"]
+        SRC["Sources"]
+        APPROVED["Approved Knowledge"]
+        REV["Review"]
+        CU["Capability Update"]
     end
 
-    subgraph MAMAS_MODE ["MAMAS Orchestration"]
-        direction TB
-        P["Planner<br/>━━━━━━━━━━<br/>Analyzes task<br/>Selects or creates playbook<br/>Identifies specialists<br/>Selects patterns"]
-        C["Coordinator<br/>━━━━━━━━━━<br/>Reads playbook<br/>Dispatches specialists<br/>Validates pattern compliance"]
-        E["Domain Specialists<br/>━━━━━━━━━━<br/>Read assigned patterns<br/>Apply constraints<br/>Produce artifacts"]
-        P --> C --> E
-    end
+    USER ==> MIND
+    MIND ==> TASK
+    TASK ==> LR
+    LR ==> REC
+    REC ==> ANA
+    ANA ==> EXE
+    EXE ==> PLAN
+    PLAN ==> CTRL
+    CTRL ==> STEP
+    STEP ==> CAP
+    CAP ==> REFL
+    REFL ==> LEARN
 
-    subgraph NOTES ["notes/ — Process Isolation"]
-        N1["notes/task-A/<br/>├── playbook.md<br/>├── patterns.md<br/>└── cache/"]
-        N2["notes/task-B/<br/>├── playbook.md<br/>├── patterns.md<br/>└── cache/"]
-    end
+    MIND --> SOUL
+    MIND --> LR
+    MIND --> REC
+    MIND --> ANA
+    MIND --> EXE
+    MIND --> CTRL
+    MIND --> REFL
+    MIND --> LEARN
+    MIND --> INF
 
-    subgraph OUTPUT ["output/ — Deliverables"]
-        O1[Reports]
-        O2[Code]
-        O3[Contracts]
-        O4[...]
-    end
-
-    subgraph OUTPUT_DIGEST ["output/.meta/ — Auto-Maintained Digests"]
-        OD1["Deliverable summaries<br/>(generated on output)"]
-    end
-
-    INPUT --> DIGEST
-    DIGEST --> ROUTING
-    ROUTING --> NOTES
-    NOTES --> OUTPUT
-    OUTPUT --> OUTPUT_DIGEST
-
-    PATTERNS -.->|"Pattern selection"| P
-    P -.->|"Pattern references"| NOTES
-    E -.->|"Pattern compliance"| C
-
-    subgraph EVOLUTION ["Self-Evolution"]
-        TA["Talent Architect<br/>━━━━━━━━━━<br/>Creates missing specialists<br/>Upgrades underperforming ones<br/>Maintains capability registry"]
-    end
-
-    P -.->|"No matching specialist"| TA
-    TA -.->|"New specialist ready"| P
-
-    PATTERNS -.->|"Pattern refinement"| TA
-    TA -.->|"Updated pattern"| PATTERNS
-
-    style INPUT fill:#e8f5e9,stroke:#2e7d32
-    style OUTPUT fill:#e3f2fd,stroke:#1565c0
-    style MAMAS_MODE fill:#fff3e0,stroke:#ef6c00
-    style EVOLUTION fill:#fce4ec,stroke:#c62828
-    style NOTES fill:#f3e5f5,stroke:#7b1fa2
-    style PATTERNS fill:#e0f7fa,stroke:#006064
+    APPROVED --> LR
+    REV --> APPROVED
+    LEARN --> REV
+    LEARN --> CU
+    CU --> CAP
+    SRC --> MIND
+    PLAN -.publish-back.-> SRC
+    INF -.conditional.-> ANA
+    INF -.conditional.-> REFL
+    INF -.conditional.-> LEARN
 ```
 
-## Core Concepts
+The diagram above is the architecture diagram. It shows the structural relationship between the core concepts, systems, and artifact layers.
 
-### 1. Source → Digest → Execute → Output
+## How to Use This Repository
 
-Every task follows the same pipeline:
+This repository is intended for people or organizations who want to define their own knowledge system, runtime rules, learning chain, and capability evolution mechanism.
 
-1. **Source**: You drop raw materials into `source/` — chat logs, meeting notes, reference documents, anything
-2. **Digest**: Before any specialist reads a source file, the system generates and caches a digest in `source/.meta/`. On subsequent tasks, the digest is reused — the raw file is never re-read unnecessarily
-3. **Execute**: Specialists work in isolated process directories under `notes/`, reading digests (not raw files), producing intermediate artifacts in their own `cache/`
-4. **Output**: Final deliverables land in `output/`. The system auto-maintains an `output/.meta/` digest layer so downstream tasks can reference prior deliverables efficiently
+Typical usage:
 
-**You only touch `source/` and `output/`.** The rest is infrastructure.
+1. define `Soul` in `mind/soul/core.md`
+2. define or extend `Capability` files under `capabilities/`
+3. place project materials in `sources/`
+4. create `tasks/{task-id}/`
+5. run the task according to the formal MindFlow protocol
+6. let task-end `Learning` promote reusable knowledge and capability updates
 
-### 2. Playbook-Driven Processes
+## What Makes It Different
 
-When a task enters MAMAS mode, the **Planner** generates (or reuses) a **playbook** — a Markdown file stored at `notes/{task}/playbook.md`. The playbook defines:
+MindFlow is different from the following common systems:
 
-- Which specialists are involved and what each does
-- The execution sequence (parallel vs. sequential)
-- Document update rules
-- Quality criteria
-
-The **Coordinator** reads the playbook and executes it. This means:
-
-- **Reusable patterns**: A playbook for "analyze chat logs and extract stakeholder motivations" can be reused whenever a similar task arrives
-- **Context isolation**: Each task gets its own `notes/` subdirectory. Specialists in task A never see task B's cache
-
-### 3. Three-Tier Routing
-
-Not every task needs full orchestration. The system evaluates complexity first:
-
-| Tier | When | What Happens | Cost |
-|------|------|-------------|------|
-| **Direct** | Simple, single-domain task | Nano specialist handles it immediately | Minimal |
-| **Full Specialist** | Moderate complexity | Full specialist with complete methodology | Moderate |
-| **MAMAS Mode** | Multi-specialist, cross-domain | Planner → Coordinator → Specialist team | Full |
-
-### 4. Self-Evolution
-
-The system extends itself. Three infrastructure specialists make this possible:
-
-| Role | Responsibility |
-|------|---------------|
-| **Planner** | Analyzes every incoming task. When no existing specialist or playbook matches, triggers creation of new ones |
-| **Coordinator** | Executes playbooks. Evaluates specialist output quality. Flags underperformance |
-| **Talent Architect** | Designs new specialists on demand. Upgrades existing ones when performance degrades. Maintains the capability registry |
-
-This creates a closed loop: **task → gap detected → specialist created → task completed → capability permanently expanded**.
-
-### 5. Pattern-Driven Constraints
-
-AI-generated content can drift from business requirements or user expectations. MAMAS solves this with **reusable behavior patterns**:
-
-- **What they are**: Pre-defined constraints that specify how specialists should execute tasks (format rules, quality standards, process requirements)
-- **How they work**: Planner identifies applicable patterns → Coordinator ensures specialists read them → specialists apply constraints → Coordinator validates compliance
-- **Pattern types**:
-  - **Domain patterns**: Academic writing, legal contracts, technical specs
-  - **Quality patterns**: Evidence-based argumentation, consistency checks
-  - **Format patterns**: Structured reports, API documentation
-  - **Process patterns**: Iterative refinement, multi-round review
-
-**Result**: Output matches real workflows and standards without manual post-editing.
-
-### 6. Token Economy
-
-AI context windows are finite. MAMAS treats tokens as a scarce resource:
-
-- **Digest-first**: Specialists receive summaries, not raw files
-- **Nano preference**: 70% of tasks use nano specialists (< 250 tokens each)
-- **Cache reuse**: Digests persist across tasks — no redundant processing
-- **Process isolation**: Each task loads only what it needs
-
-## Directory Structure
-
-```
-MAMAS/
-├── CLAUDE.md                  # AI behavior specification
-├── SYSTEM.md                  # Routing rules & protocol
-├── README.md                  # This file
-│
-├── specialists/               # Specialist agent definitions
-│   ├── planner.md            # Task analysis & playbook creation
-│   ├── coordinator.md        # Execution dispatch & quality assurance
-│   ├── talent-architect.md   # Specialist lifecycle management
-│   ├── {domain}.md           # Domain specialists (extensible)
-│   └── .nano/                # Lightweight variants (< 250 tokens)
-│       └── {domain}.md
-│
-├── patterns/                  # Behavior constraint library
-│   ├── README.md             # Pattern system documentation
-│   ├── .index.json           # Pattern selection guide
-│   ├── academic-writing.md   # Academic writing standards
-│   ├── evidence-based.md     # Evidence-based argumentation
-│   ├── structured-report.md  # Formal report templates
-│   └── {pattern}.md          # Extensible pattern definitions
-│
-├── .claude/
-│   └── experts-index.json    # Capability routing registry
-│
-├── source/                    # YOUR INPUT — raw materials
-│   └── .meta/                # Auto-maintained digests
-│       ├── index.json
-│       └── summaries/
-│
-├── output/                    # YOUR OUTPUT — deliverables
-│   └── .meta/                # Auto-maintained deliverable digests
-│       └── summaries/
-│
-└── notes/                     # Process-isolated workspaces
-    └── {task}/
-        ├── playbook.md       # Planner-generated execution plan
-        └── cache/            # Intermediate artifacts (this task only)
-            └── .context/     # Inter-specialist context summaries
-```
-
-## Quick Start
-
-```bash
-# 1. Clone into your project
-cp -r MAMAS/ your-project/MAMAS/
-
-# 2. Add raw materials
-cp meeting-notes.md your-project/MAMAS/source/
-cp chat-log.md your-project/MAMAS/source/
-
-# 3. Ask for anything
-# "Write a competitive analysis report"
-# "Draft a technical architecture document"
-# "Generate a project proposal"
-# The system routes, plans, executes, and delivers.
-```
-
-## Usage Guide
-
-### How to Use MAMAS
-
-MAMAS is designed to work with any AI assistant that supports the Claude Code framework. You simply interact in natural language, and the system handles the orchestration automatically.
-
-#### Step 1: Prepare Your Materials
-
-Place any relevant materials in the `source/` directory:
-
-```bash
-# Examples of what you can add:
-source/
-├── meeting-notes-2024-01.md
-├── customer-chat-log.md
-├── competitor-analysis.pdf
-├── technical-requirements.md
-└── project-brief.docx
-```
-
-The system automatically generates digests of these files and caches them in `source/.meta/summaries/` for efficient reuse.
-
-#### Step 2: Describe Your Task
-
-Simply tell the AI what you need. The system automatically:
-- Routes to the appropriate specialist(s)
-- Applies relevant behavior patterns
-- Generates a playbook (for complex tasks)
-- Produces deliverables in `output/`
-
-**Example Tasks**:
-
-```
-Simple (Direct Mode):
-"Summarize the meeting notes in source/"
-→ Context Synthesizer handles it directly
-
-Moderate (Full Specialist):
-"Analyze the competitive landscape based on source/competitor-analysis.pdf"
-→ Research Analyst executes with full methodology
-
-Complex (MAMAS Mode):
-"Create a comprehensive business proposal including market analysis,
-technical architecture, cost assessment, and implementation plan"
-→ Planner → Coordinator → Multiple specialists collaborate
-```
-
-#### Step 3: Review Deliverables
-
-All outputs appear in the `output/` directory:
-
-```
-output/
-├── business-proposal.md
-├── technical-architecture.md
-└── implementation-plan.md
-```
-
-Each output automatically gets a digest in `output/.meta/summaries/` for downstream tasks.
-
-### Understanding Routing
-
-MAMAS uses intelligent routing to optimize cost and latency:
-
-**When you make a request, the system evaluates:**
-
-1. **Is this a simple, single-domain task?**
-   - YES → Direct Mode (nano specialist, ~150-200 tokens)
-   - Example: "Summarize this document"
-
-2. **Does it need deep methodology but single specialist?**
-   - YES → Full Specialist Mode (~1500-2500 tokens)
-   - Example: "Conduct competitive analysis"
-
-3. **Does it require multiple specialists or cross-domain work?**
-   - YES → MAMAS Mode (Planner + Coordinator + Specialists)
-   - Example: "Create a complete project proposal"
-
-You don't need to specify the mode — the system decides automatically based on task complexity.
-
-### Working with Patterns
-
-Patterns ensure your outputs match real-world standards and requirements.
-
-**Automatic Pattern Application**:
-
-When you request a task, the Planner automatically identifies applicable patterns:
-
-```
-Request: "Write an academic paper on multi-agent systems"
-
-Planner selects:
-- patterns/academic-writing.md (ensures academic structure)
-- patterns/evidence-based.md (requires citation support)
-- patterns/structured-report.md (enforces standard sections)
-
-Result: Output follows academic conventions without you specifying details
-```
-
-**Available Patterns**:
-
-- `academic-writing.md` — Academic papers, research reports
-- `evidence-based.md` — Any document requiring credible arguments
-- `structured-report.md` — Formal reports, proposals
-
-**Extending Patterns**:
-
-Create new patterns in `patterns/` following the template in `patterns/README.md`. The system will automatically discover and use them.
-
-### Advanced Usage
-
-#### Reusing Playbooks
-
-When MAMAS mode creates a playbook for a task, it's stored in `notes/{task}/playbook.md`. Similar future tasks automatically reuse proven playbooks:
-
-```
-First time: "Analyze chat logs to extract customer pain points"
-→ Creates notes/chat-analysis/playbook.md
-
-Next time: "Analyze these new chat logs for pain points"
-→ Reuses the existing playbook (no planning overhead)
-```
-
-#### Iterative Workflows
-
-Build on previous outputs:
-
-```
-Step 1: "Analyze the market based on source/market-data.csv"
-→ Produces output/market-analysis.md
-
-Step 2: "Based on the market analysis, propose a business strategy"
-→ Reads digest of output/market-analysis.md
-→ Produces output/business-strategy.md
-
-Step 3: "Create an implementation roadmap for the business strategy"
-→ Builds on previous outputs
-```
-
-Each step reuses cached digests — no redundant re-reading.
-
-#### Custom Specialists
-
-The system can create new specialists on demand via the Talent Architect:
-
-```
-Request: "Analyze legal contracts for compliance risks"
-
-System detects:
-- No existing specialist matches "legal contract analysis"
-- Invokes Talent Architect
-- Creates specialists/legal-analyst.md
-- Updates .claude/experts-index.json
-- Executes the task
-
-Future tasks:
-- "legal contract" keywords now route to the new specialist
-```
-
-### Best Practices
-
-1. **Organize source materials clearly**: Use descriptive filenames like `customer-feedback-2024-Q1.md` instead of `notes.md`
-
-2. **Start simple, scale up**: Begin with straightforward tasks to understand routing, then tackle complex multi-specialist workflows
-
-3. **Review playbooks**: After a MAMAS-mode task, check `notes/{task}/playbook.md` to understand how the system decomposed your request
-
-4. **Leverage patterns**: When output doesn't match your expectations, consider creating a custom pattern rather than repeatedly correcting
-
-5. **Trust the digests**: The system's digest cache (`source/.meta/` and `output/.meta/`) significantly reduces token usage — don't bypass it
-
-### Troubleshooting
-
-**"Output doesn't match my requirements"**
-- Check if an appropriate pattern exists in `patterns/`
-- Create a custom pattern defining your specific requirements
-- The Planner will auto-apply it to future similar tasks
-
-**"Task seems to use the wrong specialist"**
-- The routing decision is based on keywords in `.claude/experts-index.json`
-- You can guide routing by including specific terms in your request
-- Example: "As a technical architect, design..." vs "Design..."
-
-**"Want to see the process, not just results"**
-- Check `notes/{task}/playbook.md` for the execution plan
-- Review `notes/{task}/cache/` for intermediate artifacts
-- These show exactly how the system broke down and executed your task
-
-## License
-
-[MIT](LICENSE)
+- a plain knowledge base
+  - because it does not stop at storage; it turns approved learning into executable capability
+- a plain workflow engine
+  - because it is constrained by `Soul` and has built-in reflection and learning promotion
+- a plain agent loop
+  - because it uses formal artifacts, runtime state, file-based handoff, and a review-controlled promotion path
+- a multi-agent orchestrator for its own sake
+  - because MAS is only the execution layer, not the identity of the whole system

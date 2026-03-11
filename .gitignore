@@ -1,2 +1,17 @@
 .idea
 .DS_Store
+.claude/
+.cursor/
+.codex/
+.opencode/
+.trae/
+.kiro/
+.gemini/
+.copilot/
+.windsurf/
+.cline/
+.roo/
+.aider/
+.cursorignore
+.cursorrules
+.windsurfrules
