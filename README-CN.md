@@ -1,5 +1,7 @@
 # MindFlow
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18977748.svg)](https://doi.org/10.5281/zenodo.18977748)
+
 [English](README.md) | 简体中文
 
 MindFlow 是一个面向知识管理、认知演化与任务执行的 AI-native 自主决策系统。
