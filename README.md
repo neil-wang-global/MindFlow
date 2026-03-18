@@ -1,5 +1,7 @@
 # MindFlow
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18977748.svg)](https://doi.org/10.5281/zenodo.18977748)
+
 [Simplified Chinese](README-CN.md) | English
 
 MindFlow is an AI-native autonomous decision system for knowledge management, cognitive evolution, and task execution.
