@@ -1,0 +1,14 @@
+{
+  "name": "mindflow",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prepare": "lefthook install"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "lefthook": "^2.1.4"
+  }
+}
