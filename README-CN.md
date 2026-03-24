@@ -151,7 +151,7 @@ MindFlow 的执行层本质上是 MAS。
 
 如果你按 MindFlow 的协议运行任务，每个任务都必须经过这条主流程：
 
-`Task -> Learning(Read) -> Recognition -> Analysis -> Execution -> Plan -> Execution Control -> Reflection -> Learning`
+`Task -> Learning(Read) -> Recognition -> Analysis -> Execution -> Plan -> Execution Control -> [Learning(Acquire)?] -> Reflection -> [Learning(Acquire)?] -> Learning`
 
 含义如下：
 
@@ -268,7 +268,7 @@ flowchart TB
         EXE["Execution"]
         ECTRL["Execution Control"]
         REF["Reflection"]
-        LEARN["Learning"]
+        LEARN["Learning(Terminal)"]
         INF["Inference"]
     end
 
@@ -288,6 +288,15 @@ flowchart TB
         REVIEW["Review"]
         CU["Capability Update"]
         ARCHIVED["Archived Knowledge"]
+        subgraph ACQUIRE["Learning(Acquire)  —  条件触发"]
+            SEARCH["Search\n记录候选 URL"]
+            FETCH["Fetch & Preserve\n原文存入 raw-sources/"]
+            VERIFY["Verify\n独立 Subagent 验证"]
+            RAWSRC["raw-sources/\nsrc-NNN-slug.md"]
+            SEARCH --> FETCH
+            FETCH --> RAWSRC
+            RAWSRC --> VERIFY
+        end
     end
 
     subgraph SOURCESBOX["资料层"]
@@ -310,8 +319,7 @@ flowchart TB
     MIND --> LEARN
     MIND --> INF
 
-    APPROVED --> REC
-    APPROVED --> ANA
+    APPROVED --> LREAD
 
     MIND ==> TASK
     TASK ==> LREAD
@@ -341,6 +349,9 @@ flowchart TB
     INF -.条件触发.-> REF
     INF -.条件触发.-> LEARN
 
+    STEP -."知识缺口\n触发".-> ACQUIRE
+    REF -."知识缺口\n触发".-> ACQUIRE
+    VERIFY --"仅 passed 源\n进入学习链"--> TL
 ```
 
 这张图描述的是系统里的核心概念层如何组成整体结构，以及 `Mind` 如何统领各核心模块并与任务系统、能力系统、学习系统和资料层发生关系，所以它才是架构图。

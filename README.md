@@ -155,7 +155,7 @@ It is “knowledge work naturally requires capability division, so the execution
 
 When a task is run under the MindFlow protocol, it must follow this flow:
 
-`Task -> Learning(Read) -> Recognition -> Analysis -> Execution -> Plan -> Execution Control -> Reflection -> Learning`
+`Task -> Learning(Read) -> Recognition -> Analysis -> Execution -> Plan -> Execution Control -> [Learning(Acquire)?] -> Reflection -> [Learning(Acquire)?] -> Learning`
 
 This means:
 
@@ -265,64 +265,97 @@ flowchart TB
 
     subgraph CORE["MindFlow Core"]
         MIND["Mind"]
-        TASK["Task"]
-        LR["Learning(Read)"]
+        SOUL["Soul"]
+        LREAD["Learning(Read)"]
         REC["Recognition"]
         ANA["Analysis"]
         EXE["Execution"]
-        PLAN["Plan"]
-        CTRL["Execution Control"]
-        REFL["Reflection"]
-        LEARN["Learning"]
+        ECTRL["Execution Control"]
+        REF["Reflection"]
+        LEARN["Learning(Terminal)"]
         INF["Inference"]
-        SOUL["Soul"]
     end
 
-    subgraph EXEC["Capability Layer"]
-        CAP["Capabilities"]
+    subgraph TASKSYS["Task System"]
+        TASK["Task"]
+        PLAN["Plan"]
         STEP["Step"]
+        CACHE["Task Cache"]
+        OUTPUT["Task Output"]
+        REFREPORT["Reflection Report"]
     end
 
-    subgraph KNOW["Material Layer"]
-        SRC["Sources"]
+    subgraph KNOWLEDGE["Learning System"]
         APPROVED["Approved Knowledge"]
-        REV["Review"]
+        TL["Task Learning"]
+        DRAFT["Draft Knowledge"]
+        REVIEW["Review"]
         CU["Capability Update"]
+        ARCHIVED["Archived Knowledge"]
+        subgraph ACQUIRE["Learning(Acquire)  —  conditional"]
+            SEARCH["Search\nrecord candidate URLs"]
+            FETCH["Fetch & Preserve\nsave verbatim to raw-sources/"]
+            VERIFY["Verify\nindependent subagent"]
+            RAWSRC["raw-sources/\nsrc-NNN-slug.md"]
+            SEARCH --> FETCH
+            FETCH --> RAWSRC
+            RAWSRC --> VERIFY
+        end
+    end
+
+    subgraph SOURCESBOX["Material Layer"]
+        SRC["Sources"]
+    end
+
+    subgraph CAPS["Capability System"]
+        CAP["Capabilities"]
     end
 
     USER ==> MIND
-    MIND ==> TASK
-    TASK ==> LR
-    LR ==> REC
-    REC ==> ANA
-    ANA ==> EXE
-    EXE ==> PLAN
-    PLAN ==> CTRL
-    CTRL ==> STEP
-    STEP ==> CAP
-    CAP ==> REFL
-    REFL ==> LEARN
 
     MIND --> SOUL
-    MIND --> LR
+    MIND --> LREAD
     MIND --> REC
     MIND --> ANA
     MIND --> EXE
-    MIND --> CTRL
-    MIND --> REFL
+    MIND --> ECTRL
+    MIND --> REF
     MIND --> LEARN
     MIND --> INF
 
-    APPROVED --> LR
-    REV --> APPROVED
-    LEARN --> REV
-    LEARN --> CU
+    APPROVED --> LREAD
+
+    MIND ==> TASK
+    TASK ==> LREAD
+    LREAD ==> REC
+    REC ==> ANA
+    ANA ==> EXE
+    EXE ==> PLAN
+    PLAN ==> ECTRL
+    ECTRL ==> STEP
+    STEP ==> CAP
+    CAP --> CACHE
+    CAP ==> OUTPUT
+    OUTPUT ==> REF
+    CACHE --> REF
+    REF ==> REFREPORT
+    REFREPORT ==> LEARN
+    LEARN ==> TL
+    TL ==> DRAFT
+    DRAFT ==> REVIEW
+    REVIEW ==> APPROVED
+    REVIEW --> CU
     CU --> CAP
     SRC --> MIND
+    DRAFT --> ARCHIVED
     PLAN -.publish-back.-> SRC
     INF -.conditional.-> ANA
-    INF -.conditional.-> REFL
+    INF -.conditional.-> REF
     INF -.conditional.-> LEARN
+
+    STEP -."knowledge gap\ntriggers".-> ACQUIRE
+    REF -."knowledge gap\ntriggers".-> ACQUIRE
+    VERIFY --"passed sources\nonly"--> TL
 ```
 
 The diagram above is the architecture diagram. It shows the structural relationship between the core concepts, systems, and artifact layers.
