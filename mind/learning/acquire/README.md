@@ -63,7 +63,10 @@ The verification subagent must:
 
 1. Read the ACQ-{NNN} section of `tasks/{task-id}/acquire/search-log.md` to obtain the declared Fetch Plan for this event
 2. Read all files in `tasks/{task-id}/acquire/raw-sources/`
-3. Cross-check: every URL in the event's Fetch Plan must have a corresponding `src-*.md`; every `src-*.md` claimed for this event must have its URL in the Fetch Plan
+3. Cross-check using both URL and `ACQ Event` field:
+   - every URL listed in the event's Fetch Plan must have a corresponding `src-*.md` file whose `ACQ Event` field matches this event; any URL with no such file must be recorded as `missing`
+   - every `src-*.md` file whose `ACQ Event` field declares this event must have its URL listed in this event's Fetch Plan; any file that declares this event but whose URL is not in the Fetch Plan must be recorded as `unplanned` and treated as an unverifiable source
+   - any `src-*.md` file with an `ACQ Event` field that does not match any known ACQ-{NNN} event must be recorded as `unplanned` and treated as an unverifiable source
 4. Independently re-access each URL to confirm accessibility and content match
 5. Assess source credibility based on source authority, not content
 6. Write the ACQ-{NNN} section of `tasks/{task-id}/acquire/verification-report.md`

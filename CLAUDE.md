@@ -142,7 +142,6 @@ Before running `Execution`, read:
 - `tasks/{task-id}/analysis.md`
 - the relevant `Capability` definition files referenced by the analysis
 
-
 `Plan` is the only formal execution file.
 
 Do not execute from:
