@@ -71,6 +71,7 @@ Before running `Learning(Acquire)`, the agent must read:
 Before running terminal `Learning`, the agent must read:
 
 - `mind/soul/core.md`
+- `tasks/{task-id}/state.md` (to verify ACQ-{NNN} labels in `Learning(Acquire) Log` match the events recorded in `tl-{task-id}.md`)
 - the current `Task`'s `reflection-report.md`
 - if external sources were acquired: `tasks/{task-id}/acquire/verification-report.md`
 
@@ -86,7 +87,7 @@ Before running terminal `Learning`, the agent must read:
 
 Terminal `Learning` must execute in the following order and may not skip steps:
 
-1. generate `mind/learning/task-learning/tl-{task-id}.md` from `reflection-report.md`
+1. generate `mind/learning/task-learning/tl-{task-id}.md` from `reflection-report.md`; this file must always be written — if there are no learning candidates, write `Candidate Knowledge: none` and `Next Promotion Target: none` rather than omitting the file
 2. generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
 3. **dispatch an independent subagent** to generate each `review-{task-id}-{slug}.md`
    - the subagent prompt must provide: the `draft-*.md` path, the `Source Anchor` path, the output target, and an explicit instruction that the subagent must not carry any context from the drafting session

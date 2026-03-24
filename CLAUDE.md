@@ -102,8 +102,9 @@ You must produce:
 That file must record:
 
 - which `Soul` files were read
-- which approved knowledge files were read
+- which approved knowledge files were read (use `none` if no approved knowledge files exist yet)
 - why those reads are relevant to the current task
+- which areas were explicitly excluded: `mind/learning/knowledge-base/drafts/`, `mind/learning/knowledge-base/archived/`, `mind/learning/task-learning/`, `mind/learning/reviews/`, `mind/learning/capability-updates/`
 
 ## Recognition Constraints
 
@@ -134,7 +135,7 @@ Before running `Analysis`, read:
 
 `Execution` must produce `tasks/{task-id}/plan.md`.
 
-`Execution` must also initialize `tasks/{task-id}/state.md`.
+`Execution` must also initialize `tasks/{task-id}/state.md`. The initialization order is fixed: write `plan.md` first, then initialize `state.md` based on the completed `plan.md`. `state.md` must not be written before `plan.md` is complete.
 
 Before running `Execution`, read:
 
@@ -257,10 +258,10 @@ After step execution, you must produce:
 Before writing it, read:
 
 - `mind/soul/core.md`
-- `tasks/{task-id}/state.md`
-- `tasks/{task-id}/plan.md`
-- `tasks/{task-id}/cache/`
-- `tasks/{task-id}/_output/`
+- `tasks/{task-id}/state.md` (for actual Step execution results, Parallel Branch Status, and failure records — needed to assess whether dispatch and merge behaved as declared)
+- `tasks/{task-id}/plan.md` (for the declared dispatch schema to compare against actual execution)
+- `tasks/{task-id}/cache/` (read all files present; if the directory is empty or does not exist, record that fact and continue)
+- `tasks/{task-id}/_output/` (read all files present; if the directory is empty due to task failure, note the absence and reflect on why)
 - declared `sources/` publish-back paths if present
 
 Do not write vague reflection.
@@ -281,6 +282,7 @@ After `Reflection`, you must run terminal `Learning`.
 Before it, read:
 
 - `mind/soul/core.md`
+- `tasks/{task-id}/state.md` (to verify that ACQ-{NNN} labels in `Learning(Acquire) Log` are correct before writing `tl-{task-id}.md`)
 - `tasks/{task-id}/reflection-report.md`
 - if `Learning(Acquire)` was triggered during this task: `tasks/{task-id}/acquire/verification-report.md` (read all ACQ-{NNN} sections to identify all passed sources before writing `tl-{task-id}.md`)
 

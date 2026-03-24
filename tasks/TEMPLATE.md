@@ -30,9 +30,10 @@ tasks/{task-id}/
     - `mind/learning/knowledge-base/approved/`
 
 - `state.md`
-  - the initial file is created by `Execution`:
-    - based on `tasks/{task-id}/analysis.md`
-    - based on `tasks/{task-id}/plan.md`
+  - the initial file is created by `Execution` after `plan.md` is complete:
+    - `plan.md` must be written first
+    - `state.md` is then initialized based on the completed `plan.md`
+    - `state.md` must not be written before `plan.md` is complete
   - the first formal read and all subsequent maintenance are handled by `Execution Control`:
     - `tasks/{task-id}/state.md`
     - `tasks/{task-id}/plan.md`

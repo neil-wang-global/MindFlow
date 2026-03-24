@@ -104,6 +104,7 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 
 ## Execution Rules
 
+- `plan.md` must be written before `state.md` is initialized; `state.md` initialization is based on the completed `plan.md` and must not precede it
 - the `Capability` field must contain exactly one main capability
 - the `Constraints` field must explicitly list the constraint files that must be read before that `Step` runs
 - `Outputs` must prefer `tasks/{task-id}/_output/` or `tasks/{task-id}/cache/`

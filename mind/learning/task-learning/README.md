@@ -30,3 +30,4 @@ Every task-level learning record must contain:
 - content in `task-learning/` must not be read by `Learning(Read)`
 - content in `task-learning/` must first enter `drafts/`, then enter `reviews/`
 - any task without `tl-{task-id}.md` is considered to have produced no task-level learning consolidation
+- `tl-{task-id}.md` must always be written as part of terminal `Learning`, even when `reflection-report.md` has no learning candidates; in that case, write `Candidate Knowledge: none` and `Next Promotion Target: none` — skipping `tl-{task-id}.md` entirely is not permitted
