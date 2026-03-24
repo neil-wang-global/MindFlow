@@ -19,7 +19,7 @@ Notes:
 - `Learning` requires abstraction
 - the user explicitly requests it
 
-## Required Constraint Loading Before Execution
+## Required Reads
 
 Before running `Inference`, the agent must read:
 

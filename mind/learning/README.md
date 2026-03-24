@@ -50,30 +50,11 @@ Notes:
   - occurs after `Reflection`
   - is responsible for absorbing candidate knowledge and forming `Capability Update`
 
-## Required Constraint Loading Before Execution
+## Required Reads
 
-Before running `Learning(Read)`, the agent must read:
+See `tasks/TEMPLATE.md §Required Reads Map` for the formal list of files that must be read before each Learning participation mode.
 
-- `mind/soul/core.md`
-- `mind/learning/knowledge-base/approved/`
-
-Before running `Recognition`, the agent must read:
-
-- `tasks/{task-id}/learning-read.md`
-
-Before running `Learning(Acquire)`, the agent must read:
-
-- `mind/learning/acquire/README.md`
-- the triggering artifact:
-  - for Step-triggered: the current `Step` definition and its identified knowledge gap
-  - for Reflection-triggered: `tasks/{task-id}/reflection-report.md`
-
-Before running terminal `Learning`, the agent must read:
-
-- `mind/soul/core.md`
-- `tasks/{task-id}/state.md` (to verify ACQ-{NNN} labels in `Learning(Acquire) Log` match the events recorded in `tl-{task-id}.md`)
-- the current `Task`'s `reflection-report.md`
-- if external sources were acquired: `tasks/{task-id}/acquire/verification-report.md`
+Before running `Learning(Acquire)`, also read `mind/learning/acquire/README.md`.
 
 ## Internal Stages
 

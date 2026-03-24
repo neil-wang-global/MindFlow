@@ -1,5 +1,5 @@
 `Analysis Output` is the formal artifact of `Analysis`.  
-It is not the final `Plan`, but it must be stable enough for `Execution` to generate `Plan` without ambiguity.
+It is not the final `Plan`, but it must be stable enough for `Planning` to generate `Plan` without ambiguity.
 
 ## File Requirements
 

@@ -57,3 +57,4 @@ This file defines the fixed structure of `Capability Update Record`.
 - when `Status: proposed`, `Applied Changes` and `Validation` must be `none`
 - when `Status: approved`, `Applied Changes` and `Validation` may be `none`
 - when `Status: applied`, the corresponding `Capability` file update must already be complete, and `Applied Changes` and `Validation` must not be `none`
+- when `Review Reference` is `reflection-triggered: ...`, `Status` must be `proposed` at creation time; it must not be set to `approved` or `applied` within the same task that produced the reflection — a subsequent task must review and advance the status

@@ -151,7 +151,7 @@ MindFlow 的执行层本质上是 MAS。
 
 如果你按 MindFlow 的协议运行任务，每个任务都必须经过这条主流程：
 
-`Task -> Learning(Read) -> Recognition -> Analysis -> Execution -> Plan -> Execution Control -> [Learning(Acquire)?] -> Reflection -> [Learning(Acquire)?] -> Learning`
+`Task -> Learning(Read) -> Recognition -> Analysis -> Planning -> Plan -> Execution Control -> [Learning(Acquire)?] -> Reflection -> [Learning(Acquire)?] -> Learning`
 
 含义如下：
 
@@ -161,7 +161,7 @@ MindFlow 的执行层本质上是 MAS。
   - 识别任务并产出 `Task Profile`
 - `Analysis`
   - 拆解任务并产出 `Analysis Output`
-- `Execution`
+- `Planning`
   - 产出正式 `Plan`
 - `Execution Control`
   - 按 `Plan` 推进 `Step`
@@ -186,7 +186,7 @@ MindFlow 的执行层本质上是 MAS。
       .--------------------------------------------------------.
       |              |              |              |           |
       v              v              v              v           v
-   Task --> Learning(Read) --> Recognition --> Analysis --> Execution
+   Task --> Learning(Read) --> Recognition --> Analysis --> Planning
                   ^                                            |
                   |                                            v
                   |                                          Plan
@@ -245,7 +245,7 @@ MindFlow/
 │   ├── soul/
 │   ├── recognition/
 │   ├── analysis/
-│   ├── execution/
+│   ├── planning/
 │   ├── execution-control/
 │   ├── reflection/
 │   ├── learning/
@@ -279,7 +279,7 @@ MindFlow/
  │           ├── Learning(Read)                                               │
  │           ├── Recognition                                                  │
  │           ├── Analysis  <··· Inference (conditional)                       │
- │           ├── Execution                                                    │
+ │           ├── Planning                                                     │
  │           ├── Execution Control                                            │
  │           ├── Reflection <··· Inference (conditional)                      │
  │           ├── Learning(Terminal) <··· Inference (conditional)              │
@@ -349,7 +349,7 @@ MindFlow/
   - 识别任务
 - `analysis/`
   - 拆解任务与能力需求
-- `execution/`
+- `planning/`
   - 生成正式 `Plan`
 - `execution-control/`
   - 按 `Plan` 推进 `Step`、管理并行与汇合
@@ -486,11 +486,11 @@ MindFlow 不是：
 
 ## 入口文件分别做什么
 
-- [README-CN.md](/Users/weili.wang/workspace/mamas/README-CN.md)
+- [README-CN.md](README-CN.md)
   - 面向使用者的中文总览
-- [README.md](/Users/weili.wang/workspace/mamas/README.md)
+- [README.md](README.md)
   - 面向使用者的英文总览
-- [SYSTEM.md](/Users/weili.wang/workspace/mamas/SYSTEM.md)
+- [SYSTEM.md](SYSTEM.md)
   - 面向 AI 的系统协议
-- [CLAUDE.md](/Users/weili.wang/workspace/mamas/CLAUDE.md)
+- [CLAUDE.md](CLAUDE.md)
   - 面向 AI 的运行约束

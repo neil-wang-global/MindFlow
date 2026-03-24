@@ -10,7 +10,7 @@ This file defines the fixed structure of individual raw source files saved under
 
 ## Purpose
 
-Each file stores the complete, unmodified content fetched from one URL. No summarization, extraction, paraphrasing, or interpretation is permitted in this file. The content field must contain the raw fetched text exactly as returned by the fetch tool.
+Each file stores the complete, unmodified content fetched from one URL. No summarization, extraction, paraphrasing, or interpretation is permitted in this file. The content field must contain the text as fetched by the tool, without further modification.
 
 ## Fixed Structure
 
@@ -39,9 +39,13 @@ Each file stores the complete, unmodified content fetched from one URL. No summa
 ## Fetch Status
 - `success` or `failed: {reason}`
 
+## Fetch Completeness
+- `complete` / `truncated` / `partial`
+- if not `complete`, state the reason (e.g., tool output limit, paywall, page too large)
+
 ## Original Content
 
-[Complete verbatim content from fetch tool. Must not be modified, summarized, or extracted from.]
+[Complete content as fetched by the tool, without further modification. Must not be summarized, paraphrased, or extracted from.]
 ```
 
 ## Validation Rules

@@ -65,6 +65,16 @@ Candidate knowledge may be promoted through `reviews/` only when all of the foll
   - the new review supersedes the deferred one; the deferred review file is then considered closed
 - a `deferred` review that has not been re-opened within the scope of the project is considered **stale**; stale deferred reviews must be listed in the next task's `reflection-report.md` under `Issue Detection` until resolved or explicitly rejected
 
+## Rejected Decision Handling
+
+`Decision: rejected` is a terminal state. The following rules apply:
+
+- `Reason` must state the specific grounds for rejection
+- `Promotion Target` must be written as `none`
+- the corresponding `draft-*.md` must be moved from `drafts/` to `archived/` — it must not remain in `drafts/` indefinitely
+- if the rejected knowledge may become relevant under different conditions, a note must be recorded in `Reason` stating those conditions; the knowledge may then re-enter the pipeline via a new draft in a future task
+- a `rejected` review must not be re-opened or overridden; if the same knowledge is reconsidered, a new `draft-*.md` and `review-*.md` must be created in the context of a new task
+
 ## Prohibitions
 
 - writing directly into `approved/` without a review record is forbidden

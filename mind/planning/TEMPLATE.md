@@ -1,4 +1,4 @@
-`Plan` is the only formal output of `Execution`.  
+`Plan` is the only formal output of `Planning`.
 The runtime recognizes only `plan.md`, not scattered `Step` notes.
 
 ## File Requirements
@@ -21,14 +21,14 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 
 ## Runtime State
 - the fixed runtime state file is: `tasks/{task-id}/state.md`
-- `Execution` must ensure that the `Plan` can be executed in a stateful way
+- `Planning` must ensure that the `Plan` can be executed in a stateful way
 
 ## Global Constraints
-- global execution constraints for this task
+- global constraints for this task
 - default final result directory: `tasks/{task-id}/_output/`
 - if publish-back to `sources/` is needed, it must be explicitly declared in the corresponding `Step`
 - before task completion, at least one final-output `Step` must write results into `tasks/{task-id}/_output/`
-- `Execution` must explicitly choose the execution mode of `Plan -> Steps` rather than leaving dispatch to implicit judgment
+- `Planning` must explicitly choose the dispatch mode of `Plan -> Steps` rather than leaving dispatch to implicit judgment
 
 ### Step 1
 - Name:
@@ -102,7 +102,7 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - what must be true before the task is considered complete
 ```
 
-## Execution Rules
+## Planning Rules
 
 - `plan.md` must be written before `state.md` is initialized; `state.md` initialization is based on the completed `plan.md` and must not precede it
 - the `Capability` field must contain exactly one main capability

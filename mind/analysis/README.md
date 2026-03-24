@@ -22,14 +22,9 @@ Notes:
 - available capability information
 - `Soul` constraints
 
-## Required Constraint Loading Before Execution
+## Required Reads
 
-Before running `Analysis`, the agent must read:
-
-- `mind/soul/core.md`
-- `mind/learning/knowledge-base/approved/`
-- the current `Task`'s `learning-read.md`
-- the current `Task`'s `task-profile.md`
+See `tasks/TEMPLATE.md §Required Reads Map` for the formal list of files that must be read before producing `analysis.md`.
 
 ## Outputs
 
@@ -37,6 +32,6 @@ Before running `Analysis`, the agent must read:
 
 ## Not Responsible For
 
-- directly generating the final `Plan`
+- directly generating the final `Plan` (that is `Planning`'s job)
 - `Step` execution
 - the post-task learning closure loop

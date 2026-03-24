@@ -59,7 +59,7 @@ Cross-check between this event's `Fetch Plan` in `search-log.md` and actual `raw
 
 - **URL**: the URL verified
 - **Accessibility**: accessible / inaccessible / redirected
-- **Content Match**: matched / mismatched / partial
+- **Content Match**: matched / substantially-matched / mismatched / partial
 - **Verification Status**: `passed` / `failed` / `downgraded`
 - **Notes**: any discrepancy or issue found
 

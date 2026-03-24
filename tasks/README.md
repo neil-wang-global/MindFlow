@@ -39,7 +39,7 @@ The following files do not live inside `tasks/{task-id}/`, but must correspond o
 - task instance content must not be written back into shared template directories
 - `learning-read.md` is the formal audit record of `Learning(Read)`
 - `state.md` is the only formal runtime state file of the task
-  - the initial file is created by `Execution`, then continuously maintained by `Execution Control`
+  - the initial file is created by `Planning`, then continuously maintained by `Execution Control`
 - final results default to `tasks/{task-id}/_output/`
 - `tasks/{task-id}/_output/` must not be empty when the task is complete
 - results may be synchronized into `sources/` only when `Plan` explicitly declares a publish-back path

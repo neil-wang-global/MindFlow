@@ -19,7 +19,7 @@ The following constraints are absolute and may not be bypassed under any circums
 
 - **Search results are leads, not knowledge.** Search engine summaries, snippets, and AI-generated overviews must never be used as knowledge sources. They exist only to identify URLs worth fetching.
 - **Fetch before you record.** Every piece of external information must originate from a fetched original source. If a page cannot be fetched, that information cannot enter the pipeline.
-- **Preserve original content in full.** Fetched content must be saved verbatim into `tasks/{task-id}/acquire/raw-sources/`. No summarization, paraphrasing, extraction, or interpretation is permitted during the acquisition stage.
+- **Preserve original content in full.** Fetched content must be saved as fetched by the tool, without further modification, into `tasks/{task-id}/acquire/raw-sources/`. No summarization, paraphrasing, extraction, or interpretation is permitted during the acquisition stage.
 - **Verification must use an independent context.** The agent that verifies raw sources must not share execution context with the agent that fetched and recorded them. Verification must be dispatched as an independent subagent.
 - **Unverified sources must not enter drafts.** Only sources that pass verification may be referenced in `tl-{task-id}.md` as `Grounded Source`.
 
@@ -40,7 +40,7 @@ Use search tools to identify candidate URLs relevant to the knowledge gap or pro
 For each candidate URL:
 
 1. Fetch the original page content using a web fetch tool
-2. Save the complete fetched content verbatim — no modification, no extraction
+2. Save the complete fetched content as fetched by the tool, without further modification
 3. Record the source URL, fetch timestamp, and source type
 4. If a page cannot be fetched, record the failure and find an alternative; never fall back to the search summary
 

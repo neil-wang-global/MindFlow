@@ -21,17 +21,9 @@ Notes:
 - task results
 - `Step` process records
 
-## Required Constraint Loading Before Execution
+## Required Reads
 
-Before running `Reflection`, the agent must read:
-
-- `mind/soul/core.md`
-- the current `Task`'s `state.md`
-- the current `Task`'s `plan.md`
-- the current `Task`'s `_output/` (read all files present; if empty due to task failure, note the absence and reflect on why)
-- the current `Task`'s `cache/` (read all files present; if empty or absent, record that fact and continue)
-- if publish-back exists, the `sources/` publish-back paths declared in `Plan`
-- the dispatch fields and parallel merge rules declared in `plan.md` (compare against actual execution results recorded in `state.md` — both must be read to assess whether dispatch and merge behaved as expected)
+See `tasks/TEMPLATE.md §Required Reads Map` for the formal list of files that must be read before producing `reflection-report.md`.
 
 ## Outputs
 

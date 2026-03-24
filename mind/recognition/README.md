@@ -20,11 +20,9 @@ Notes:
 - the raw task statement
 - current task context
 
-## Required Constraint Loading Before Execution
+## Required Reads
 
-Before running `Recognition`, the agent must read:
-
-- the current `Task`'s `learning-read.md`
+See `tasks/TEMPLATE.md §Required Reads Map` for the formal list of files that must be read before producing `task-profile.md`.
 
 ## Outputs
 

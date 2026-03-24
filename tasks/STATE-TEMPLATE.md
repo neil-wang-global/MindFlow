@@ -16,7 +16,7 @@ This file defines the fixed structure of the task runtime state file.
 - current task ID
 
 ## Current Phase
-- `learning-read / recognition / analysis / execution / execution-control / reflection / terminal-learning / completed / blocked`
+- `learning-read / recognition / analysis / planning / execution-control / learning-acquire / reflection / terminal-learning / completed / blocked`
 - note: `terminal-learning` is the post-Reflection terminal Learning stage; `learning-read` is the pre-Recognition Learning(Read) stage; these are distinct phases and must not share the same label
 
 ## Current Step
@@ -55,7 +55,7 @@ This file defines the fixed structure of the task runtime state file.
 
 ## Validation Rules
 
-- `Current Phase` must not be omitted; must be one of: `learning-read / recognition / analysis / execution / execution-control / reflection / terminal-learning / completed / blocked`
+- `Current Phase` must not be omitted; must be one of: `learning-read / recognition / analysis / planning / execution-control / reflection / terminal-learning / completed / blocked`
 - `Overall Status` must not be omitted
 - `Step Status Map` must not be omitted
 - `Ready For Reflection` may only be `yes / no`

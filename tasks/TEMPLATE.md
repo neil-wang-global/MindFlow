@@ -30,7 +30,7 @@ tasks/{task-id}/
     - `mind/learning/knowledge-base/approved/`
 
 - `state.md`
-  - the initial file is created by `Execution` after `plan.md` is complete:
+  - the initial file is created by `Planning` after `plan.md` is complete:
     - `plan.md` must be written first
     - `state.md` is then initialized based on the completed `plan.md`
     - `state.md` must not be written before `plan.md` is complete
@@ -46,6 +46,7 @@ tasks/{task-id}/
   - before it is generated, the runtime must first read:
     - `mind/soul/core.md`
     - `mind/learning/knowledge-base/approved/`
+    - `capabilities/`
     - `tasks/{task-id}/learning-read.md`
     - `tasks/{task-id}/task-profile.md`
 
@@ -55,7 +56,7 @@ tasks/{task-id}/
     - `tasks/{task-id}/analysis.md`
     - the relevant `Capability` definition files
     - the dispatch-related fields declared in `analysis.md`
-  - note: `state.md` is initialized by `Execution` after `plan.md` is written, not before
+  - note: `state.md` is initialized by `Planning` after `plan.md` is written, not before
 
 - `reflection-report.md`
   - before it is generated, the runtime must first read:
@@ -75,14 +76,22 @@ tasks/{task-id}/
     - all files in `tasks/{task-id}/acquire/raw-sources/`
   - the subagent producing this file must not share execution context with the agent that performed the fetch stage
 
+- `tl-{task-id}.md` (terminal Learning output — written to `mind/learning/task-learning/`)
+  - before it is generated, the runtime must first read:
+    - `tasks/{task-id}/reflection-report.md`
+    - `tasks/{task-id}/state.md`
+    - `tasks/{task-id}/_output/`
+    - `tasks/{task-id}/cache/`
+    - `tasks/{task-id}/acquire/verification-report.md` (if `Learning(Acquire)` was executed)
+
 ## Fixed File Descriptions
 
 - `learning-read.md`: the artifact of `Learning(Read)`, used to record which formal knowledge was actually loaded for this task
 - `state.md`: the formal runtime state file of the task, maintained by `Execution Control`
-  - the initial file is created by `Execution`
+  - the initial file is created by `Planning`
 - `task-profile.md`: the artifact of `Recognition`
 - `analysis.md`: the artifact of `Analysis`
-- `plan.md`: the only formal artifact of `Execution`, namely `Plan`
+- `plan.md`: the only formal artifact of `Planning`, namely `Plan`
 - `reflection-report.md`: the formal artifact of `Reflection`, namely `Reflection Report`
 - `_output/`: the default formal result directory of the current task
 - `cache/`: the file handoff area between `Step`s

@@ -12,15 +12,7 @@ It must leave a formal record showing exactly which `Soul` constraints and which
 
 ## Fixed Rules
 
-- `Learning(Read)` may read only:
-  - `mind/soul/core.md`
-  - `mind/learning/knowledge-base/approved/`
-- `Learning(Read)` must not read:
-  - `mind/learning/knowledge-base/drafts/`
-  - `mind/learning/knowledge-base/archived/`
-  - `mind/learning/task-learning/`
-  - `mind/learning/reviews/`
-  - `mind/learning/capability-updates/`
+- see `SYSTEM.md §Learning(Read) Protocol` for the authoritative read/write rules
 - `learning-read.md` must record the files that were actually read, not an abstract statement such as “knowledge base consulted”
 - `learning-read.md` must be generated before `task-profile.md`
 - any task chain missing `learning-read.md` is considered incomplete in front-loaded learning

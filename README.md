@@ -155,7 +155,7 @@ It is “knowledge work naturally requires capability division, so the execution
 
 When a task is run under the MindFlow protocol, it must follow this flow:
 
-`Task -> Learning(Read) -> Recognition -> Analysis -> Execution -> Plan -> Execution Control -> [Learning(Acquire)?] -> Reflection -> [Learning(Acquire)?] -> Learning`
+`Task -> Learning(Read) -> Recognition -> Analysis -> Planning -> Plan -> Execution Control -> [Learning(Acquire)?] -> Reflection -> [Learning(Acquire)?] -> Learning`
 
 This means:
 
@@ -165,7 +165,7 @@ This means:
   - identifies the task and produces `Task Profile`
 - `Analysis`
   - decomposes the task and produces `Analysis Output`
-- `Execution`
+- `Planning`
   - produces the formal `Plan`
 - `Execution Control`
   - advances `Step`s according to the formal `Plan`
@@ -190,7 +190,7 @@ This means:
       .--------------------------------------------------------.
       |              |              |              |           |
       v              v              v              v           v
-   Task --> Learning(Read) --> Recognition --> Analysis --> Execution
+   Task --> Learning(Read) --> Recognition --> Analysis --> Planning
                   ^                                            |
                   |                                            v
                   |                                          Plan
@@ -249,7 +249,7 @@ MindFlow/
 │   ├── soul/
 │   ├── recognition/
 │   ├── analysis/
-│   ├── execution/
+│   ├── planning/
 │   ├── execution-control/
 │   ├── reflection/
 │   ├── learning/
@@ -283,7 +283,7 @@ MindFlow/
  │           ├── Learning(Read)                                               │
  │           ├── Recognition                                                  │
  │           ├── Analysis  <··· Inference (conditional)                       │
- │           ├── Execution                                                    │
+ │           ├── Planning                                                     │
  │           ├── Execution Control                                            │
  │           ├── Reflection <··· Inference (conditional)                      │
  │           ├── Learning(Terminal) <··· Inference (conditional)              │
