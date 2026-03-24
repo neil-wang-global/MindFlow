@@ -13,7 +13,13 @@ tasks/{task-id}/
 ├── plan.md
 ├── reflection-report.md
 ├── _output/
-└── cache/
+├── cache/
+└── acquire/                  (created only when Learning(Acquire) is triggered)
+    ├── search-log.md
+    ├── raw-sources/
+    │   ├── src-001-{slug}.md
+    │   └── ...
+    └── verification-report.md
 ```
 
 ## Required Reads Map
@@ -60,6 +66,14 @@ tasks/{task-id}/
     - if publish-back exists, the `sources/` publish-back paths declared in `Plan`
     - the dispatch fields and parallel merge rules declared in `plan.md`
 
+- `acquire/verification-report.md`
+  - created only when `Learning(Acquire)` is triggered
+  - must be read by terminal `Learning` before writing `tl-{task-id}.md` if `Learning(Acquire)` was executed
+  - before it is generated, the verification subagent must first read:
+    - `tasks/{task-id}/acquire/search-log.md`
+    - all files in `tasks/{task-id}/acquire/raw-sources/`
+  - the subagent producing this file must not share execution context with the agent that performed the fetch stage
+
 ## Fixed File Descriptions
 
 - `learning-read.md`: the artifact of `Learning(Read)`, used to record which formal knowledge was actually loaded for this task
@@ -84,3 +98,5 @@ tasks/{task-id}/
 - dispatch fields in `analysis.md`, `plan.md`, and `reflection-report.md` must remain consistent
 - `Required Reads Map` must not be removed
 - fixed files in the fixed structure must not be renamed
+- `tasks/{task-id}/acquire/raw-sources/` must not be deleted while any knowledge derived from its files has not yet been promoted to `mind/learning/knowledge-base/approved/`
+- once all derived knowledge from `acquire/raw-sources/` has been promoted to `approved/` and the corresponding `kb-*.md` files record the `Original Source URL`, the `acquire/` directory may be archived or removed

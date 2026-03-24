@@ -43,7 +43,7 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - Inputs:
 - Outputs:
 - Publish To Sources:
-- Learning:
+- Learning: `acquire-required / terminal-only / optional / not-needed`
 - Depends On:
 - Subagent / Branch Scope:
 - Merge / Sync Rule:
@@ -64,7 +64,7 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - Inputs:
 - Outputs:
 - Publish To Sources:
-- Learning:
+- Learning: `acquire-required / terminal-only / optional / not-needed`
 - Depends On:
 - Subagent / Branch Scope:
 - Merge / Sync Rule:
@@ -85,7 +85,7 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - Inputs:
 - Outputs:
 - Publish To Sources:
-- Learning:
+- Learning: `acquire-required / terminal-only / optional / not-needed`
 - Depends On:
 - Subagent / Branch Scope:
 - Merge / Sync Rule:
@@ -111,7 +111,11 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - at least one final-output `Step` must write into `tasks/{task-id}/_output/`
 - `Publish To Sources` must not be omitted; use `none` when there is no publish-back
 - if multiple capabilities are needed, split the work into multiple `Step`s
-- the `Learning` field must explicitly be `required / optional / not-needed`
+- the `Learning` field must explicitly be one of `acquire-required / terminal-only / optional / not-needed`
+  - `acquire-required`: this Step may encounter an external knowledge gap; if it does, `Learning(Acquire)` must be triggered before the Step proceeds; when the Step completes, the agent must record in `state.md` whether a knowledge gap was encountered and whether `Learning(Acquire)` was triggered or skipped, and if skipped, the explicit reason
+  - `terminal-only`: learning from this Step is captured at terminal Learning from task-internal artifacts only; no external acquisition needed
+  - `optional`: learning may occur but is not mandatory
+  - `not-needed`: this Step produces no learnable knowledge
 - `Depends On` must not be omitted; use `none` when there is no dependency
 - `Completion Criteria` must not be omitted; it must be written as checkable conditions
 - `Failure Policy` must not be omitted; the only allowed values are `retry / rework / stop / escalate-to-reflection`
@@ -124,3 +128,4 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - if `Dispatch Mode` is `parallel-branch`, the parallel group, synchronization point, and merge-responsible `Step` must be explicit
 - parallel `Step`s must not write to the same undeclared shared output path
 - `Instructions` must be executable actions, not abstract slogans
+- if a Step's `Learning` value differs from the corresponding classification declared in `task-profile.md Step-level Learning Possibility`, the reason for the downgrade or upgrade must be stated explicitly in that Step's `Instructions`

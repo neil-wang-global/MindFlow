@@ -42,6 +42,14 @@ This file defines the fixed structure of the task runtime state file.
 
 ## Ready For Reflection
 - `yes / no`
+
+## Learning(Acquire) Log
+- records the outcome of every `Learning(Acquire)` event in this task, from both trigger sources:
+  - **Step-triggered**: one entry per Step whose `Learning` field is `acquire-required`
+    - format: `Step {N}: gap-encountered → ACQ-{NNN} triggered` | `Step {N}: no-gap → skipped (reason: {explicit reason})`
+  - **Reflection-triggered**: one entry if `reflection-report.md` set either `Requires External Acquisition` to `yes`
+    - format: `Reflection: external-acquisition-required → ACQ-{NNN} triggered` | `Reflection: no-external-acquisition-required`
+- write `none` if no Step has `Learning: acquire-required` and reflection did not require external acquisition
 ```
 
 ## Validation Rules
@@ -50,3 +58,8 @@ This file defines the fixed structure of the task runtime state file.
 - `Overall Status` must not be omitted
 - `Step Status Map` must not be omitted
 - `Ready For Reflection` may only be `yes / no`
+- `Learning(Acquire) Log` must not be omitted
+- for every Step with `Learning: acquire-required`, a corresponding Step-triggered entry must appear in `Learning(Acquire) Log` before that Step is marked `completed`
+- if `reflection-report.md` sets either `Requires External Acquisition` to `yes`, a Reflection-triggered entry must appear in `Learning(Acquire) Log` before terminal `Learning` begins
+- a Step-triggered entry of `skipped` must include an explicit reason; `skipped (reason: none)` is not valid
+- each triggered entry must record the ACQ-{NNN} label assigned to that event; the label must match the corresponding entry in `tl-{task-id}.md` and `search-log.md`

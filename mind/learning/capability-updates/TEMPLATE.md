@@ -26,7 +26,9 @@ This file defines the fixed structure of `Capability Update Record`.
 - source `Task` or `Learning Record`
 
 ## Review Reference
-- corresponding `review-*.md`
+- corresponding `review-*.md` — if this capability update was triggered by an accepted knowledge review
+- write `reflection-triggered: tasks/{task-id}/reflection-report.md §Capability Impact` — if this update was triggered directly by `Reflection` without a corresponding knowledge review (e.g., process or structural capability changes that do not go through the knowledge promotion path)
+- this field must not be omitted; it must always identify the authoritative source that justified the capability change
 
 ## Target Capability File
 - target capability file path
@@ -48,7 +50,7 @@ This file defines the fixed structure of `Capability Update Record`.
 
 ## Validation Rules
 
-- `Review Reference` must not be omitted
+- `Review Reference` must not be omitted; must be either a `review-*.md` path or a `reflection-triggered: ...` pointer — it may not be `none`
 - `Target Capability File` must not be omitted
 - `Planned Changes` must not be omitted
 - `Status` may only be `proposed / approved / applied`

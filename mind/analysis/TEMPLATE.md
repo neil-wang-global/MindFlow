@@ -62,7 +62,13 @@ It is not the final `Plan`, but it must be stable enough for `Execution` to gene
 - impact on `Plan`
 
 ## Step-level Learning Need
-- which `Step`s may require temporary `Learning`
+- for each Step, declare the expected Learning mode using exactly one of the four values:
+  - `acquire-required`: this Step may encounter a knowledge gap requiring external information
+  - `terminal-only`: learning from this Step will come from task-internal artifacts only
+  - `optional`: learning may occur but is not expected to be mandatory
+  - `not-needed`: this Step is not expected to produce learnable knowledge
+- this declaration must be consistent with `task-profile.md` Step-level Learning Possibility
+- `plan.md` must carry forward these same classifications per Step; if `plan.md` changes a classification, the reason must be stated in that Step's `Instructions`
 
 ## Possible Inference Trigger
 - which points may require inference
@@ -79,3 +85,5 @@ It is not the final `Plan`, but it must be stable enough for `Execution` to gene
 - `Step Drafts` must be mappable to concrete `Step`s in the subsequent `Plan`
 - if multi-branch execution is possible, any `Analysis Output` without a parallelism judgment is incomplete
 - if `Step Drafts` use dispatch-related fields, both field names and values must remain consistent with the later `Plan`
+- `Step-level Learning Need` must not use free-form descriptions; each Step must be classified using exactly one of the four values: `acquire-required / terminal-only / optional / not-needed`
+- the classifications in `Step-level Learning Need` must be consistent with the `Step-level Learning Possibility` declared in `task-profile.md`

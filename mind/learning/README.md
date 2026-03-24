@@ -5,6 +5,7 @@ This directory defines the `Learning` module.
 Responsibilities:
 
 - provide `Learning(Read)` before task execution
+- acquire and ground external knowledge through `Learning(Acquire)` when needed
 - receive candidate knowledge
 - review whether that knowledge should be absorbed
 - consolidate knowledge assets
@@ -13,10 +14,11 @@ Responsibilities:
 Notes:
 
 - `Learning(Read)` reads only `mind/soul/core.md` and `mind/learning/knowledge-base/approved/`
+- `Learning(Acquire)` is mandatory whenever external information is needed; it must complete before `tl-{task-id}.md` references any external source
 - terminal `Learning` may have multiple input sources, but its output path is fixed
 - the internal `Learning` process must remain stable and strictly ordered
 
-## Two Participation Modes
+## Three Participation Modes
 
 - `Learning(Read)`
   - occurs before `Recognition`
@@ -33,6 +35,17 @@ Notes:
     - `mind/learning/reviews/`
     - `mind/learning/capability-updates/`
 
+- `Learning(Acquire)`
+  - triggered in exactly two conditions:
+    - **Step-triggered**: a `Step` identifies a knowledge gap requiring external information
+    - **Reflection-triggered**: `reflection-report.md` identifies a problem whose resolution requires external information
+  - must execute in three stages in fixed order:
+    1. **Search**: issue queries, record candidate URLs only — search summaries must not enter the pipeline
+    2. **Fetch and Preserve**: fetch each candidate URL, save complete original content verbatim to `tasks/{task-id}/acquire/raw-sources/`
+    3. **Verify**: dispatch an independent subagent to re-access each URL and confirm content match; produce `tasks/{task-id}/acquire/verification-report.md`
+  - only sources listed as `passed` in the verification report may be cited in `tl-{task-id}.md`
+  - see `mind/learning/acquire/README.md` for full protocol
+
 - `Learning`
   - occurs after `Reflection`
   - is responsible for absorbing candidate knowledge and forming `Capability Update`
@@ -48,10 +61,18 @@ Before running `Recognition`, the agent must read:
 
 - `tasks/{task-id}/learning-read.md`
 
+Before running `Learning(Acquire)`, the agent must read:
+
+- `mind/learning/acquire/README.md`
+- the triggering artifact:
+  - for Step-triggered: the current `Step` definition and its identified knowledge gap
+  - for Reflection-triggered: `tasks/{task-id}/reflection-report.md`
+
 Before running terminal `Learning`, the agent must read:
 
 - `mind/soul/core.md`
 - the current `Task`'s `reflection-report.md`
+- if external sources were acquired: `tasks/{task-id}/acquire/verification-report.md`
 
 ## Internal Stages
 
@@ -67,13 +88,28 @@ Terminal `Learning` must execute in the following order and may not skip steps:
 
 1. generate `mind/learning/task-learning/tl-{task-id}.md` from `reflection-report.md`
 2. generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
-3. generate a corresponding `review-{task-id}-{slug}.md` for each `draft-*.md`
+3. **dispatch an independent subagent** to generate each `review-{task-id}-{slug}.md`
+   - the subagent prompt must provide: the `draft-*.md` path, the `Source Anchor` path, the output target, and an explicit instruction that the subagent must not carry any context from the drafting session
+   - the agent that wrote the `draft-*.md` must not also write the corresponding `review-*.md`
+   - `Verification Mode` in the review file must be `independent-subagent`; any review written in the same context as its draft is invalid and must record `Verification Mode: same-context` with `Decision: rejected`
 4. only review records with `Decision: accepted` may generate `kb-{type}-{slug}.md`
 5. if needed, generate `cu-{task-id}-{capability-name}.md` based on accepted review records
+
+## Absolute Prohibition
+
+**A search summary, snippet, or AI-generated overview is never a valid knowledge source.**
+
+No candidate knowledge may enter `drafts/` unless it is traceable to either:
+
+- a verified original source recorded in `tasks/{task-id}/acquire/raw-sources/` and listed as `passed` in `tasks/{task-id}/acquire/verification-report.md`, or
+- a direct quotation from `tasks/{task-id}/_output/` or `tasks/{task-id}/cache/` with an explicit `Source Anchor`
+
+Any `Candidate Conclusion` in `tl-{task-id}.md` that lacks a valid source anchor is invalid and must not be promoted to `drafts/`.
 
 ## Subdirectory Overview
 
 - `knowledge-base/`: system-level knowledge assets
+- `acquire/`: protocol and templates for `Learning(Acquire)`
 - `learning-read/`: audit template for front-loaded `Learning(Read)`
 - `task-learning/`: task-level `Learning Record`
 - `reviews/`: learning review records

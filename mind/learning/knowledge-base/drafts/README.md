@@ -32,10 +32,15 @@ Every pending knowledge file must contain:
 - `Task ID`
 - `Summary`
 - `From Task Learning`
+- `Source Type`
+- `Source Anchor`
+- `Original Excerpt`
 - `Candidate Conclusion`
 - `Review Status`
 - `Review Target`
 - `Notes`
+
+`Source Type`, `Source Anchor`, and `Original Excerpt` are mandatory anti-hallucination fields. A draft that omits any of these three fields is invalid and must not enter `drafts/`.
 
 ## Promotion Conditions
 
@@ -44,5 +49,8 @@ Draft knowledge may leave `drafts/` only when all of the following are true:
 - the corresponding `tl-{task-id}.md` already exists
 - the corresponding `review-*.md` already exists
 - the review record has `Decision: accepted`
+- the review record has `Verification Mode: independent-subagent`
+- the review record has `Summary Verified: yes`
+- the review record has `Source Anchor Verified: yes`
 - a compliant `kb-{type}-{slug}.md` has been generated
-- the draft and the formal knowledge share the same source
+- the `Source Lineage` in `kb-{type}-{slug}.md` traces back to the same `tl-{task-id}.md` and `Source Anchor` as this draft

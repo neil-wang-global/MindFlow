@@ -46,7 +46,13 @@ Every task must produce it before `Analysis` may continue.
 - known format requirements
 
 ## Step-level Learning Possibility
-- whether some later `Step` may require temporary `Learning`
+- for each Step that may require learning, declare the expected Learning mode:
+  - `acquire-required`: this Step may encounter an external knowledge gap
+  - `terminal-only`: learning from this Step will come from task-internal artifacts only
+  - `optional`: learning may occur but is not expected to be mandatory
+  - `not-needed`: this Step is not expected to produce learnable knowledge
+- this declaration is advisory; `plan.md` must carry forward the same classification per Step
+- if `plan.md` downgrades a Step from `acquire-required` to a lower mode, the reason must be stated in that Step's `Instructions`
 
 ## Inference Possibility
 - whether `Inference` may be needed

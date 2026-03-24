@@ -31,9 +31,17 @@
 - process gaps
 - runtime risks or failures
 
+### Requires External Acquisition
+- `yes` — one or more issues above require external information to resolve; `Learning(Acquire)` must be triggered before writing `tl-{task-id}.md`
+- `no` — all issues can be addressed from task-internal artifacts only
+
 ## Learning Candidates
 - what is worth learning from this task
 - what may be promoted into terminal `Learning`
+
+### Requires External Acquisition
+- `yes` — one or more learning candidates require external information to ground; `Learning(Acquire)` must be triggered before writing `tl-{task-id}.md`
+- `no` — all learning candidates are grounded in task-internal artifacts only
 
 ## Capability Impact
 - which `Capability` may require upgrade, split, addition, or downgrade
@@ -50,6 +58,9 @@
 - `Result Evaluation` must not be omitted
 - `Process Review` must not be omitted
 - `Issue Detection` must not be omitted
+- `Issue Detection.Requires External Acquisition` must not be omitted; must be `yes` or `no`
 - `Learning Candidates` must not be omitted
+- `Learning Candidates.Requires External Acquisition` must not be omitted; must be `yes` or `no`
+- if either `Requires External Acquisition` is `yes`, `Learning(Acquire)` must be triggered before terminal `Learning` begins
 - `Capability Impact` must not be omitted
 - `Inference Triggers` must not be omitted
