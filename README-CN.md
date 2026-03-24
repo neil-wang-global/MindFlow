@@ -178,27 +178,39 @@ MindFlow 的执行层本质上是 MAS。
 
 ## 流程图
 
-```mermaid
-flowchart LR
-    T["Task"] --> LR["Learning(Read)"]
-    LR --> R["Recognition"]
-    R --> A["Analysis"]
-    A --> E["Execution"]
-    E --> P["Plan"]
-    P --> EC["Execution Control"]
-    EC --> S["Step"]
-    S --> C["Capabilities"]
-    C --> O["tasks/{task-id}/_output/"]
-    O --> RF["Reflection"]
-    RF --> L["Learning"]
-    L --> KB["Approved Knowledge / Capability Update"]
-    KB --> LR
-
-    SOUL["Soul"] -.约束.-> LR
-    SOUL -.约束.-> R
-    SOUL -.约束.-> A
-    SOUL -.约束.-> RF
-    SOUL -.约束.-> L
+```text
+                                   Soul
+                                    |
+                                约束每个阶段
+                                    |
+      .--------------------------------------------------------.
+      |              |              |              |           |
+      v              v              v              v           v
+   Task --> Learning(Read) --> Recognition --> Analysis --> Execution
+                  ^                                            |
+                  |                                            v
+                  |                                          Plan
+                  |                                            |
+                  |                                            v
+                  |                                    Execution Control
+                  |                                            |
+                  |                                            v
+                  |                                          Step
+                  |                                            |
+                  |                                            v
+                  |                                       Capabilities
+                  |                                            |
+                  |                                            v
+                  |                                 tasks/{task-id}/_output/
+                  |                                            |
+                  |                                            v
+                  |                                        Reflection
+                  |                                            |
+                  |                                            v
+                  |                                         Learning
+                  |                                            |
+                  |                                            v
+                  '------------------------- Approved Knowledge / Capability Update
 ```
 
 上图描述的是任务如何流经系统，所以它是流程图，不是架构图。
@@ -253,105 +265,75 @@ MindFlow/
 
 ## 架构图
 
-```mermaid
-flowchart TB
-    subgraph ENTRY["入口层"]
-        USER["User / External Trigger"]
-    end
-
-    subgraph CORE["MindFlow Core"]
-        MIND["Mind"]
-        SOUL["Soul"]
-        LREAD["Learning(Read)"]
-        REC["Recognition"]
-        ANA["Analysis"]
-        EXE["Execution"]
-        ECTRL["Execution Control"]
-        REF["Reflection"]
-        LEARN["Learning(Terminal)"]
-        INF["Inference"]
-    end
-
-    subgraph TASKSYS["Task System"]
-        TASK["Task"]
-        PLAN["Plan"]
-        STEP["Step"]
-        CACHE["Task Cache"]
-        OUTPUT["Task Output"]
-        REFREPORT["Reflection Report"]
-    end
-
-    subgraph KNOWLEDGE["Learning System"]
-        APPROVED["Approved Knowledge"]
-        TL["Task Learning"]
-        DRAFT["Draft Knowledge"]
-        REVIEW["Review"]
-        CU["Capability Update"]
-        ARCHIVED["Archived Knowledge"]
-        subgraph ACQUIRE["Learning(Acquire)  —  条件触发"]
-            SEARCH["Search\n记录候选 URL"]
-            FETCH["Fetch & Preserve\n原文存入 raw-sources/"]
-            VERIFY["Verify\n独立 Subagent 验证"]
-            RAWSRC["raw-sources/\nsrc-NNN-slug.md"]
-            SEARCH --> FETCH
-            FETCH --> RAWSRC
-            RAWSRC --> VERIFY
-        end
-    end
-
-    subgraph SOURCESBOX["资料层"]
-        SRC["Sources"]
-    end
-
-    subgraph CAPS["Capability System"]
-        CAP["Capabilities"]
-    end
-
-    USER ==> MIND
-
-    MIND --> SOUL
-    MIND --> LREAD
-    MIND --> REC
-    MIND --> ANA
-    MIND --> EXE
-    MIND --> ECTRL
-    MIND --> REF
-    MIND --> LEARN
-    MIND --> INF
-
-    APPROVED --> LREAD
-
-    MIND ==> TASK
-    TASK ==> LREAD
-    LREAD ==> REC
-    REC ==> ANA
-    ANA ==> EXE
-    EXE ==> PLAN
-    PLAN ==> ECTRL
-    ECTRL ==> STEP
-    STEP ==> CAP
-    CAP --> CACHE
-    CAP ==> OUTPUT
-    OUTPUT ==> REF
-    CACHE --> REF
-    REF ==> REFREPORT
-    REFREPORT ==> LEARN
-    LEARN ==> TL
-    TL ==> DRAFT
-    DRAFT ==> REVIEW
-    REVIEW ==> APPROVED
-    REVIEW --> CU
-    CU --> CAP
-    SRC --> MIND
-    DRAFT --> ARCHIVED
-    PLAN -.可选回填.-> SRC
-    INF -.条件触发.-> ANA
-    INF -.条件触发.-> REF
-    INF -.条件触发.-> LEARN
-
-    STEP -."知识缺口\n触发".-> ACQUIRE
-    REF -."知识缺口\n触发".-> ACQUIRE
-    VERIFY --"仅 passed 源\n进入学习链"--> TL
+```text
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  入口层                                                                     │
+ │    User / External Trigger                                                 │
+ └────────────────────────────────┬───────────────────────────────────────────┘
+                                  │
+                                  v
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  MindFlow Core                                                             │
+ │                                                                            │
+ │    Mind ──┬── Soul                                                         │
+ │           ├── Learning(Read)                                               │
+ │           ├── Recognition                                                  │
+ │           ├── Analysis  <··· Inference（条件触发）                           │
+ │           ├── Execution                                                    │
+ │           ├── Execution Control                                            │
+ │           ├── Reflection <··· Inference（条件触发）                          │
+ │           ├── Learning(Terminal) <··· Inference（条件触发）                  │
+ │           └── Inference                                                    │
+ └────────────────────────────────┬───────────────────────────────────────────┘
+                                  │
+     ┌────────────────────────────┼──────────────────────────────┐
+     v                            v                              v
+ ┌──────────────┐  ┌───────────────────────────────┐  ┌───────────────────────┐
+ │ 资料层        │  │  Task System                  │  │ Capability System     │
+ │              │  │                               │  │                       │
+ │  Sources ────┼─>│  Task                         │  │  Capabilities <──┐    │
+ │  <·· Plan    │  │   └─> Learning(Read)          │  │    │             │    │
+ │  （可选回填）  │  │        └─> Recognition        │  │    v             │    │
+ │              │  │             └─> Analysis      │  │  (被 Step 调用)   │    │
+ └──────────────┘  │                  └─> Exec     │  └───────┬──────────┘    │
+                   │                       └─>Plan │          │               │
+                   │                 Plan ─> Exec  │          │               │
+                   │                          Ctrl │          │               │
+                   │                  Exec Ctrl    │          │               │
+                   │                   └─> Step ───┼────> Capabilities        │
+                   │                               │      │       │           │
+                   │                  Task Cache <─┼──────┘       │           │
+                   │                  Task Output<─┼──────────────┘           │
+                   │                   │           │                          │
+                   │                   v           │                          │
+                   │                Reflection     │                          │
+                   │                   │           │                          │
+                   │                   v           │                          │
+                   │             Reflection Report │                          │
+                   └───────────────────┬───────────┘                          │
+                                       │                                      │
+                                       v                                      │
+ ┌─────────────────────────────────────────────────────────────────────┐      │
+ │  Learning System                                                    │      │
+ │                                                                     │      │
+ │    Learning(Terminal)                                               │      │
+ │      └─> Task Learning                                              │      │
+ │           └─> Draft Knowledge ───> Archived Knowledge               │      │
+ │                └─> Review                                           │      │
+ │                     ├─> Approved Knowledge ──> Learning(Read)       │      │
+ │                     └─> Capability Update ──────────────────────────┼──>───┘
+ │                                                                     │
+ │    Learning(Acquire) condition trigger                              │
+ │    (由 Step 或 Reflection 在发现知识缺口时触发)                         │
+ │    ┌──────────────────────────────────────────────────────────┐     │
+ │    │  Search（记录候选 URL）                                    │     │
+ │    │    └─> Fetch & Preserve（原文存入 raw-sources/）           │     │
+ │    │         └─> raw-sources/src-NNN-slug.md                  │     │
+ │    │              └─> Verify（独立 Subagent 验证）              │     │
+ │    │                   └─> Only passed Source                 │     │
+ │    │                              └─> Task Learning           │     │
+ │    └──────────────────────────────────────────────────────────┘     │
+ └─────────────────────────────────────────────────────────────────────┘
 ```
 
 这张图描述的是系统里的核心概念层如何组成整体结构，以及 `Mind` 如何统领各核心模块并与任务系统、能力系统、学习系统和资料层发生关系，所以它才是架构图。

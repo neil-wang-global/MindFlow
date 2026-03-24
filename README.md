@@ -182,27 +182,39 @@ This means:
 
 ## Flow Diagram
 
-```mermaid
-flowchart LR
-    T["Task"] --> LR["Learning(Read)"]
-    LR --> R["Recognition"]
-    R --> A["Analysis"]
-    A --> E["Execution"]
-    E --> P["Plan"]
-    P --> EC["Execution Control"]
-    EC --> S["Step"]
-    S --> C["Capabilities"]
-    C --> O["tasks/{task-id}/_output/"]
-    O --> RF["Reflection"]
-    RF --> L["Learning"]
-    L --> KB["Approved Knowledge / Capability Update"]
-    KB --> LR
-
-    SOUL["Soul"] -.constraints.-> LR
-    SOUL -.constraints.-> R
-    SOUL -.constraints.-> A
-    SOUL -.constraints.-> RF
-    SOUL -.constraints.-> L
+```text
+                                    Soul
+                                     |
+                          constraints on every stage
+                                     |
+      .--------------------------------------------------------.
+      |              |              |              |           |
+      v              v              v              v           v
+   Task --> Learning(Read) --> Recognition --> Analysis --> Execution
+                  ^                                            |
+                  |                                            v
+                  |                                          Plan
+                  |                                            |
+                  |                                            v
+                  |                                    Execution Control
+                  |                                            |
+                  |                                            v
+                  |                                          Step
+                  |                                            |
+                  |                                            v
+                  |                                       Capabilities
+                  |                                            |
+                  |                                            v
+                  |                                 tasks/{task-id}/_output/
+                  |                                            |
+                  |                                            v
+                  |                                        Reflection
+                  |                                            |
+                  |                                            v
+                  |                                         Learning
+                  |                                            |
+                  |                                            v
+                  '------------------------- Approved Knowledge / Capability Update
 ```
 
 The diagram above shows how a task flows through the system, so it is a flow diagram, not the architecture diagram.
@@ -257,105 +269,74 @@ MindFlow/
 
 ## Architecture
 
-```mermaid
-flowchart TB
-    subgraph ENTRY["Entry Layer"]
-        USER["User / External Trigger"]
-    end
-
-    subgraph CORE["MindFlow Core"]
-        MIND["Mind"]
-        SOUL["Soul"]
-        LREAD["Learning(Read)"]
-        REC["Recognition"]
-        ANA["Analysis"]
-        EXE["Execution"]
-        ECTRL["Execution Control"]
-        REF["Reflection"]
-        LEARN["Learning(Terminal)"]
-        INF["Inference"]
-    end
-
-    subgraph TASKSYS["Task System"]
-        TASK["Task"]
-        PLAN["Plan"]
-        STEP["Step"]
-        CACHE["Task Cache"]
-        OUTPUT["Task Output"]
-        REFREPORT["Reflection Report"]
-    end
-
-    subgraph KNOWLEDGE["Learning System"]
-        APPROVED["Approved Knowledge"]
-        TL["Task Learning"]
-        DRAFT["Draft Knowledge"]
-        REVIEW["Review"]
-        CU["Capability Update"]
-        ARCHIVED["Archived Knowledge"]
-        subgraph ACQUIRE["Learning(Acquire)  —  conditional"]
-            SEARCH["Search\nrecord candidate URLs"]
-            FETCH["Fetch & Preserve\nsave verbatim to raw-sources/"]
-            VERIFY["Verify\nindependent subagent"]
-            RAWSRC["raw-sources/\nsrc-NNN-slug.md"]
-            SEARCH --> FETCH
-            FETCH --> RAWSRC
-            RAWSRC --> VERIFY
-        end
-    end
-
-    subgraph SOURCESBOX["Material Layer"]
-        SRC["Sources"]
-    end
-
-    subgraph CAPS["Capability System"]
-        CAP["Capabilities"]
-    end
-
-    USER ==> MIND
-
-    MIND --> SOUL
-    MIND --> LREAD
-    MIND --> REC
-    MIND --> ANA
-    MIND --> EXE
-    MIND --> ECTRL
-    MIND --> REF
-    MIND --> LEARN
-    MIND --> INF
-
-    APPROVED --> LREAD
-
-    MIND ==> TASK
-    TASK ==> LREAD
-    LREAD ==> REC
-    REC ==> ANA
-    ANA ==> EXE
-    EXE ==> PLAN
-    PLAN ==> ECTRL
-    ECTRL ==> STEP
-    STEP ==> CAP
-    CAP --> CACHE
-    CAP ==> OUTPUT
-    OUTPUT ==> REF
-    CACHE --> REF
-    REF ==> REFREPORT
-    REFREPORT ==> LEARN
-    LEARN ==> TL
-    TL ==> DRAFT
-    DRAFT ==> REVIEW
-    REVIEW ==> APPROVED
-    REVIEW --> CU
-    CU --> CAP
-    SRC --> MIND
-    DRAFT --> ARCHIVED
-    PLAN -.publish-back.-> SRC
-    INF -.conditional.-> ANA
-    INF -.conditional.-> REF
-    INF -.conditional.-> LEARN
-
-    STEP -."knowledge gap\ntriggers".-> ACQUIRE
-    REF -."knowledge gap\ntriggers".-> ACQUIRE
-    VERIFY --"passed sources\nonly"--> TL
+```text
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Entry Layer                                                               │
+ │    User / External Trigger                                                 │
+ └────────────────────────────────┬───────────────────────────────────────────┘
+                                  │
+                                  v
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  MindFlow Core                                                             │
+ │                                                                            │
+ │    Mind ──┬── Soul                                                         │
+ │           ├── Learning(Read)                                               │
+ │           ├── Recognition                                                  │
+ │           ├── Analysis  <··· Inference (conditional)                       │
+ │           ├── Execution                                                    │
+ │           ├── Execution Control                                            │
+ │           ├── Reflection <··· Inference (conditional)                      │
+ │           ├── Learning(Terminal) <··· Inference (conditional)              │
+ │           └── Inference                                                    │
+ └────────────────────────────────┬───────────────────────────────────────────┘
+                                  │
+     ┌────────────────────────────┼──────────────────────────────┐
+     v                            v                              v
+ ┌──────────────┐  ┌───────────────────────────────┐  ┌───────────────────────┐
+ │ Material     │  │  Task System                  │  │ Capability System     │
+ │ Layer        │  │                               │  │                       │
+ │  Sources ────┼─>│  Task                         │  │  Capabilities <──┐    │
+ │  <·· Plan    │  │   └─> Learning(Read)          │  │    │             │    │
+ │  (publish-   │  │        └─> Recognition        │  │    v             │    │
+ │   back)      │  │             └─> Analysis      │  │  (called by      │    │
+ └──────────────┘  │                  └─> Exec     │  │   Step)          │    │
+                   │                       └─>Plan │  └──────┬───────────┘    │
+                   │                 Plan ─> Exec  │         │                │
+                   │                          Ctrl │         │                │
+                   │                  Exec Ctrl    │         │                │
+                   │                   └─> Step ───┼────> Capabilities        │
+                   │                               │      │       │           │
+                   │                  Task Cache <─┼──────┘       │           │
+                   │                  Task Output<─┼──────────────┘           │
+                   │                   │           │                          │
+                   │                   v           │                          │
+                   │                Reflection     │                          │
+                   │                   │           │                          │
+                   │                   v           │                          │
+                   │             Reflection Report │                          │
+                   └───────────────────┬───────────┘                          │
+                                       │                                      │
+                                       v                                      │
+ ┌─────────────────────────────────────────────────────────────────────┐      │
+ │  Learning System                                                    │      │
+ │                                                                     │      │
+ │    Learning(Terminal)                                               │      │
+ │      └─> Task Learning                                              │      │
+ │           └─> Draft Knowledge ───> Archived Knowledge               │      │
+ │                └─> Review                                           │      │
+ │                     ├─> Approved Knowledge ──> Learning(Read)       │      │
+ │                     └─> Capability Update ──────────────────────────┼──>───┘
+ │                                                                     │
+ │    Learning(Acquire) — conditional                                  │
+ │    (triggered by Step or Reflection on knowledge gap)               │
+ │    ┌──────────────────────────────────────────────────────────┐     │
+ │    │  Search (record candidate URLs)                          │     │
+ │    │    └─> Fetch & Preserve (save verbatim to raw-sources/)  │     │
+ │    │         └─> raw-sources/src-NNN-slug.md                  │     │
+ │    │              └─> Verify (independent subagent)           │     │
+ │    │                   └─> passed sources only ──> Task Learn │     │
+ │    └──────────────────────────────────────────────────────────┘     │
+ └─────────────────────────────────────────────────────────────────────┘
 ```
 
 The diagram above is the architecture diagram. It shows the structural relationship between the core concepts, systems, and artifact layers.
