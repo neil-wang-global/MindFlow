@@ -179,10 +179,10 @@ MindFlow 的执行层本质上是 MAS。
 ## 流程图
 
 ```text
-                                   Soul
-                                    |
-                                约束每个阶段
-                                    |
+                                    Soul
+                                     |
+                          constraints on every stage
+                                     |
       .--------------------------------------------------------.
       |              |              |              |           |
       v              v              v              v           v
@@ -267,7 +267,7 @@ MindFlow/
 
 ```text
  ┌────────────────────────────────────────────────────────────────────────────┐
- │  入口层                                                                     │
+ │  Entry Layer                                                               │
  │    User / External Trigger                                                 │
  └────────────────────────────────┬───────────────────────────────────────────┘
                                   │
@@ -278,28 +278,28 @@ MindFlow/
  │    Mind ──┬── Soul                                                         │
  │           ├── Learning(Read)                                               │
  │           ├── Recognition                                                  │
- │           ├── Analysis  <··· Inference（条件触发）                           │
+ │           ├── Analysis  <··· Inference (conditional)                       │
  │           ├── Execution                                                    │
  │           ├── Execution Control                                            │
- │           ├── Reflection <··· Inference（条件触发）                          │
- │           ├── Learning(Terminal) <··· Inference（条件触发）                  │
+ │           ├── Reflection <··· Inference (conditional)                      │
+ │           ├── Learning(Terminal) <··· Inference (conditional)              │
  │           └── Inference                                                    │
  └────────────────────────────────┬───────────────────────────────────────────┘
                                   │
      ┌────────────────────────────┼──────────────────────────────┐
      v                            v                              v
  ┌──────────────┐  ┌───────────────────────────────┐  ┌───────────────────────┐
- │ 资料层        │  │  Task System                  │  │ Capability System     │
- │              │  │                               │  │                       │
+ │ Material     │  │  Task System                  │  │ Capability System     │
+ │ Layer        │  │                               │  │                       │
  │  Sources ────┼─>│  Task                         │  │  Capabilities <──┐    │
  │  <·· Plan    │  │   └─> Learning(Read)          │  │    │             │    │
- │  （可选回填）  │  │        └─> Recognition        │  │    v             │    │
- │              │  │             └─> Analysis      │  │  (被 Step 调用)   │    │
- └──────────────┘  │                  └─> Exec     │  └───────┬──────────┘    │
-                   │                       └─>Plan │          │               │
-                   │                 Plan ─> Exec  │          │               │
-                   │                          Ctrl │          │               │
-                   │                  Exec Ctrl    │          │               │
+ │  (publish-   │  │        └─> Recognition        │  │    v             │    │
+ │   back)      │  │             └─> Analysis      │  │  (called by      │    │
+ └──────────────┘  │                  └─> Exec     │  │   Step)          │    │
+                   │                       └─>Plan │  └──────┬───────────┘    │
+                   │                 Plan ─> Exec  │         │                │
+                   │                          Ctrl │         │                │
+                   │                  Exec Ctrl    │         │                │
                    │                   └─> Step ───┼────> Capabilities        │
                    │                               │      │       │           │
                    │                  Task Cache <─┼──────┘       │           │
@@ -323,15 +323,14 @@ MindFlow/
  │                     ├─> Approved Knowledge ──> Learning(Read)       │      │
  │                     └─> Capability Update ──────────────────────────┼──>───┘
  │                                                                     │
- │    Learning(Acquire) condition trigger                              │
- │    (由 Step 或 Reflection 在发现知识缺口时触发)                         │
+ │    Learning(Acquire) — conditional                                  │
+ │    (triggered by Step or Reflection on knowledge gap)               │
  │    ┌──────────────────────────────────────────────────────────┐     │
- │    │  Search（记录候选 URL）                                    │     │
- │    │    └─> Fetch & Preserve（原文存入 raw-sources/）           │     │
+ │    │  Search (record candidate URLs)                          │     │
+ │    │    └─> Fetch & Preserve (save verbatim to raw-sources/)  │     │
  │    │         └─> raw-sources/src-NNN-slug.md                  │     │
- │    │              └─> Verify（独立 Subagent 验证）              │     │
- │    │                   └─> Only passed Source                 │     │
- │    │                              └─> Task Learning           │     │
+ │    │              └─> Verify (independent subagent)           │     │
+ │    │                   └─> passed sources only ──> Task Learn │     │
  │    └──────────────────────────────────────────────────────────┘     │
  └─────────────────────────────────────────────────────────────────────┘
 ```
