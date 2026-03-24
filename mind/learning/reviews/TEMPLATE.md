@@ -52,7 +52,9 @@ This file defines the fixed structure of learning review records.
 
 ## Promotion Target
 - target approved knowledge path
-- write `none` when not promoted
+- write `none` when `Decision` is `rejected`
+- write `pending-reopen` when `Decision` is `deferred` (must not write `none`; the deferred review must be re-opened in a subsequent task)
+- write `none` when `Decision` is `accepted` but no promotion is needed (rare; must state reason)
 
 ## Capability Impact
 - whether any `Capability` may be affected
