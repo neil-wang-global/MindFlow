@@ -212,13 +212,13 @@ Each `Step` must:
 - write declared outputs
 - declare whether it publishes to `sources/` or `none`
 - declare step-level `Learning` as exactly one of:
-  - `acquire-required`: if a knowledge gap requiring external information is encountered during this Step, `Learning(Acquire)` must be triggered immediately before the Step proceeds; when the Step completes, the agent must record in `state.md` whether a gap was encountered, and if `Learning(Acquire)` was not triggered, the explicit reason why no gap was identified
+  - `acquire-required`: if a knowledge gap requiring external information is encountered during this Step, `Learning(Acquire)` must be triggered immediately; the Step is paused (`state.md` Step Status → `blocked`) until `Learning(Acquire)` completes all three stages; after completion the Step resumes by re-reading its `Constraints` and `Inputs`; if `Learning(Acquire)` is exhausted, apply the Step's `Failure Policy`; when the Step completes, record in `state.md` whether a gap was encountered, and if `Learning(Acquire)` was not triggered, the explicit reason why no gap was identified
   - `terminal-only`: learning is captured at terminal Learning from task-internal artifacts only
   - `optional`: learning may occur but is not mandatory
   - `not-needed`: this Step produces no learnable knowledge
 - declare its dispatch mode and dependency shape
 - declare `Completion Criteria`
-- declare `Failure Policy`
+- declare `Failure Policy`; when `Failure Policy: escalate-to-reflection` is triggered: stop the Step, preserve all partial outputs in `cache/` and `_output/`, update `state.md` to `Overall Status: blocked` and `Ready For Reflection: yes`, then hand control to `Reflection`; the failed task does not automatically retry the failed Step — any re-execution must be a new task
 
 If more than one main action is needed, split the work into multiple `Step`s.
 
@@ -288,8 +288,8 @@ Before it, read:
 
 Then follow this order exactly:
 
-1. write `mind/learning/task-learning/tl-{task-id}.md`
-2. write one or more `draft-{type}-{task-id}-{slug}.md`
+1. write `mind/learning/task-learning/tl-{task-id}.md`; always write this file — if there are no learning candidates, write `Candidate Knowledge: none` and `Next Promotion Target: none`
+2. if `Candidate Knowledge` is `none`, skip steps 3 and 4 and go directly to step 5; otherwise write one or more `draft-{type}-{task-id}-{slug}.md`
 3. dispatch an independent subagent to write each `review-{task-id}-{slug}.md`
    - subagent prompt must include: the `draft-*.md` path, the `Source Anchor` path, the output target, and an explicit instruction that the subagent must not carry any context from the drafting session
    - the agent that wrote a `draft-*.md` must not write its corresponding `review-*.md`
@@ -348,6 +348,19 @@ npm install
 ```
 
 Do not commit without the hooks active. A missing hook is treated as an incomplete environment — resolve it before proceeding.
+
+## Task ID Naming Rule
+
+Every task must use a `task-id` with the fixed format: `YYYYMMDD-short-name` (e.g. `20260324-refactor-learning`).
+
+This format is required because `task-id` is used as a component in the names of all formal artifacts across both the task layer and the learning layer:
+- `tasks/{task-id}/`
+- `tl-{task-id}.md`
+- `draft-{type}-{task-id}-{slug}.md`
+- `review-{task-id}-{slug}.md`
+- `cu-{task-id}-{capability-name}.md`
+
+A malformed `task-id` breaks cross-artifact traceability. Do not use arbitrary strings.
 
 ## General Discipline
 

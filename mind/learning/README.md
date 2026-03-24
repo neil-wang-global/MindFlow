@@ -88,13 +88,13 @@ Before running terminal `Learning`, the agent must read:
 Terminal `Learning` must execute in the following order and may not skip steps:
 
 1. generate `mind/learning/task-learning/tl-{task-id}.md` from `reflection-report.md`; this file must always be written — if there are no learning candidates, write `Candidate Knowledge: none` and `Next Promotion Target: none` rather than omitting the file
-2. generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
+2. if `tl-{task-id}.md` has `Candidate Knowledge: none`, skip steps 3–5 and proceed directly to step 5 (capability update check only); otherwise generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
 3. **dispatch an independent subagent** to generate each `review-{task-id}-{slug}.md`
    - the subagent prompt must provide: the `draft-*.md` path, the `Source Anchor` path, the output target, and an explicit instruction that the subagent must not carry any context from the drafting session
    - the agent that wrote the `draft-*.md` must not also write the corresponding `review-*.md`
    - `Verification Mode` in the review file must be `independent-subagent`; any review written in the same context as its draft is invalid and must record `Verification Mode: same-context` with `Decision: rejected`
 4. only review records with `Decision: accepted` may generate `kb-{type}-{slug}.md`
-5. if needed, generate `cu-{task-id}-{capability-name}.md` based on accepted review records
+5. if needed, generate `cu-{task-id}-{capability-name}.md` based on accepted review records or directly from `reflection-report.md §Capability Impact`
 
 ## Absolute Prohibition
 
