@@ -31,6 +31,7 @@ Before running `Reflection`, the agent must read:
 - the current `Task`'s `_output/`
 - the current `Task`'s `cache/`
 - if publish-back exists, the `sources/` publish-back paths declared in `Plan`
+- the dispatch fields and parallel merge rules declared in `plan.md` (to verify whether the actual execution matched the declared dispatch schema)
 
 ## Outputs
 

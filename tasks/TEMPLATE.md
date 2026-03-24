@@ -51,10 +51,10 @@ tasks/{task-id}/
 - `plan.md`
   - before it is generated, the runtime must first read:
     - `mind/soul/core.md`
-    - `tasks/{task-id}/state.md`
     - `tasks/{task-id}/analysis.md`
     - the relevant `Capability` definition files
     - the dispatch-related fields declared in `analysis.md`
+  - note: `state.md` is initialized by `Execution` after `plan.md` is written, not before
 
 - `reflection-report.md`
   - before it is generated, the runtime must first read:

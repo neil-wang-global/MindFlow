@@ -30,7 +30,7 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - before task completion, at least one final-output `Step` must write results into `tasks/{task-id}/_output/`
 - `Execution` must explicitly choose the execution mode of `Plan -> Steps` rather than leaving dispatch to implicit judgment
 
-## Step 1
+### Step 1
 - Name:
 - Goal:
 - Capability:

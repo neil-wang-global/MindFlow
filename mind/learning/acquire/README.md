@@ -135,6 +135,17 @@ Learning(Acquire)
   kb-{type}-{slug}.md → approved/
 ```
 
+## Lifecycle of the acquire/ Directory
+
+The `acquire/` directory and its contents must not be deleted while any knowledge derived from its `raw-sources/` files has not yet been promoted to `mind/learning/knowledge-base/approved/`.
+
+Once all of the following conditions are met, the `acquire/` directory may be archived or removed:
+
+- all derived knowledge from `raw-sources/` has been promoted to `approved/`
+- the corresponding `kb-*.md` files each record an `Original Source URL` field, preserving the permanent fallback reference to the original fetched content
+
+Until these conditions are satisfied, `raw-sources/` must be preserved as the ground truth for any in-progress or future review of the derived knowledge.
+
 ## Subdirectory Overview
 
 - `RAW-SOURCES-TEMPLATE.md`: template for individual raw source files
