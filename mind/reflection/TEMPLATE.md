@@ -23,7 +23,7 @@
 ## Process Review
 - which parts of the process were appropriate
 - which parts of the process were problematic
-- whether dispatch and merge behaved as expected
+- dispatch and merge assessment: compare the dispatch fields declared in `plan.md` against the actual execution results recorded in `state.md`; explicitly state whether each dispatch mode, parallel branch, and merge point behaved as declared
 
 ## Issue Detection
 - capability gaps

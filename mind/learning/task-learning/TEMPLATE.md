@@ -41,7 +41,9 @@ Otherwise, list one entry per acquisition event:
 
 ## Candidate Knowledge
 
-Each candidate knowledge item must include a source anchor. Items without a valid source anchor are invalid and must not be promoted.
+(If `reflection-report.md` has no learning candidates, write `none` as the only content under this heading.)
+
+Otherwise, each candidate knowledge item must include a source anchor. Items without a valid source anchor are invalid and must not be promoted.
 
 **Required writing order per item**: the source file must be opened and read first; the `Original Excerpt` must be copied directly from the file before `Derived Conclusion` is written. Writing `Derived Conclusion` before reading the source file is not permitted.
 

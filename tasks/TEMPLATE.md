@@ -89,6 +89,7 @@ tasks/{task-id}/
 
 ## Constraints
 
+- `{task-id}` must use the fixed format `YYYYMMDD-short-name` (e.g. `20260324-refactor-learning`); a malformed `task-id` breaks cross-artifact traceability across both the task layer and the learning layer
 - each task directory serves exactly one task
 - task caches must not be shared with other tasks
 - formal artifacts must preferentially remain inside the task directory

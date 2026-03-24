@@ -212,7 +212,7 @@ Each `Step` must:
 - write declared outputs
 - declare whether it publishes to `sources/` or `none`
 - declare step-level `Learning` as exactly one of:
-  - `acquire-required`: if a knowledge gap requiring external information is encountered during this Step, `Learning(Acquire)` must be triggered immediately; the Step is paused (`state.md` Step Status → `blocked`) until `Learning(Acquire)` completes all three stages; after completion the Step resumes by re-reading its `Constraints` and `Inputs`; if `Learning(Acquire)` is exhausted, apply the Step's `Failure Policy`; when the Step completes, record in `state.md` whether a gap was encountered, and if `Learning(Acquire)` was not triggered, the explicit reason why no gap was identified
+  - `acquire-required`: if a knowledge gap requiring external information is encountered during this Step, `Learning(Acquire)` must be triggered immediately; the Step is paused (`state.md` Step Status → `blocked`) until `Learning(Acquire)` completes all three stages; after completion the Step resumes by re-reading its `Constraints` and `Inputs`; if `Learning(Acquire)` is exhausted, apply the Step's `Failure Policy`; when the Step completes, record in `state.md` whether a knowledge gap was encountered and whether `Learning(Acquire)` was triggered or skipped, and if skipped, the explicit reason
   - `terminal-only`: learning is captured at terminal Learning from task-internal artifacts only
   - `optional`: learning may occur but is not mandatory
   - `not-needed`: this Step produces no learnable knowledge
