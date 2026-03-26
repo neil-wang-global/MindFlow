@@ -21,23 +21,20 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 
 ## Runtime State
 - the fixed runtime state file is: `tasks/{task-id}/state.md`
-- `Planning` must ensure that the `Plan` can be executed in a stateful way
 
 ## Global Constraints
 - global constraints for this task
 - default final result directory: `tasks/{task-id}/_output/`
 - if publish-back to `sources/` is needed, it must be explicitly declared in the corresponding `Step`
-- before task completion, at least one final-output `Step` must write results into `tasks/{task-id}/_output/`
-- `Planning` must explicitly choose the dispatch mode of `Plan -> Steps` rather than leaving dispatch to implicit judgment
 
 ### Step 1
 - Name:
 - Goal:
 - Capability:
 - Dispatch Mode: `sequential / subagent / parallel-branch`
-- Parallel Group:
-- Synchronization Point:
-- Merge Owner:
+- Parallel Group: (omit if Dispatch Mode is sequential)
+- Synchronization Point: (omit if Dispatch Mode is sequential)
+- Merge Owner: (omit if Dispatch Mode is sequential)
 - Output Isolation:
 - Constraints:
 - Inputs:
@@ -45,58 +42,18 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - Publish To Sources:
 - Learning: `acquire-required / terminal-only / optional / not-needed`
 - Depends On:
-- Subagent / Branch Scope:
-- Merge / Sync Rule:
-- Completion Criteria:
-- Failure Policy: `retry / rework / stop / escalate-to-reflection`
-- Instructions:
-
-### Step 2
-- Name:
-- Goal:
-- Capability:
-- Dispatch Mode: `sequential / subagent / parallel-branch`
-- Parallel Group:
-- Synchronization Point:
-- Merge Owner:
-- Output Isolation:
-- Constraints:
-- Inputs:
-- Outputs:
-- Publish To Sources:
-- Learning: `acquire-required / terminal-only / optional / not-needed`
-- Depends On:
-- Subagent / Branch Scope:
-- Merge / Sync Rule:
+- Subagent / Branch Scope: (omit if Dispatch Mode is sequential)
+- Merge / Sync Rule: (omit if Dispatch Mode is sequential)
 - Completion Criteria:
 - Failure Policy: `retry / rework / stop / escalate-to-reflection`
 - Instructions:
 
 ### Step N
-- Name:
-- Goal:
-- Capability:
-- Dispatch Mode: `sequential / subagent / parallel-branch`
-- Parallel Group:
-- Synchronization Point:
-- Merge Owner:
-- Output Isolation:
-- Constraints:
-- Inputs:
-- Outputs:
-- Publish To Sources:
-- Learning: `acquire-required / terminal-only / optional / not-needed`
-- Depends On:
-- Subagent / Branch Scope:
-- Merge / Sync Rule:
-- Completion Criteria:
-- Failure Policy: `retry / rework / stop / escalate-to-reflection`
-- Instructions:
+(same structure as Step 1)
 
 ## Handoffs
 - how `Step`s hand off through files
-- how parallel branches merge
-- which synchronization points are mandatory
+- how parallel branches merge (if applicable)
 
 ## Completion Check
 - what must be true before the task is considered complete
@@ -104,29 +61,25 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 
 ## Planning Rules
 
-- `plan.md` must be written before `state.md` is initialized; `state.md` initialization is based on the completed `plan.md` and must not precede it
+- `state.md` already exists (created by `Learning(Read)`); after `plan.md` is written, `Planning` must update `state.md` to populate `Step Status Map` and transition phase (see `mind/planning/README.md §Phase Entry`)
 - the `Capability` field must contain exactly one main capability
 - the `Constraints` field must explicitly list the constraint files that must be read before that `Step` runs
 - `Outputs` must prefer `tasks/{task-id}/_output/` or `tasks/{task-id}/cache/`
-- only intermediate handoff files may be written exclusively into `tasks/{task-id}/cache/`
 - at least one final-output `Step` must write into `tasks/{task-id}/_output/`
 - `Publish To Sources` must not be omitted; use `none` when there is no publish-back
 - if multiple capabilities are needed, split the work into multiple `Step`s
-- the `Learning` field must explicitly be one of `acquire-required / terminal-only / optional / not-needed`
-  - `acquire-required`: this Step may encounter an external knowledge gap; if it does, `Learning(Acquire)` must be triggered before the Step proceeds; when the Step completes, the agent must record in `state.md` whether a knowledge gap was encountered and whether `Learning(Acquire)` was triggered or skipped, and if skipped, the explicit reason
-  - `terminal-only`: learning from this Step is captured at terminal Learning from task-internal artifacts only; no external acquisition needed
+- `Learning` must be one of `acquire-required / terminal-only / optional / not-needed`
+  - `acquire-required`: this Step may encounter a knowledge gap; if it does, `Learning(Acquire)` must be triggered; when the Step completes, record in `state.md` whether acquisition was triggered or skipped with explicit reason
+  - `terminal-only`: learning captured at terminal Learning from task-internal artifacts only
   - `optional`: learning may occur but is not mandatory
-  - `not-needed`: this Step produces no learnable knowledge
+  - `not-needed`: no learnable knowledge expected
 - `Depends On` must not be omitted; use `none` when there is no dependency
-- `Completion Criteria` must not be omitted; it must be written as checkable conditions
-- `Failure Policy` must not be omitted; the only allowed values are `retry / rework / stop / escalate-to-reflection`
-- `Dispatch Mode` must not be omitted; the only allowed values are `sequential / subagent / parallel-branch`
-- `Parallel Group` must not be omitted; use `none` when there is no parallelism
-- `Synchronization Point` must not be omitted; use `none` when there is no synchronization
-- `Merge Owner` must not be omitted; use `none` when there is no merge
-- `Output Isolation` must not be omitted; it must clearly define the isolated output rule of that `Step`
-- if `Dispatch Mode` is `subagent`, the decomposition boundary, per-subagent output locations, and merge method must be explicit
-- if `Dispatch Mode` is `parallel-branch`, the parallel group, synchronization point, and merge-responsible `Step` must be explicit
+- `Completion Criteria` must be written as checkable conditions
+- `Failure Policy` must be one of `retry / rework / stop / escalate-to-reflection`
+- `Dispatch Mode` must be one of `sequential / subagent / parallel-branch`
+- when `Dispatch Mode` is `sequential`: `Parallel Group`, `Synchronization Point`, `Merge Owner`, `Subagent / Branch Scope`, and `Merge / Sync Rule` may be omitted (they default to `none`)
+- when `Dispatch Mode` is `subagent`: decomposition boundary, per-subagent output locations, and merge method must be explicit
+- when `Dispatch Mode` is `parallel-branch`: parallel group, synchronization point, and merge-responsible `Step` must be explicit
 - parallel `Step`s must not write to the same undeclared shared output path
 - `Instructions` must be executable actions, not abstract slogans
-- if a Step's `Learning` value differs from the corresponding classification declared in `task-profile.md Step-level Learning Possibility`, the reason for the downgrade or upgrade must be stated explicitly in that Step's `Instructions`
+- if a Step's `Learning` value differs from `analysis.md §Step-level Learning Need`, the reason must be stated in `Instructions`

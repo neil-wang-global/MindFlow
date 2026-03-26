@@ -2,17 +2,27 @@
 
 This directory defines the `Analysis` module.
 
-Responsibilities:
+## Responsibilities
 
 - problem modeling
 - task decomposition
 - identification of dependencies and constraints
 - production of `Analysis Output`
 
-Notes:
+## Phase Entry
 
-- `Analysis` must have a formal artifact
-- the template is maintained separately
+Upon entering this module, set `state.md`: `Current Phase: analysis`.
+
+## Required Reads
+
+Before producing `analysis.md`, the runtime must read:
+
+- `mind/soul/core.md`
+- `tasks/{task-id}/learning-read.md` (for approved knowledge already loaded)
+- `tasks/{task-id}/task-profile.md`
+- `capabilities/` (for available capability labels)
+
+Note: approved knowledge files are accessed via `learning-read.md §Approved Knowledge Reads`. If specific approved knowledge needs deeper reading, read those files directly.
 
 ## Inputs
 
@@ -22,13 +32,15 @@ Notes:
 - available capability information
 - `Soul` constraints
 
-## Required Reads
-
-See `tasks/TEMPLATE.md §Required Reads Map` for the formal list of files that must be read before producing `analysis.md`.
-
 ## Outputs
 
-- `Analysis Output`
+- `tasks/{task-id}/analysis.md` (see `TEMPLATE.md` for structure)
+
+`Analysis` must provide enough structure for `Planning` to generate `Plan` without ambiguity.
+
+## Inference Trigger
+
+If `task-profile.md §Inference Possibility` indicated inference may be needed, and `Analysis` confirms the gap, `Analysis` triggers `Inference` before completing `analysis.md`. See `mind/inference/README.md`.
 
 ## Not Responsible For
 

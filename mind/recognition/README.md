@@ -2,31 +2,42 @@
 
 This directory defines the `Recognition` module.
 
-Responsibilities:
+## Responsibilities
 
 - identify the task
 - produce `Task Profile`
 - identify task type, complexity, risk, and capability needs
 
-Notes:
+## Phase Entry
 
-- `Recognition` must have a formal artifact
-- the formal artifact is `Task Profile`
-- the template is maintained separately
-
-## Inputs
-
-- `Learning(Read)` audit result
-- the raw task statement
-- current task context
+Upon entering this module, set `state.md`: `Current Phase: recognition`.
 
 ## Required Reads
 
-See `tasks/TEMPLATE.md §Required Reads Map` for the formal list of files that must be read before producing `task-profile.md`.
+Before producing `task-profile.md`, the runtime must read:
+
+- `mind/soul/core.md`
+- `tasks/{task-id}/learning-read.md`
+
+## Inputs
+
+- `Learning(Read)` audit result (`learning-read.md`)
+- the raw task statement
+- current task context
 
 ## Outputs
 
-- `Task Profile`
+- `tasks/{task-id}/task-profile.md` (see `TEMPLATE.md` for structure)
+
+## Recognition Must Identify
+
+- task type
+- goal
+- complexity
+- risk
+- capability needs
+- whether task-level learning may be required
+- whether `Inference` may be needed
 
 ## Not Responsible For
 

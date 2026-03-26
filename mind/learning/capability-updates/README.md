@@ -6,24 +6,15 @@ These files are not direct capability definitions. They are formal change record
 
 ## File Naming Rule
 
-Capability update files must use the fixed naming pattern:
-
 `cu-{task-id}-{capability-name}.md`
 
-## Required Fields
+## Template and Rules
 
-Every capability update record must contain:
+See `TEMPLATE.md` for the formal structure, required fields, and validation rules.
 
-- `Capability`
-- `Update Type`
-- `Reason`
-- `Source`
-- `Review Reference`
-- `Target Capability File`
-- `Planned Changes`
-- `Applied Changes`
-- `Validation`
-- `Status`
+## Advancement Rules
+
+A capability update with `Status: proposed` or `Status: approved` is a pending cross-task item. Advancement rules are defined in `SYSTEM.md §Capability Update Advancement`.
 
 ## Fixed Rules
 

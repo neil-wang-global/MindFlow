@@ -2,26 +2,44 @@
 
 This directory defines the `Inference` module.
 
-Responsibilities:
+`Inference` is conditional, not always-on. Its output is provisional by default and does not directly become a formal capability.
 
-- perform controlled inference
-- provide candidate conclusions when needed
+## Trigger Conditions
 
-Notes:
+`Inference` may be triggered when:
 
-- `Inference` is not a permanently active default `Step`
-- its output is provisional by default and does not directly become a formal capability
+- `Analysis` identifies a question that cannot be answered from available inputs alone
+- `Reflection` surfaces a reusable pattern that requires generalization
+- terminal `Learning` requires abstraction beyond what the source materials directly state
+- the user explicitly requests inference
 
-## Common Trigger Conditions
+## Trigger Decision
 
-- `Analysis` lacks sufficient information
-- `Reflection` discovers reusable lessons
-- `Learning` requires abstraction
-- the user explicitly requests it
+The decision to trigger `Inference` is made by the module that encounters the gap:
+
+- during `Analysis`: `Analysis` triggers `Inference` before completing `analysis.md`
+- during `Reflection`: `Reflection` triggers `Inference` before completing `reflection-report.md`
+- during terminal `Learning`: terminal `Learning` triggers `Inference` before finalizing `tl-{task-id}.md`
 
 ## Required Reads
 
 Before running `Inference`, the agent must read:
 
 - `mind/soul/core.md`
+- `mind/inference/TEMPLATE.md`
 - the upstream artifact that triggered it
+
+## Output
+
+`Inference` output is written to `tasks/{task-id}/cache/inference-{slug}.md` using `TEMPLATE.md`.
+
+`Inference` output is provisional by default (`Status: provisional`).
+
+## Promotion Rules
+
+Provisional `Inference` output must not directly become:
+
+- approved knowledge
+- formal capability change
+
+If an inference conclusion is later validated by task results or external sources, it may enter the learning pipeline through the normal `tl-{task-id}.md` → `draft-*.md` → `review-*.md` path. The `Source Type` in `tl-{task-id}.md` must be `task-output` with `Source Anchor` pointing to the inference output file.

@@ -2,26 +2,28 @@
 
 This directory defines the `Learning(Acquire)` module.
 
-`Learning(Acquire)` is a mandatory acquisition stage that must be completed before any external knowledge enters the learning pipeline. It enforces that all externally sourced knowledge is grounded in original fetched content, independently verified, and fully traceable before it may be drafted into candidate knowledge.
+`Learning(Acquire)` is a mandatory acquisition stage that must be completed before any external knowledge enters the learning pipeline. It enforces that all externally sourced knowledge is grounded in original fetched content, independently verified, and fully traceable.
 
 ## Trigger Conditions
 
 `Learning(Acquire)` must be triggered in exactly two scenarios:
 
 - **Step-triggered**: during `Step` execution, the agent identifies a knowledge gap that requires external information to resolve
-- **Reflection-triggered**: after `Reflection`, `Issue Detection` or `Learning Candidates` in `reflection-report.md` identifies a problem whose resolution requires external information
+- **Reflection-triggered**: after `Reflection`, `reflection-report.md` identifies a problem whose resolution requires external information
 
 In both cases, `Learning(Acquire)` must complete before `tl-{task-id}.md` is written for any externally sourced knowledge item.
 
 ## Non-Negotiable Constraints
 
-The following constraints are absolute and may not be bypassed under any circumstance:
-
 - **Search results are leads, not knowledge.** Search engine summaries, snippets, and AI-generated overviews must never be used as knowledge sources. They exist only to identify URLs worth fetching.
 - **Fetch before you record.** Every piece of external information must originate from a fetched original source. If a page cannot be fetched, that information cannot enter the pipeline.
-- **Preserve original content in full.** Fetched content must be saved as fetched by the tool, without further modification, into `tasks/{task-id}/acquire/raw-sources/`. No summarization, paraphrasing, extraction, or interpretation is permitted during the acquisition stage.
-- **Verification must use an independent context.** The agent that verifies raw sources must not share execution context with the agent that fetched and recorded them. Verification must be dispatched as an independent subagent.
-- **Unverified sources must not enter drafts.** Only sources that pass verification may be referenced in `tl-{task-id}.md` as `Grounded Source`.
+- **Preserve original content in full.** Fetched content must be saved as fetched by the tool, without modification, into `tasks/{task-id}/acquire/raw-sources/`.
+- **Verification must use an independent context.** See Stage 3 below.
+- **Unverified sources must not enter drafts.** Only sources that pass verification may be referenced in `tl-{task-id}.md`.
+
+## Tool Unavailability
+
+If search or fetch tools are not available in the current runtime environment, the acquisition event must be treated as `exhausted` with reason `required tools unavailable`. Follow the exhausted outcome rules below.
 
 ## Three-Stage Protocol
 
@@ -29,59 +31,51 @@ The following constraints are absolute and may not be bypassed under any circums
 
 ### Stage 1: Search
 
-Use search tools to identify candidate URLs relevant to the knowledge gap or problem.
+Use search tools to identify candidate URLs relevant to the knowledge gap.
 
 - Record all candidate URLs
 - Do not read, quote, or use any summary text from search results
-- Output: `tasks/{task-id}/acquire/search-log.md`
+- Output: `tasks/{task-id}/acquire/search-log.md` (see `SEARCH-LOG-TEMPLATE.md`)
 
 ### Stage 2: Fetch and Preserve
 
 For each candidate URL:
 
 1. Fetch the original page content using a web fetch tool
-2. Save the complete fetched content as fetched by the tool, without further modification
+2. Save the complete fetched content without modification
 3. Record the source URL, fetch timestamp, and source type
 4. If a page cannot be fetched, record the failure and find an alternative; never fall back to the search summary
 
-Output: one file per source in `tasks/{task-id}/acquire/raw-sources/`
-
-File naming: `src-{NNN}-{slug}.md`
+Output: one file per source in `tasks/{task-id}/acquire/raw-sources/` (see `RAW-SOURCES-TEMPLATE.md`)
 
 ### Stage 3: Verification
 
-**Dispatch Mode: subagent — this stage must be executed as an independent subagent invocation.**
+**Dispatch Mode: independent subagent — this stage must not be executed by the agent that performed Stage 2.**
 
-The subagent must be dispatched with an explicit prompt that includes all of the following:
-- the ACQ-{NNN} label of the acquisition event being verified
-- the path `tasks/{task-id}/acquire/search-log.md` (so the subagent can read the Fetch Plan for this event)
-- the path `tasks/{task-id}/acquire/raw-sources/` (so the subagent can read all raw source files)
-- the path `tasks/{task-id}/acquire/verification-report.md` as the output target, and the instruction to write or append the ACQ-{NNN} section
-- the explicit instruction that this subagent must NOT carry over any context from the Stage 2 fetch session
+The subagent must be dispatched with an explicit prompt that includes:
+- the ACQ-{NNN} label being verified
+- the path `tasks/{task-id}/acquire/search-log.md`
+- the path `tasks/{task-id}/acquire/raw-sources/`
+- the output path `tasks/{task-id}/acquire/verification-report.md`
+- the instruction that this subagent must NOT carry context from Stage 2
 
 The verification subagent must:
 
-1. Read the ACQ-{NNN} section of `tasks/{task-id}/acquire/search-log.md` to obtain the declared Fetch Plan for this event
-2. Read all files in `tasks/{task-id}/acquire/raw-sources/`
-3. Cross-check using both URL and `ACQ Event` field:
-   - every URL listed in the event's Fetch Plan must have a corresponding `src-*.md` file whose `ACQ Event` field matches this event; any URL with no such file must be recorded as `missing`
-   - every `src-*.md` file whose `ACQ Event` field declares this event must have its URL listed in this event's Fetch Plan; any file that declares this event but whose URL is not in the Fetch Plan must be recorded as `unplanned` and treated as an unverifiable source
-   - any `src-*.md` file with an `ACQ Event` field that does not match any known ACQ-{NNN} event must be recorded as `unplanned` and treated as an unverifiable source
-4. Independently re-access each URL to confirm accessibility and content match
-5. Assess source credibility based on source authority, not content
-6. Write the ACQ-{NNN} section of `tasks/{task-id}/acquire/verification-report.md`
+1. Read the ACQ-{NNN} section of `search-log.md` for the declared Fetch Plan
+2. Read all files in `raw-sources/`
+3. Cross-check coverage: every planned URL must have a `src-*.md`; every `src-*.md` must be in the plan
+4. Verify each source: confirm URL accessibility, assess content consistency, evaluate source credibility
+5. Write the ACQ-{NNN} section of `verification-report.md` (see `VERIFICATION-TEMPLATE.md`)
 
-The agent that executed Stage 2 must not also execute Stage 3. If the same agent attempts to self-verify, the verification report is invalid and must be regenerated by a true independent subagent.
+**Verification flexibility**: The subagent may verify accessibility by re-fetching the URL header or partial content. Full content re-fetch and exact match are not required — the subagent should confirm that the URL is accessible and the domain/source type matches the declared metadata. Content drift on dynamic pages is expected and should not automatically fail verification.
 
-Only sources listed as `passed` in `Passed Sources for ACQ-{NNN}` may be cited in `tl-{task-id}.md` for that event.
+Only sources listed as `passed` in `Passed Sources for ACQ-{NNN}` may be cited in `tl-{task-id}.md`.
 
 ## Multi-Event Structure
 
-A task may trigger `Learning(Acquire)` more than once — once per Step that encounters a knowledge gap, and once if `reflection-report.md` flags `Requires External Acquisition: yes`. Each trigger is a separate acquisition event identified as `ACQ-001`, `ACQ-002`, etc.
+A task may trigger `Learning(Acquire)` more than once. Each trigger is a separate acquisition event identified as `ACQ-001`, `ACQ-002`, etc.
 
-All events share the same `acquire/` directory. The `search-log.md` and `verification-report.md` files contain one section per event, each labeled with its `ACQ-{NNN}` identifier. Raw source files from all events share the same `raw-sources/` directory; source IDs are unique across all events.
-
-The `ACQ-{NNN}` labels must be consistent across `search-log.md`, `verification-report.md`, and `tl-{task-id}.md`.
+All events share the same `acquire/` directory. The `search-log.md` and `verification-report.md` files contain one section per event. Raw source files from all events share `raw-sources/`; source IDs are unique across all events.
 
 ## Output Structure
 
@@ -89,24 +83,22 @@ The `ACQ-{NNN}` labels must be consistent across `search-log.md`, `verification-
 tasks/{task-id}/acquire/
 ├── search-log.md              (one ACQ-{NNN} section per event)
 ├── raw-sources/
-│   ├── src-001-{slug}.md      (sources from ACQ-001)
-│   ├── src-002-{slug}.md      (sources from ACQ-001)
-│   ├── src-003-{slug}.md      (sources from ACQ-002)
+│   ├── src-001-{slug}.md
+│   ├── src-002-{slug}.md
 │   └── ...
 └── verification-report.md     (one ACQ-{NNN} section per event)
 ```
 
 ## Exhausted Outcome
 
-When all sources fail verification for a given event (zero `passed` for that `ACQ-{NNN}`), that event is considered **exhausted**.
+When all sources fail verification for a given event (zero `passed`), that event is **exhausted**.
 
-In this case:
-- `tl-{task-id}.md` must record the corresponding `ACQ-{NNN}` entry with `Status: exhausted`
-- the triggering knowledge gap or learning candidate must be documented as unresolvable in `tl-{task-id}.md`
+- `tl-{task-id}.md` must record the entry with `Status: exhausted`
+- the triggering knowledge gap must be documented as unresolvable
 - the corresponding `Candidate Knowledge` item must not be promoted to `drafts/`
-- do not fabricate alternative sources or fall back to search summaries to fill the gap
+- do not fabricate alternative sources or fall back to search summaries
 
-An exhausted outcome is a legitimate terminal state. It is not a protocol failure — it is the correct response to the absence of verifiable external sources.
+An exhausted outcome is a legitimate terminal state, not a protocol failure.
 
 ## What Learning(Acquire) Does Not Do
 
@@ -114,40 +106,6 @@ An exhausted outcome is a legitimate terminal state. It is not a protocol failur
 - It does not decide which knowledge is worth learning — that belongs to `tl-{task-id}.md`
 - It does not write into `drafts/` — that belongs to terminal `Learning`
 
-## Relationship to Learning Pipeline
-
-`Learning(Acquire)` feeds into terminal `Learning` as follows:
-
-```
-Learning(Acquire)
-  └── tasks/{task-id}/acquire/raw-sources/  (verified originals)
-          │
-          ▼
-  tl-{task-id}.md  (Grounded Source field cites raw-sources files)
-          │
-          ▼
-  draft-{type}-{task-id}-{slug}.md
-          │
-          ▼
-  review-{task-id}-{slug}.md  (independent context)
-          │
-          ▼
-  kb-{type}-{slug}.md → approved/
-```
-
 ## Lifecycle of the acquire/ Directory
 
-The `acquire/` directory and its contents must not be deleted while any knowledge derived from its `raw-sources/` files has not yet been promoted to `mind/learning/knowledge-base/approved/`.
-
-Once all of the following conditions are met, the `acquire/` directory may be archived or removed:
-
-- all derived knowledge from `raw-sources/` has been promoted to `approved/`
-- the corresponding `kb-*.md` files each record an `Original Source URL` field, preserving the permanent fallback reference to the original fetched content
-
-Until these conditions are satisfied, `raw-sources/` must be preserved as the ground truth for any in-progress or future review of the derived knowledge.
-
-## Subdirectory Overview
-
-- `RAW-SOURCES-TEMPLATE.md`: template for individual raw source files
-- `VERIFICATION-TEMPLATE.md`: template for the verification report
-- `SEARCH-LOG-TEMPLATE.md`: template for the search log
+The `acquire/` directory must not be deleted while any derived knowledge has not yet been promoted to `approved/`. Once all derived knowledge is promoted and `kb-*.md` files record the `Original Source URL`, the directory may be archived or removed.

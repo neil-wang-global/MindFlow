@@ -1,4 +1,4 @@
-`Analysis Output` is the formal artifact of `Analysis`.  
+`Analysis Output` is the formal artifact of `Analysis`.
 It is not the final `Plan`, but it must be stable enough for `Planning` to generate `Plan` without ambiguity.
 
 ## File Requirements
@@ -23,12 +23,7 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 - what must be true when the task is complete
 
 ## Required Reads
-- which files must be read before running `Analysis`
-- at minimum include:
-  - `mind/soul/core.md`
-  - `mind/learning/knowledge-base/approved/`
-  - `tasks/{task-id}/learning-read.md`
-  - `tasks/{task-id}/task-profile.md`
+- which files were actually read before running `Analysis`
 
 ## Stage Breakdown
 - what stages the task should be divided into
@@ -36,25 +31,15 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 
 ## Step Drafts
 - `Step 1`: goal / dependencies / candidate capability / Dispatch Mode / Parallel Group / Synchronization Point / Merge Owner / Output Isolation
-- `Step 2`: goal / dependencies / candidate capability / Dispatch Mode / Parallel Group / Synchronization Point / Merge Owner / Output Isolation
-- `Step N`: goal / dependencies / candidate capability / Dispatch Mode / Parallel Group / Synchronization Point / Merge Owner / Output Isolation
+- `Step N`: (same fields)
 
-## Serial vs Parallel Assessment
-- which `Step`s must be sequential
-- which `Step`s may run in parallel
-
-## Dispatch Strategy
-- which work should remain sequential
-- which `Step`s are suitable for `subagent` parallelism inside a single `Step`
-- which work is better split into multiple parallel `Step`s or task branches
-- what the prerequisites, boundaries, and merge points are for each parallelism mode
-
-## Dispatch Fields
-- `Dispatch Mode` values: `sequential / subagent / parallel-branch`
-- `Parallel Group` identifies parallel branch membership; use `none` when there is no parallelism
-- `Synchronization Point` identifies branch merge points; use `none` when there is no synchronization
-- `Merge Owner` identifies the `Step` responsible for consolidating branch results; use `none` when there is no merge
-- `Output Isolation` explains which isolated paths the `Step` or branch writes to and how write conflicts are avoided
+## Dispatch Assessment
+- for each Step, state the `Dispatch Mode` decision and the reason:
+  - `sequential`: why this Step must run in order (e.g., depends on prior output, shared mutable state)
+  - `subagent`: why this Step is decomposable (e.g., independent sub-problems, isolated inputs/outputs); state decomposition boundary and merge method
+  - `parallel-branch`: why this Step can run alongside others (e.g., no shared output, independent work branch); state parallel group, synchronization point, and merge owner
+- per-Step field values: `Dispatch Mode`, `Parallel Group`, `Synchronization Point`, `Merge Owner`, `Output Isolation`
+- value domains defined in `SYSTEM.md §Dispatch Field Consistency`
 
 ## Risks
 - key risks
@@ -62,16 +47,20 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 - impact on `Plan`
 
 ## Step-level Learning Need
-- for each Step, declare the expected Learning mode using exactly one of the four values:
-  - `acquire-required`: this Step may encounter a knowledge gap requiring external information
+- for each Step, declare the expected Learning mode:
+  - `acquire-required`: this Step may encounter an external knowledge gap requiring `Learning(Acquire)`
   - `terminal-only`: learning from this Step will come from task-internal artifacts only
-  - `optional`: learning may occur but is not expected to be mandatory
+  - `optional`: learning may occur but is not mandatory
   - `not-needed`: this Step is not expected to produce learnable knowledge
-- this declaration must be consistent with `task-profile.md` Step-level Learning Possibility
-- `plan.md` must carry forward these same classifications per Step; if `plan.md` changes a classification, the reason must be stated in that Step's `Instructions`
+- this is the primary Step-level declaration; `plan.md` must carry forward the same classification per Step
+- must be consistent with `task-profile.md §Task-level Learning Possibility` (e.g., if task-level is `not-expected`, no Step should be `acquire-required` without explicit justification)
 
 ## Possible Inference Trigger
 - which points may require inference
+
+## Inference References
+(include this section only if Inference was triggered during Analysis)
+- format: `tasks/{task-id}/cache/inference-{slug}.md` — status: `accepted-into-analysis` / `rejected`
 
 ## Notes
 - only additional information required at the analysis stage
@@ -83,7 +72,5 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 - any `Analysis Output` without dependency information is incomplete
 - any `Analysis Output` without risk information is incomplete
 - `Step Drafts` must be mappable to concrete `Step`s in the subsequent `Plan`
-- if multi-branch execution is possible, any `Analysis Output` without a parallelism judgment is incomplete
-- if `Step Drafts` use dispatch-related fields, both field names and values must remain consistent with the later `Plan`
-- `Step-level Learning Need` must not use free-form descriptions; each Step must be classified using exactly one of the four values: `acquire-required / terminal-only / optional / not-needed`
-- the classifications in `Step-level Learning Need` must be consistent with the `Step-level Learning Possibility` declared in `task-profile.md`
+- `Step-level Learning Need` must use exactly one of: `acquire-required / terminal-only / optional / not-needed` per Step
+- classifications must be consistent with `task-profile.md §Task-level Learning Possibility`

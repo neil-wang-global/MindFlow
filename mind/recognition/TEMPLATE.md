@@ -27,10 +27,6 @@ Every task must produce it before `Analysis` may continue.
 ## Success Criteria
 - criteria that determine whether the task is complete
 
-## Required Reads
-- must read before running `Recognition`:
-  - `tasks/{task-id}/learning-read.md`
-
 ## Complexity
 - `low / medium / high`
 
@@ -45,14 +41,11 @@ Every task must produce it before `Analysis` may continue.
 - known prohibitions
 - known format requirements
 
-## Step-level Learning Possibility
-- for each Step that may require learning, declare the expected Learning mode:
-  - `acquire-required`: this Step may encounter an external knowledge gap
-  - `terminal-only`: learning from this Step will come from task-internal artifacts only
-  - `optional`: learning may occur but is not expected to be mandatory
-  - `not-needed`: this Step is not expected to produce learnable knowledge
-- this declaration is advisory; `plan.md` must carry forward the same classification per Step
-- if `plan.md` downgrades a Step from `acquire-required` to a lower mode, the reason must be stated in that Step's `Instructions`
+## Task-level Learning Possibility
+- `acquire-likely`: this task is likely to require external knowledge acquisition during execution
+- `terminal-only`: learning from this task will come from task-internal artifacts only
+- `not-expected`: no significant learnable knowledge expected from this task
+- this declaration is advisory and task-level only; Step-level Learning declarations are made in `Analysis`
 
 ## Inference Possibility
 - whether `Inference` may be needed
@@ -63,7 +56,6 @@ Every task must produce it before `Analysis` may continue.
 
 ## Validation Rules
 
-- `Required Reads` must not be omitted
 - if the task goal itself is learning, `Task Type` must not be `delivery`
 - if inputs are severely insufficient, that must be explicitly stated in `Constraints`
 - if the task may drift, `Risk` must not be set to low
