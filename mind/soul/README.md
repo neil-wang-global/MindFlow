@@ -27,6 +27,10 @@ When any module reads `Soul`, it may read only:
 
 If additional `Soul` files are introduced in the future, they must first be declared in this documentation before they become readable.
 
+## Bootstrap
+
+When `mind/soul/core.md` has all fields set to "To be defined", `Soul` constraints are not enforced. `Learning(Read)` must record this state explicitly in `learning-read.md §Soul Reads` (see `mind/learning/learning-read/TEMPLATE.md` for the exact wording).
+
 ## Explicitly Forbidden
 
 The following content must not be written into `mind/soul/`:

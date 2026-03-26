@@ -83,14 +83,9 @@ When a `Step` with `Learning: acquire-required` encounters a knowledge gap:
 3. After completion, resume: re-read the `Step`'s `Constraints` and `Inputs`, set `Current Phase: execution-control`, mark Step as `running`
 4. If exhausted (zero passed sources): apply the `Step`'s declared `Failure Policy`
 
-## Reflection-Triggered Learning(Acquire) State Management
+## Failure Policy Protocols
 
-When `reflection-report.md` sets either `Requires External Acquisition` sub-heading to `yes`:
-
-1. Set `Current Phase: learning-acquire`
-2. Execute `Learning(Acquire)` to completion
-3. Set `Current Phase: terminal-learning`
-4. Proceed with terminal `Learning`
+See `SYSTEM.md §Failure Policies` for the complete protocol definitions of `retry`, `rework`, `stop`, and `escalate-to-reflection`. `Execution Control` is responsible for executing these protocols when a `Step` fails.
 
 ## Key Principles
 

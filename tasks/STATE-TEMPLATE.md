@@ -23,15 +23,17 @@ This file defines the fixed structure of the task runtime state file.
 - write `none` when there is no active step
 
 ## Overall Status
-- `pending / running / blocked / failed / completed / cancelled`
+- `running / blocked / failed / completed / cancelled`
 
 ## Step Status Map
 - `Step 1: pending / running / completed / failed / blocked`
 - `Step 2: pending / running / completed / failed / blocked`
 
 ## Parallel Branch Status
-- runtime status of parallel branches
 - write `none` when there is no parallel branch
+- when parallel branches exist, use this format:
+  - `Branch {label} (Steps {N},{M}): pending / running / completed / blocked`
+  - `Synchronization Point: Step {X} — waiting / ready`
 
 ## Last Failure
 - the most recent failure point
@@ -67,6 +69,14 @@ This file defines the fixed structure of the task runtime state file.
 - `Retry Count`: `0`
 - `Ready For Reflection`: `no`
 - `Learning(Acquire) Log`: `none`
+
+### Step Status Map Initialization (by Planning)
+
+When `Planning` completes and `plan.md` is written, `Planning` must update `state.md`:
+
+- set `Current Phase: execution-control`
+- set `Current Step` to Step 1
+- populate `Step Status Map` with one entry per Step from `plan.md`, each set to `pending`
 
 ### Phase Transitions
 

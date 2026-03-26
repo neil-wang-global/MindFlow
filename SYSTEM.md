@@ -4,27 +4,33 @@ This file defines the system protocol for AI running inside MindFlow.
 
 It is the authoritative flow definition and cross-module rule set. Module-internal rules live in each module's own `README.md` and are loaded when the runtime enters that module.
 
+## Quick Start
+
+1. Read `SYSTEM.md` (this file) — loaded once at task start
+2. Determine `task-id` (format: `YYYYMMDD-short-name`, see `CONTRIBUTING.md`)
+3. Create `tasks/{task-id}/` with subdirectories `_output/` and `cache/`
+4. Enter `Learning(Read)` — read `mind/learning/learning-read/README.md`, create `state.md` and `learning-read.md`
+5. Follow the Required Main Flow below, loading each module's `README.md` on entry
+
+## Task Initialization
+
+Before the main flow begins:
+
+1. Determine `task-id` using the format defined in `CONTRIBUTING.md §Task ID Format`
+2. Create `tasks/{task-id}/` with subdirectories `_output/` and `cache/`
+3. Enter `Learning(Read)` — this is the first phase of the main flow; it creates `state.md`
+
 ## Required Main Flow
 
 Every task must follow this exact flow:
 
 `Task -> Learning(Read) -> Recognition -> Analysis -> Planning -> Plan -> Execution Control -> Reflection -> Learning`
 
-No task may skip:
-
-- `Learning(Read)`
-- `Recognition`
-- `Analysis`
-- `Planning`
-- `Execution Control`
-- `Reflection`
-- terminal `Learning`
-
 ## Compact Mode
 
 When `Recognition` determines that a task has `Complexity: low` and `Risk: low`, the task may use compact mode. Compact mode does not skip any phase — it compresses their artifacts:
 
-- `Analysis` and `Planning` may be written as a single combined file `tasks/{task-id}/analysis-plan.md`; the file must still contain the required sections from both `analysis/TEMPLATE.md` and `planning/TEMPLATE.md`, but sections with no meaningful content may be written as a single line (e.g., `## Risks\n- none`)
+- `Analysis` and `Planning` may be written as a single combined file `tasks/{task-id}/analysis-plan.md` using `mind/analysis/COMPACT-TEMPLATE.md`; the file must still contain the required sections from both `analysis/TEMPLATE.md` and `planning/TEMPLATE.md`, but sections with no meaningful content may be written as a single line (e.g., `## Risks\n- none`)
 - The `Plan` may contain a single `Step`
 - `Reflection` may be abbreviated: `Result Evaluation`, `Process Review`, and `Issue Detection` are still required; other sections may be written as `none` if genuinely empty
 - All other rules (file handoff, Learning pipeline, state tracking) remain in full effect
@@ -38,7 +44,7 @@ Compact mode must not be used when:
 
 ## Constraint Loading Rule
 
-Before entering any module or any `Step`, the AI must read the `README.md` (and `TEMPLATE.md` when producing an artifact) of that module's directory. This is the only constraint loading required — do not recursively chase references from within those files. `SYSTEM.md` is assumed loaded at task start.
+Before entering any module or any `Step`, the AI must read that module's `README.md` (and `TEMPLATE.md` when producing an artifact). The `Required Reads` declared in that `README.md` are mandatory inputs for that phase and must also be read. Do not recursively chase secondary references from within those input files — only the module's own `README.md` defines what must be read. `SYSTEM.md` is assumed loaded at task start.
 
 ## Runtime Roles
 
@@ -116,15 +122,21 @@ See `mind/inference/README.md` for full rules.
 
 Every phase transition must update `tasks/{task-id}/state.md`. The complete transition sequence is:
 
-1. `Learning(Read)` creates `state.md` with `Current Phase: learning-read`
-2. `Recognition` sets `Current Phase: recognition`
-3. `Analysis` sets `Current Phase: analysis`
-4. `Planning` sets `Current Phase: planning`; after `plan.md` is written, sets `Current Phase: execution-control`, populates `Step Status Map`, sets `Current Step` to Step 1
+1. `Learning(Read)` creates `state.md` with `Current Phase: learning-read`; before transitioning, verify `learning-read.md` exists and passes its validation rules
+2. `Recognition` sets `Current Phase: recognition`; before transitioning, verify `task-profile.md` exists and passes its validation rules (see `mind/recognition/TEMPLATE.md §Validation Rules`)
+3. `Analysis` sets `Current Phase: analysis`; before transitioning, verify `analysis.md` (or `analysis-plan.md` in compact mode) exists and passes its validation rules (see `mind/analysis/TEMPLATE.md §Validation Rules`)
+4. `Planning` sets `Current Phase: planning`; after `plan.md` is written and passes its validation rules, sets `Current Phase: execution-control`, populates `Step Status Map`, sets `Current Step` to Step 1
 5. `Execution Control` maintains `Current Step` and `Step Status Map` throughout
 6. When all Steps complete (or `escalate-to-reflection` / `stop` triggers): set `Current Phase: reflection`, `Ready For Reflection: yes`
-7. `Reflection` runs; upon completion set `Current Phase: terminal-learning`
-8. When `Learning(Acquire)` is triggered (mid-step or post-reflection): set `Current Phase: learning-acquire`; upon completion restore previous phase
-9. Terminal `Learning` runs; upon completion set `Current Phase: completed`, `Overall Status: completed`
+7. `Reflection` runs; upon completion, check whether either `Requires External Acquisition` sub-heading in `reflection-report.md` is `yes` — if so, proceed to step 8 before terminal `Learning`; otherwise skip to step 9
+8. When `Learning(Acquire)` is triggered:
+   - **mid-step**: set `Current Phase: learning-acquire`, mark Step as `blocked`; upon completion, restore `Current Phase: execution-control`, mark Step as `running`
+   - **post-reflection**: set `Current Phase: learning-acquire`; upon completion, set `Current Phase: terminal-learning`
+9. Terminal `Learning` runs; upon completion, determine the final state from `Overall Status` at entry: if `running` → set `Current Phase: completed`, `Overall Status: completed`; if `cancelled` → set `Current Phase: cancelled`, `Overall Status: cancelled`; if `failed` → set `Current Phase: completed`, `Overall Status: failed`
+
+### Inference State Rule
+
+When `Inference` is triggered mid-phase (during `Analysis`, `Reflection`, or terminal `Learning`), `Current Phase` remains unchanged — `Inference` is a sub-operation within the triggering phase, not a separate phase. The inference output file path must be recorded in the triggering artifact's `Inference References` section.
 
 Each module is responsible for setting its own phase upon entry. Failure to update `state.md` makes the task non-recoverable.
 
@@ -146,15 +158,11 @@ Only approved knowledge may be reused by future `Learning(Read)`.
 
 ### Independent Subagent Review
 
-Both `Learning(Acquire)` Stage 3 (verification) and terminal `Learning` step 3 (review) must be executed by an independent subagent that does not share execution context with the agent that produced the artifact being reviewed. This is a system-level integrity rule, not a module-level preference.
+Both `Learning(Acquire)` Stage 3 (verification) and terminal `Learning` step 4 (review) must be executed by an independent subagent that does not share execution context with the agent that produced the artifact being reviewed. This is a system-level integrity rule, not a module-level preference.
 
 #### Subagent Unavailability Degradation
 
-If the runtime environment does not support independent subagent dispatch:
-
-- `Learning(Acquire)` Stage 3: the verification report must be written with `Verification Mode: same-context` annotation; all sources are treated as `downgraded` and the event is marked `exhausted` with reason `independent verification unavailable`
-- terminal `Learning` step 3: the review must be written with `Verification Mode: same-context`; per `reviews/TEMPLATE.md`, this forces `Decision: rejected` — the knowledge does not enter `approved/`
-- the degradation must be recorded in `reflection-report.md §Issue Detection` so that a future task with subagent support can re-attempt the review
+If the runtime environment does not support independent subagent dispatch, degraded verification modes apply. See `mind/learning/acquire/README.md §Subagent Unavailability` and `mind/learning/README.md §Subagent Unavailability`. The degradation must be recorded in `reflection-report.md §Issue Detection` so that a future task with subagent support can re-attempt the review.
 
 ### Capability Update Advancement
 
@@ -191,7 +199,7 @@ All `ACQ-{NNN}` labels must be consistent across `tasks/{task-id}/state.md §Lea
 
 ## Failure Policies
 
-These are cross-cutting policies referenced by any `Step`.
+Every `Step` must declare one of these policies: `retry`, `rework`, `stop`, `escalate-to-reflection`.
 
 ### retry
 
@@ -234,7 +242,7 @@ When a task is cancelled by the user before completion:
 2. Preserve all files already produced
 3. Run a lightweight `Reflection`: set `Current Phase: reflection`, produce `reflection-report.md` covering only `Result Evaluation` (what was completed so far), `Process Review` (where the task was when cancelled), and `Issue Detection` (any issues worth noting). `Learning Candidates`, `Capability Impact`, and `Inference Triggers` may be written as `none — task cancelled`
 4. After lightweight `Reflection`, run terminal `Learning` as normal — if there are no learning candidates, `tl-{task-id}.md` is still written with `Candidate Knowledge: none`
-5. After terminal `Learning` completes, set `Current Phase: cancelled`, `Overall Status: cancelled`
+5. After terminal `Learning` completes, `Current Phase` and `Overall Status` are set automatically per §Phase Transition Protocol step 9 (entry status is `cancelled`)
 6. A cancelled task is a terminal state
 
 ## Recovery Protocol
@@ -276,14 +284,10 @@ A `Capability` may load a `Skill`, but:
 
 ## Bootstrap Phase
 
-During bootstrap (before any `cap-{name}.md` files exist in `capabilities/`):
+During bootstrap, some subsystems may not yet be fully configured:
 
-- capability labels in `Step` declarations serve as classification identifiers only
-- constraint loading from `capabilities/` is skipped for Steps whose label has no corresponding file
-- `Capability Update` records (`cu-*.md`) may still be created with `Status: proposed`; they will be applied once the target `cap-{name}.md` is created
-- the capability evolution mechanism fully activates once the first `cap-{name}.md` file is created via a `Capability Update` with `Status: applied`
-
-Similarly, when `mind/soul/core.md` has all fields set to "To be defined", `Soul` constraints are not enforced. `Learning(Read)` must record this state explicitly.
+- **Capabilities**: see `capabilities/README.md §Bootstrap` for rules when no `cap-{name}.md` files exist yet
+- **Soul**: see `mind/soul/README.md §Bootstrap` for rules when `core.md` fields are all "To be defined"
 
 ## Self-Check Points
 
@@ -292,5 +296,6 @@ At these critical junctures, the runtime must pause and explicitly verify consis
 1. **Before writing `plan.md`**: verify that `analysis.md §Step-level Learning Need` values are carried forward consistently into each Step's `Learning` field
 2. **Before executing a Step with `Learning: acquire-required`**: verify that `state.md §Learning(Acquire) Log` has a placeholder entry for this Step
 3. **Before writing `tl-{task-id}.md`**: read `state.md §Learning(Acquire) Log` and verify all ACQ labels are consistent with `acquire/search-log.md` and `acquire/verification-report.md`
-4. **Before writing `kb-*.md`**: verify the corresponding `review-*.md` has `Decision: accepted`, `Verification Mode: independent-subagent`, `Summary Verified: yes`, and `Source Anchor Verified: yes`
-5. **Before marking task as `completed`**: verify `_output/` is not empty and all Steps in `Step Status Map` are `completed` (or `failed` with escalation handled)
+4. **Before writing `draft-*.md`**: verify that each `Original Excerpt` in `tl-{task-id}.md` is a verbatim substring of the referenced source file content (read the source file, do not rely on memory)
+5. **Before writing `kb-*.md`**: verify the corresponding `review-*.md` has `Decision: accepted`, `Verification Mode: independent-subagent`, `Summary Verified: yes`, and `Source Anchor Verified: yes`
+6. **Before marking task as `completed`**: verify `_output/` is not empty and all Steps in `Step Status Map` are `completed` (or `failed` with escalation handled)

@@ -1,5 +1,7 @@
 # capabilities
 
+This file is a navigation aid for human readers. The runtime loads individual `cap-{name}.md` files on demand — it does not load this file for constraint purposes.
+
 This directory stores `Capability` definitions used by `Plan` and `Step`.
 
 ## Directory Structure
@@ -21,7 +23,14 @@ When a `Step` references a capability label that has a corresponding `cap-{name}
 - `Capability` labels should be stable across tasks for traceability
 - see `TEMPLATE.md` for the full authoring rules when creating a new capability definition
 
-## Bootstrap Guide
+## Bootstrap
+
+During bootstrap (before any `cap-{name}.md` files exist):
+
+- capability labels in `Step` declarations serve as classification identifiers only
+- constraint loading from `capabilities/` is skipped for Steps whose label has no corresponding file
+- `Capability Update` records (`cu-*.md`) may still be created with `Status: proposed`; they will be applied once the target `cap-{name}.md` is created
+- the capability evolution mechanism fully activates once the first `cap-{name}.md` file is created via a `Capability Update` with `Status: applied`
 
 Create the first `cap-{name}.md` file when:
 - a `Capability Update` record (`cu-*.md`) reaches `Status: approved` and its `Target Capability File` does not yet exist

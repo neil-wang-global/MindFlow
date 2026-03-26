@@ -42,6 +42,7 @@ This file defines the fixed structure of learning review records.
   - the excerpt omits surrounding context in a way that inverts the original meaning
 - if `no`, Decision must be `rejected`
 - paraphrase or semantic similarity does not satisfy the match requirement; only normalized substring presence qualifies
+- for `task-output` sources where the `Source Anchor` includes a `§{Section}` reference, the substring match is performed against the content of that section only, not the entire file
 
 ## Conflict Check
 - `no-conflict` — no existing `kb-*.md` in `approved/` contradicts or substantially overlaps with this candidate
@@ -91,7 +92,7 @@ This file defines the fixed structure of learning review records.
 - the deferred review must be re-opened in a subsequent task:
   - the re-opening task must write a new `review-{new-task-id}-{slug}.md` that references the original deferred review in its `Subject` field
   - the new review supersedes the deferred one; the deferred review file is then considered closed
-- a `deferred` review that has not been re-opened within the scope of the project is considered **stale**; stale deferred reviews are surfaced by `Learning(Read)` in `learning-read.md §Pending Cross-Task Items` and must be listed in the next task's `reflection-report.md` under `Issue Detection` until resolved or explicitly rejected
+- a `deferred` review that has not been re-opened is considered **stale**; cross-task escalation rules for stale deferred reviews are defined in `SYSTEM.md §Deferred Review Advancement`
 
 ## Rejected Decision Handling
 

@@ -24,7 +24,7 @@ tasks/{task-id}/
 
 ## Required Reads Map
 
-Each module's `README.md` defines its own Required Reads. This map provides a centralized overview for human readers. If any conflict exists between this map and a module's README, the module README is authoritative.
+This section is a navigation aid for human readers. The runtime loads each module's `README.md` on demand — it does not use this map for constraint loading. If any conflict exists between this map and a module's README, the module README is authoritative.
 
 - `learning-read.md`
   - module README: `mind/learning/learning-read/README.md`

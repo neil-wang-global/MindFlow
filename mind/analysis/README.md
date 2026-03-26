@@ -35,6 +35,7 @@ Note: approved knowledge files are accessed via `learning-read.md §Approved Kno
 ## Outputs
 
 - `tasks/{task-id}/analysis.md` (see `TEMPLATE.md` for structure)
+- In compact mode: `tasks/{task-id}/analysis-plan.md` (see `COMPACT-TEMPLATE.md` for the combined structure)
 
 `Analysis` must provide enough structure for `Planning` to generate `Plan` without ambiguity.
 

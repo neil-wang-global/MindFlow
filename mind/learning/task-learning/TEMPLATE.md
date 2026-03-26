@@ -67,8 +67,12 @@ For `task-output`:
 - which `Capability` may be affected
 
 ## Next Promotion Target
-- target draft file path
+- for each KDC-{NNN}, state: `promoted to {draft path}` or `not promoted: {reason}`
 - write `none` if nothing should be promoted
+
+## Promotion Suppressed Reason
+(include this section only when `reflection-report.md` has non-empty `Learning Candidates` but promotion is genuinely not possible)
+- state why promotion was suppressed (e.g., `ACQ-{NNN} exhausted — no verifiable sources available`)
 ```
 
 ## Validation Rules

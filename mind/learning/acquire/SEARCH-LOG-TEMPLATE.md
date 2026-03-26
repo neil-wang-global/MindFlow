@@ -4,7 +4,7 @@ This file defines the fixed structure of `tasks/{task-id}/acquire/search-log.md`
 
 ## Purpose
 
-Records the search queries issued and the candidate URLs identified. This file is the only permitted use of search result data. Summary text from search results must not appear anywhere else in the pipeline.
+Records the search queries issued and the candidate URLs identified. Only URLs and selection rationale are permitted — summary text from search results must not appear in this file (per `acquire/README.md §Non-Negotiable Constraints`).
 
 ## File Path
 
@@ -12,7 +12,7 @@ Records the search queries issued and the candidate URLs identified. This file i
 
 ## Multi-Event Note
 
-A single task may trigger `Learning(Acquire)` multiple times. Each trigger produces a separate acquisition event (`ACQ-{NNN}`). When multiple events occur, each event must have its own search log section within this file. The `ACQ-{NNN}` identifiers here must match the `ACQ-{NNN}` entries in `tl-{task-id}.md` and in `verification-report.md`.
+A single task may trigger `Learning(Acquire)` multiple times. Each trigger produces a separate `ACQ-{NNN}` section within this file. Label consistency rules: see `SYSTEM.md §ACQ Label Consistency Rule`.
 
 ## Fixed Structure
 
@@ -60,5 +60,4 @@ A single task may trigger `Learning(Acquire)` multiple times. Each trigger produ
 - each acquisition event must be identified by its `ACQ-{NNN}` label; the label must match the corresponding entry in `tl-{task-id}.md`
 - `Trigger` within each event must be either `step-triggered: Step {N}` or `reflection-triggered`
 - `Knowledge Gap or Problem` must not be omitted for each event
-- summary text from search results must not appear in this file
-- only URLs and selection rationale are permitted
+- per `acquire/README.md §Non-Negotiable Constraints`, only URLs and selection rationale are permitted

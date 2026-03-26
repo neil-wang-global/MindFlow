@@ -1,5 +1,7 @@
 # sources
 
+This file is a navigation aid for human readers. The runtime does not load this file.
+
 This directory is the unified location for user-provided materials and promoted task outputs.
 
 ## Purpose

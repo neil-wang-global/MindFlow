@@ -15,7 +15,7 @@ This directory defines the formal audit record of `Learning(Read)`.
 - `mind/soul/core.md`
 - `mind/learning/knowledge-base/approved/`
 
-It must also scan for pending cross-task items (read-only inspection for awareness, not as knowledge sources):
+It must also scan for pending cross-task items (read-only inspection — not as knowledge sources, but findings may trigger mandatory maintenance steps in the Plan per `SYSTEM.md §Capability Update Advancement` and `§Deferred Review Advancement`):
 
 - `mind/learning/capability-updates/` — files with `Status: proposed` or `Status: approved`
 - `mind/learning/reviews/` — files with `Decision: deferred`

@@ -33,6 +33,9 @@ If search or fetch tools are not available in the current runtime environment, t
 
 Use search tools to identify candidate URLs relevant to the knowledge gap.
 
+- Issue at least 2 search queries with different phrasings to ensure coverage
+- Select at least 2 candidate URLs per query when possible
+- If initial queries return no relevant results, refine query terms and retry once before declaring the search phase complete
 - Record all candidate URLs
 - Do not read, quote, or use any summary text from search results
 - Output: `tasks/{task-id}/acquire/search-log.md` (see `SEARCH-LOG-TEMPLATE.md`)
@@ -70,6 +73,15 @@ The verification subagent must:
 **Verification flexibility**: The subagent may verify accessibility by re-fetching the URL header or partial content. Full content re-fetch and exact match are not required — the subagent should confirm that the URL is accessible and the domain/source type matches the declared metadata. Content drift on dynamic pages is expected and should not automatically fail verification.
 
 Only sources listed as `passed` in `Passed Sources for ACQ-{NNN}` may be cited in `tl-{task-id}.md`.
+
+## Subagent Unavailability
+
+If the runtime environment does not support independent subagent dispatch for Stage 3:
+
+- the verification report must be written with `Verification Mode: same-context` annotation
+- all sources are treated as `downgraded`
+- the event is marked `exhausted` with reason `independent verification unavailable`
+- this degradation must be recorded in `reflection-report.md §Issue Detection`
 
 ## Multi-Event Structure
 

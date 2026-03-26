@@ -1,5 +1,7 @@
 # tasks
 
+This file is a navigation aid for human readers. The runtime does not load this file.
+
 This directory stores task instance directories.
 
 ## Directory Naming Rule

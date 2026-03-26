@@ -18,7 +18,7 @@ The verification report must be produced by an independent subagent that does no
 
 `tasks/{task-id}/acquire/verification-report.md`
 
-When a task has multiple acquisition events, all events are verified in a single report file. Each event is reported as a separate `ACQ-{NNN}` section. The `ACQ-{NNN}` labels must match those in `search-log.md` and `tl-{task-id}.md`.
+When a task has multiple acquisition events, all events are verified in a single report file. Each event is reported as a separate `ACQ-{NNN}` section. Label consistency rules: see `SYSTEM.md §ACQ Label Consistency Rule`.
 
 ## Fixed Structure
 
@@ -94,6 +94,18 @@ List of source IDs that passed verification for this event and may be cited in `
 - overall assessment across all events
 - whether sufficient grounded sources exist to support the knowledge acquisition goals of this task
 ```
+
+## Content Match → Verification Status Mapping
+
+| Accessibility | Content Match | → Verification Status |
+|--------------|---------------|----------------------|
+| accessible | matched | `passed` |
+| accessible | substantially-matched | `passed` (with note explaining variance) |
+| accessible | partial | `downgraded` |
+| accessible | mismatched | `failed` |
+| inaccessible | any | `failed` |
+| redirected | matched or substantially-matched | `passed` (with note about redirect) |
+| redirected | partial or mismatched | `failed` |
 
 ## Validation Rules
 
