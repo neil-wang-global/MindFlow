@@ -41,10 +41,10 @@ Before producing `plan.md`, the runtime must read:
 
 ## Plan Output Rules
 
+See `TEMPLATE.md §Planning Rules` for the full set of output path rules. Key points:
+
 - Default formal result directory: `tasks/{task-id}/_output/`
 - Intermediate handoff files go to: `tasks/{task-id}/cache/`
-- At least one final-output `Step` must write to `_output/`
-- Writing to `sources/` is optional and only allowed when explicitly declared in the relevant `Step`
 
 ## Key Principles
 

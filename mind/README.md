@@ -11,7 +11,7 @@ This directory contains the runtime module definitions of `Mind`.
 See `SYSTEM.md §Required Main Flow` for the authoritative flow definition and artifact data flow.
 
 ```
-Learning(Read) → Recognition → Analysis → Planning → Plan → Execution Control → Reflection → Terminal Learning
+Learning(Read) → Recognition → Analysis → Planning → Execution Control → Reflection → Terminal Learning
      │                                                      │                  │
      │                                                      ▼                  ▼
      │                                              Learning(Acquire)   Learning(Acquire)

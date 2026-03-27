@@ -52,6 +52,8 @@ It must not read for knowledge purposes:
 - pending cross-task items found (or `none`)
 - the excluded areas (always the same three directories)
 
+Additionally, for each scanned pending cross-task item file, append the current task-id to its `§Scan History` field (see §Write Scope).
+
 `learning-read.md` must record files that were actually read, not abstract statements like "knowledge base consulted".
 
 ## Exit Validation

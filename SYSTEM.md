@@ -151,7 +151,8 @@ When a session resumes after interruption:
 5. **Planning recovery**: when `Current Phase: planning` and `plan.md` already exists, complete the `state.md` updates (set `Current Phase: execution-control`, populate `Step Status Map`, set `Current Step` to Step 1) without re-running Planning
 6. **Compact mode recovery**: when `Current Phase: analysis` but `analysis-plan.md` already exists, the task is in compact mode and analysis is complete — resume by transitioning directly to `execution-control` (populate `Step Status Map` and `Current Step` if not yet populated)
 7. When `Current Phase: learning-acquire`, check `acquire/` directory to determine the sub-stage (search-log exists? raw-sources populated? verification-report exists?) and resume from the incomplete sub-stage
-8. If `state.md` is missing or corrupted, treat the task as non-resumable and report the issue
+8. When `Current Phase: terminal-learning`, check which terminal Learning step was last completed: if `tl-{task-id}.md` does not exist, resume from step 1; if `tl-{task-id}.md` exists but no `draft-*.md`, resume from step 3; if `draft-*.md` exists but no `review-*.md`, resume from step 4; if `review-*.md` exists but no `kb-*.md` (and review is accepted), resume from step 5
+9. If `state.md` is missing or corrupted, treat the task as non-resumable and report the issue
 
 ## Self-Check Points
 

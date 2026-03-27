@@ -239,8 +239,10 @@ tasks/20260324-api-rate-limiter/
 - no
 
 ## Learning Candidates
-- Token bucket vs sliding window trade-off analysis — reusable for future API design
-- Distributed cache integration pattern — worth documenting
+Each candidate must include its source location so terminal `Learning` can trace it:
+
+- Token bucket vs sliding window trade-off analysis — source: `cache/step-1-research-notes.md §Algorithm Comparison`
+- Distributed cache integration pattern — source: `_output/rate-limiter-design.md §Cache Integration`
 
 ### Learning Candidates: Requires External Acquisition
 - no

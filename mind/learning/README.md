@@ -48,12 +48,12 @@ It must execute in this order:
    - **Sufficient support**: does the `Original Excerpt` contain enough evidence to support every claim in the conclusion?
    - **Excerpt fidelity**: re-read the source file and confirm `Original Excerpt` is a verbatim substring (do not rely on memory); apply the same whitespace normalization and substring match logic defined in `mind/learning/reviews/TEMPLATE.md §Source Anchor Verified`
    If any check fails, revise the conclusion (or excerpt, if the excerpt was incomplete) in `tl-{task-id}.md` now — this is the only stage where revision is permitted. **After step 2 completes, `tl-{task-id}.md` is frozen — no further edits are permitted for the remainder of the task. Reads are always permitted; frozen means write-locked only.**
-3. if `tl-{task-id}.md` has `Candidate Knowledge: none`, skip steps 4 and 5 and proceed directly to step 6; otherwise generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
-4. **dispatch an independent subagent** to generate each `review-{task-id}-{slug}.md`
+3. if `tl-{task-id}.md` has `Candidate Knowledge: none`, skip steps 4 and 5 and proceed directly to step 6; otherwise read `mind/learning/knowledge-base/drafts/TEMPLATE.md` and generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
+4. **dispatch an independent subagent** to generate each `review-{task-id}-{slug}.md`; the subagent must read `mind/learning/reviews/TEMPLATE.md` before writing
    - the subagent prompt must provide: the `draft-*.md` path, the `Source Anchor` path, the output target, and an explicit instruction that the subagent must not carry any context from the drafting session; the subagent must have access to file read and search tools (e.g., Grep) to perform Source Anchor verification
    - the agent that wrote the `draft-*.md` must not also write the corresponding `review-*.md`
    - `Verification Mode` in the review file must be `independent-subagent`; any review written in the same context as its draft is invalid
-5. only review records with `Decision: accepted` may generate `kb-{type}-{slug}.md`; when a `kb-*.md` is written to `approved/`, `INDEX.md` must be created or updated to list the new entry with its Type and one-line Summary
+5. only review records with `Decision: accepted` may generate `kb-{type}-{slug}.md`; read `mind/learning/knowledge-base/approved/TEMPLATE.md` before writing; when a `kb-*.md` is written to `approved/`, `INDEX.md` must be created or updated to list the new entry with its Type and one-line Summary
 6. for each `exhausted` ACQ event in `tl-{task-id}.md §External Acquisition`, create `mind/learning/knowledge-gaps/gap-{task-id}-{slug}.md` with `Status: open` (see `mind/learning/knowledge-gaps/README.md` for structure); this enables future tasks' `Learning(Read)` to detect and retry the unresolved knowledge gap
 7. if needed, generate `cu-{task-id}-{capability-name}.md` based on accepted review records or directly from `reflection-report.md §Capability Impact`; reflection-triggered capability updates must be created with `Status: proposed`
 

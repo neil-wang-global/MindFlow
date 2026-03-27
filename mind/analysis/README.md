@@ -48,7 +48,7 @@ When `Recognition` determines `Complexity: low` and `Risk: low`, the task may us
 - `Analysis` and `Planning` merge into `tasks/{task-id}/analysis-plan.md` (see `COMPACT-TEMPLATE.md` for full structure and constraints)
 - Single `Step` only
 
-**Exit compact mode**: if `Analysis` discovers compact mode is no longer appropriate, it must remove the compact declaration from `task-profile.md`, produce separate `analysis.md` and `plan.md`, and record the exit reason in `analysis.md §Notes`. Once `analysis-plan.md` is written, compact mode is committed.
+**Exit compact mode**: if `Analysis` discovers compact mode is no longer appropriate, it must remove the compact declaration from `task-profile.md`, produce separate `analysis.md` and `plan.md`, and record the exit reason in `analysis.md §Notes`. If a partial `analysis-plan.md` was already started, delete it before producing the separate files. Once a complete `analysis-plan.md` is written, compact mode is committed.
 
 **State update in compact mode**: after writing `analysis-plan.md`, complete the `state.md` updates per `mind/planning/README.md §Phase Entry` (set `Current Phase: execution-control`, populate `Step Status Map`, set `Current Step` to Step 1). The `planning` phase marker is skipped — the runtime transitions directly from `analysis` to `execution-control`.
 

@@ -60,7 +60,7 @@ When a task is cancelled by the user before completion:
 
 1. Stop the current Step immediately. Set `Overall Status: cancelled`, record reason
 2. Preserve all files already produced
-3. Run a lightweight `Reflection`: set `Current Phase: reflection`, produce `reflection-report.md` covering only `Result Evaluation` (what was completed so far), `Process Review` (where the task was when cancelled), and `Issue Detection` (any issues worth noting). `Learning Candidates`, `Capability Impact`, and `Inference Triggers` may be written as `none — task cancelled`
+3. Run a lightweight `Reflection` — see `mind/reflection/README.md §Lightweight Reflection` for scope rules
 4. After lightweight `Reflection`, run terminal `Learning` as normal — if there are no learning candidates, `tl-{task-id}.md` is still written with `Candidate Knowledge: none`
 5. After terminal `Learning` completes, `Current Phase` and `Overall Status` are set automatically per `SYSTEM.md §Phase Transition Protocol` step 4 (entry status is `cancelled`)
 6. A cancelled task is a terminal state
@@ -120,19 +120,13 @@ Every `Step` must declare one of these policies: `retry`, `rework`, `stop`, `esc
 ### stop
 
 1. Stop immediately. No retry or rework
-2. Set `Overall Status: failed`, mark Step as `failed`, set `Ready For Reflection: yes`
-3. Do not advance to next Step
-4. Hand control to `Reflection` so that the failure is formally analyzed
-5. After `Reflection`, terminal `Learning` runs as normal
-6. The task is then considered terminated. A new task must be created to retry the work
+2. Transition to `Reflection` per §Transition to Reflection (`stop` triggered scenario)
+3. The task is then considered terminated. A new task must be created to retry the work
 
 ### escalate-to-reflection
 
 1. Stop immediately. Preserve all partial outputs
-2. Set `Overall Status: blocked`, mark Step as `failed`, set `Ready For Reflection: yes`
-3. Do not advance to next Step
-4. Hand control to `Reflection`
-5. After `Reflection`, terminal `Learning` runs as normal
+2. Transition to `Reflection` per §Transition to Reflection (`escalate-to-reflection` triggered scenario)
 
 ## Exit Validation
 
