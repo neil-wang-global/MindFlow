@@ -21,3 +21,4 @@ A capability update with `Status: proposed` or `Status: approved` is a pending c
 - `Capability Update` must be traceable back to a concrete task and a concrete review record
 - `Capability Update` must not claim to be `applied` without evidence
 - any update with `Status: applied` must already correspond to a real change in the target capability file
+- reflection-triggered capability updates (where `Review Reference` is `reflection-triggered: ...`) must be created with `Status: proposed` and must not be advanced to `approved` or `applied` within the same task that produced the reflection

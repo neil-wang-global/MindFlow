@@ -112,6 +112,10 @@ When all sources fail verification for a given event (zero `passed`), that event
 
 An exhausted outcome is a legitimate terminal state, not a protocol failure.
 
+### Cross-Task Retry for Exhausted Events
+
+An exhausted event must be recorded in `reflection-report.md §Issue Detection` as a knowledge gap. Terminal `Learning` must also create a `gap-{task-id}-{slug}.md` file in `mind/learning/knowledge-gaps/` with `Status: open` (see `mind/learning/knowledge-gaps/README.md`). Future tasks' `Learning(Read)` scans `knowledge-gaps/` for open gaps, enabling detection and retry with different search strategies. A retry is a new ACQ event with a new ACQ label, not a continuation of the old one. When a future task successfully acquires the knowledge, it must update the gap file to `Status: resolved`.
+
 ## What Learning(Acquire) Does Not Do
 
 - It does not analyze, interpret, or draw conclusions from fetched content

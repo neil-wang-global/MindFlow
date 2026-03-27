@@ -25,6 +25,7 @@ Before producing `plan.md`, the runtime must read:
 
 - `mind/soul/core.md`
 - `tasks/{task-id}/analysis.md`
+- `tasks/{task-id}/learning-read.md` (for `§Pending Cross-Task Items` — if `Analysis` identified mandatory maintenance Steps, `Planning` must include them in `plan.md`)
 - the relevant `Capability` definition files (if they exist in `capabilities/`)
 
 ## Inputs

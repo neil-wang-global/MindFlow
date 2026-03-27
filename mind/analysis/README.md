@@ -18,11 +18,13 @@ Upon entering this module, set `state.md`: `Current Phase: analysis`.
 Before producing `analysis.md`, the runtime must read:
 
 - `mind/soul/core.md`
-- `tasks/{task-id}/learning-read.md` (for approved knowledge already loaded)
+- `tasks/{task-id}/learning-read.md` (for approved knowledge already loaded; also check `§Pending Cross-Task Items` for mandatory maintenance triggers per `SYSTEM.md §Capability Update Advancement` and `§Deferred Review Advancement`)
 - `tasks/{task-id}/task-profile.md`
 - `capabilities/` (for available capability labels)
 
 Note: approved knowledge files are accessed via `learning-read.md §Approved Knowledge Reads`. If specific approved knowledge needs deeper reading, read those files directly.
+
+If `learning-read.md §Pending Cross-Task Items` reports 3+ pending capability updates or 2+ deferred reviews, `Analysis` must include dedicated maintenance `Step`(s) in `§Step Drafts` to address them.
 
 ## Inputs
 

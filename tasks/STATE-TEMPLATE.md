@@ -16,7 +16,7 @@ This file defines the fixed structure of the task runtime state file.
 - current task ID
 
 ## Current Phase
-- `learning-read / recognition / analysis / planning / execution-control / learning-acquire / reflection / terminal-learning / completed / blocked / cancelled`
+- `learning-read / recognition / analysis / planning / execution-control / learning-acquire / reflection / terminal-learning / completed / cancelled`
 
 ## Current Step
 - the `Step` currently being executed

@@ -20,6 +20,7 @@ The decision to trigger `Inference` is made by the module that encounters the ga
 - during `Analysis`: `Analysis` triggers `Inference` before completing `analysis.md`
 - during `Reflection`: `Reflection` triggers `Inference` before completing `reflection-report.md`
 - during terminal `Learning`: terminal `Learning` triggers `Inference` before finalizing `tl-{task-id}.md`
+- `user-request`: the user may explicitly request inference during any of the three phases above; if the request occurs outside these phases (e.g., during `Execution Control`), the inference must be deferred to the next eligible phase (`Reflection`) — `Current Phase` must not change for the deferral
 
 ## Required Reads
 
@@ -34,6 +35,17 @@ Before running `Inference`, the agent must read:
 `Inference` output is written to `tasks/{task-id}/cache/inference-{slug}.md` using `TEMPLATE.md`.
 
 `Inference` output is provisional by default (`Status: provisional`).
+
+## Acceptance Criteria
+
+The triggering module decides whether to accept or reject the inference output. The decision must be recorded by updating the `Status` field in the inference output file. Acceptance requires all of the following:
+
+- the `Provisional Conclusion` directly addresses the `Question` that triggered the inference
+- the `Reasoning` chain is internally consistent and does not rely on unsupported premises
+- the `Confidence` level is `medium` or `high`
+- the conclusion does not contradict `Soul` constraints or approved knowledge
+
+If any criterion is not met, the inference output must be set to `Status: rejected`. The triggering module must then proceed without the inference result — it must not retry or modify the inference.
 
 ## Promotion Rules
 

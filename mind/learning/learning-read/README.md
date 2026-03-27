@@ -19,6 +19,7 @@ It must also scan for pending cross-task items (read-only inspection — not as 
 
 - `mind/learning/capability-updates/` — files with `Status: proposed` or `Status: approved`
 - `mind/learning/reviews/` — files with `Decision: deferred`
+- `mind/learning/knowledge-gaps/` — files with `Status: open` (unresolved knowledge gaps from prior tasks' exhausted ACQ events; a future task encountering the same knowledge need may trigger a new `Learning(Acquire)` event with different search strategies)
 
 It must not read for knowledge purposes:
 

@@ -47,6 +47,10 @@ Every task must produce it before `Analysis` may continue.
 - `not-expected`: no significant learnable knowledge expected from this task
 - this declaration is advisory and task-level only; Step-level Learning declarations are made in `Analysis`
 
+## Mode
+- `standard` — normal full-phase flow
+- `compact` — compressed artifacts; only valid when `Complexity: low` and `Risk: low` (see `SYSTEM.md §Compact Mode` for full eligibility rules)
+
 ## Inference Possibility
 - whether `Inference` may be needed
 
@@ -59,3 +63,5 @@ Every task must produce it before `Analysis` may continue.
 - if the task goal itself is learning, `Task Type` must not be `delivery`
 - if inputs are severely insufficient, that must be explicitly stated in `Constraints`
 - if the task may drift, `Risk` must not be set to low
+- `Mode` must be `standard` or `compact`; `compact` is only valid when both `Complexity: low` and `Risk: low`
+- `Mode` must not be omitted

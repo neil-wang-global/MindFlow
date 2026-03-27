@@ -11,7 +11,7 @@ This directory defines the `Execution Control` module.
 - manage sequential execution, `subagent` parallelism, and branch parallelism according to `Dispatch Mode`
 - manage branch merge and synchronization points
 - check whether each `Step` has reached its completion criteria
-- decide whether failure should trigger retry, rework, termination, or return to an upstream module (see `SYSTEM.md §Failure Policies`)
+- decide whether failure should trigger retry, rework, termination, or return to an upstream module (see §Failure Policy Protocols below)
 - hand stable runtime results to `Reflection`
 
 ## Entry Expectations
@@ -49,7 +49,7 @@ When all Steps are completed:
 - set `Ready For Reflection: yes`
 - set `Current Phase: reflection`
 
-When `escalate-to-reflection` triggers: see `SYSTEM.md §Failure Policies`.
+When `escalate-to-reflection` triggers: see §Failure Policy Protocols below.
 
 ## Step Execution Protocol
 
@@ -85,7 +85,40 @@ When a `Step` with `Learning: acquire-required` encounters a knowledge gap:
 
 ## Failure Policy Protocols
 
-See `SYSTEM.md §Failure Policies` for the complete protocol definitions of `retry`, `rework`, `stop`, and `escalate-to-reflection`. `Execution Control` is responsible for executing these protocols when a `Step` fails.
+`Execution Control` is responsible for executing these protocols when a `Step` fails. The four policies and their cross-module effects are summarized in `SYSTEM.md §Failure Policies`; full operational details follow.
+
+### retry
+
+1. Increment `Retry Count` in `state.md`
+2. Re-read the `Step`'s `Constraints` and `Inputs` before retrying
+3. Re-execute the `Step` from scratch
+4. Maximum retries: 2. After 2 failures, escalate to `escalate-to-reflection` automatically
+5. Each retry recorded in `state.md` under `Last Failure`
+
+### rework
+
+1. Preserve partial outputs
+2. Re-read preceding `Step`'s outputs and current `Step`'s `Constraints`
+3. Re-execute with adjusted approach
+4. Maximum rework attempts: 1. After failure, escalate to `escalate-to-reflection` automatically
+5. Record in `state.md` under `Last Failure`
+
+### stop
+
+1. Stop immediately. No retry or rework
+2. Set `Overall Status: failed`, mark Step as `failed`, set `Ready For Reflection: yes`
+3. Do not advance to next Step
+4. Hand control to `Reflection` so that the failure is formally analyzed
+5. After `Reflection`, terminal `Learning` runs as normal
+6. The task is then considered terminated. A new task must be created to retry the work
+
+### escalate-to-reflection
+
+1. Stop immediately. Preserve all partial outputs
+2. Set `Overall Status: blocked`, mark Step as `failed`, set `Ready For Reflection: yes`
+3. Do not advance to next Step
+4. Hand control to `Reflection`
+5. After `Reflection`, terminal `Learning` runs as normal
 
 ## Key Principles
 

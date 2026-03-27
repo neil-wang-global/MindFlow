@@ -33,7 +33,7 @@ This file defines the fixed structure of learning review records.
 ## Source Anchor Verified
 - `yes` — all of the following are confirmed:
   1. the `Source Anchor` path exists as an actual file
-  2. the `Original Excerpt` matches the source file content after whitespace normalization (collapse consecutive whitespace characters into a single space, trim leading/trailing whitespace); the normalized excerpt must appear as a substring of the normalized source file content; **the reviewing subagent should use a search tool (e.g. Grep with literal/fixed-string mode) to perform this substring check rather than relying on memory-based comparison**
+  2. the `Original Excerpt` matches the source file content after whitespace normalization (collapse consecutive whitespace characters into a single space, trim leading/trailing whitespace; for `grounded-external` sources, also strip HTML whitespace entities and tool-specific formatting artifacts before normalization); the normalized excerpt must appear as a substring of the normalized source file content; **the reviewing subagent should use a search tool (e.g. Grep with literal/fixed-string mode) to perform this substring check rather than relying on memory-based comparison**
   3. the excerpt is not taken out of context in a way that inverts or materially distorts the meaning of the surrounding passage
 - `no` — any of the following is true:
   - `Source Anchor` field is missing or empty

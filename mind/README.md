@@ -10,6 +10,21 @@ This directory contains the runtime module definitions of `Mind`.
 
 See `SYSTEM.md §Required Main Flow` for the authoritative flow definition.
 
+```
+Learning(Read) → Recognition → Analysis → Planning → Execution Control → Reflection → Terminal Learning
+     │                                                      │                  │
+     │                                                      ▼                  ▼
+     │                                              Learning(Acquire)   Learning(Acquire)
+     │                                              (mid-step, if gap)  (post-reflection)
+     │
+     └── reads: soul/core.md, knowledge-base/approved/, knowledge-gaps/, capability-updates/, reviews/
+```
+
+Data flow through task artifacts:
+```
+learning-read.md → task-profile.md → analysis.md → plan.md → cache/ + _output/ → reflection-report.md → tl-{task-id}.md → draft-*.md → review-*.md → kb-*.md
+```
+
 ## Directory Overview
 
 Each subdirectory owns exactly one module. Each module's `README.md` is self-contained — it defines all rules needed when the runtime enters that module. The runtime loads a module's `README.md` (and `TEMPLATE.md` when producing artifacts) upon entering that module.

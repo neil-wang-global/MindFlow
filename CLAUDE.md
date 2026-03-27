@@ -19,11 +19,7 @@ Read `CONTRIBUTING.md` for commit rules and engineering conventions.
 
 ## Loading Model
 
-- `SYSTEM.md` is loaded once at task start — it defines the flow skeleton and cross-module rules
-- **Module READMEs** (e.g., `mind/recognition/README.md`, `mind/learning/acquire/README.md`) are loaded when the runtime enters that module — each is the self-contained authority for that module's rules
-- **Directory index READMEs** (`mind/README.md`, `tasks/README.md`, `sources/README.md`, `capabilities/README.md`) are navigation aids for human readers — the runtime does not load them
-- `TEMPLATE.md` files are loaded when producing an artifact of that type
-- Do not pre-load all module READMEs at task start; load them on demand as each phase is entered
+See `SYSTEM.md §Core Design Principle: Lazy Loading` for the authoritative loading rules.
 
 ## Recovery
 

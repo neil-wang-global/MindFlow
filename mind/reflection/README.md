@@ -18,6 +18,8 @@ Upon entering this module, set `state.md`: `Current Phase: reflection`.
 Before producing `reflection-report.md`, the runtime must read:
 
 - `mind/soul/core.md`
+- `tasks/{task-id}/learning-read.md` (to assess whether initial knowledge and constraints were properly applied during execution)
+- `tasks/{task-id}/task-profile.md` (for `§Success Criteria` — used in `Result Evaluation`)
 - `tasks/{task-id}/state.md`
 - `tasks/{task-id}/plan.md`
 - `tasks/{task-id}/cache/`
@@ -43,6 +45,7 @@ Before producing `reflection-report.md`, the runtime must read:
 - learning candidates
 - capability impact
 - inference triggers
+- whether external acquisition is required — both for `Issue Detection` and for `Learning Candidates`; each has a `Requires External Acquisition` sub-heading (see `TEMPLATE.md`); if either is `yes`, `Learning(Acquire)` must be triggered post-reflection before terminal `Learning` begins (see `SYSTEM.md §Phase Transition Protocol` step 7–8)
 
 ## Inference Trigger
 

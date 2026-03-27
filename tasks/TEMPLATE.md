@@ -24,7 +24,7 @@ tasks/{task-id}/
 
 ## Required Reads Map
 
-This section is a navigation aid for human readers. The runtime loads each module's `README.md` on demand — it does not use this map for constraint loading. If any conflict exists between this map and a module's README, the module README is authoritative.
+This section is a navigation aid for human readers. The runtime loads each module's `README.md` on demand — it does not use this map for constraint loading. If any conflict exists between this map and a module's README, the module README is authoritative. This map must be updated when module `README.md` Required Reads change.
 
 - `learning-read.md`
   - module README: `mind/learning/learning-read/README.md`
@@ -44,11 +44,11 @@ This section is a navigation aid for human readers. The runtime loads each modul
 
 - `plan.md`
   - module README: `mind/planning/README.md`
-  - reads: `mind/soul/core.md`, `tasks/{task-id}/analysis.md`, relevant `Capability` definition files
+  - reads: `mind/soul/core.md`, `tasks/{task-id}/analysis.md`, `tasks/{task-id}/learning-read.md`, relevant `Capability` definition files
 
 - `reflection-report.md`
   - module README: `mind/reflection/README.md`
-  - reads: `mind/soul/core.md`, `tasks/{task-id}/state.md`, `tasks/{task-id}/plan.md`, `tasks/{task-id}/cache/`, `tasks/{task-id}/_output/`
+  - reads: `mind/soul/core.md`, `tasks/{task-id}/learning-read.md`, `tasks/{task-id}/task-profile.md`, `tasks/{task-id}/state.md`, `tasks/{task-id}/plan.md`, `tasks/{task-id}/cache/`, `tasks/{task-id}/_output/`
 
 - `acquire/verification-report.md`
   - module README: `mind/learning/acquire/README.md`
@@ -57,7 +57,7 @@ This section is a navigation aid for human readers. The runtime loads each modul
 
 - `tl-{task-id}.md` (written to `mind/learning/task-learning/`)
   - module README: `mind/learning/README.md`
-  - reads: `tasks/{task-id}/reflection-report.md`, `tasks/{task-id}/state.md`, `tasks/{task-id}/_output/`, `tasks/{task-id}/cache/`, `tasks/{task-id}/acquire/verification-report.md` (if applicable)
+  - reads: `tasks/{task-id}/reflection-report.md`, `tasks/{task-id}/task-profile.md`, `tasks/{task-id}/plan.md`, `tasks/{task-id}/state.md`, `tasks/{task-id}/_output/`, `tasks/{task-id}/cache/`, `tasks/{task-id}/acquire/verification-report.md` (if applicable)
 
 ## Fixed File Descriptions
 

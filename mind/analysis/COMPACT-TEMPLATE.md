@@ -11,9 +11,9 @@ When `Recognition` determines `Complexity: low` and `Risk: low`, the task uses c
 
 ## Compact Mode Constraints
 
-- must be declared in `task-profile.md` as `## Mode\n- compact`
+See `SYSTEM.md §Compact Mode` for full eligibility rules and exit conditions. Key constraints:
+
 - the Plan may contain only a single Step
-- must not be used when `Complexity` is `medium` or `high`, `Risk` is `medium` or `high`, the task requires `Learning(Acquire)`, or the task has more than one Step
 - all other rules (file handoff, Learning pipeline, state tracking) remain in full effect
 
 ## Fixed Structure

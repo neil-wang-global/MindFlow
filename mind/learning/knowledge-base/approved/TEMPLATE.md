@@ -17,8 +17,9 @@ This file defines the fixed structure of `mind/learning/knowledge-base/approved/
 - knowledge type
 
 ## Summary
-- must be copied verbatim from the `Candidate Conclusion` of the corresponding `draft-*.md`
-- no rephrasing or elaboration is permitted
+- must preserve the meaning of the `Candidate Conclusion` from the corresponding `draft-*.md`
+- purely editorial changes are permitted (formatting, punctuation, grammar fixes) but must not alter meaning, scope, or claims
+- substantive rephrasing or elaboration is not permitted
 - if the conclusion is found inadequate at this stage, the correct action is to reject the review and revise the draft — not to silently rewrite the summary here
 
 ## Source Lineage
@@ -53,7 +54,7 @@ This file defines the fixed structure of `mind/learning/knowledge-base/approved/
 
 - `Review Status` must always be `accepted`
 - `Approved By Review` must not be omitted
-- `Summary` must be copied verbatim from `Candidate Conclusion` in the corresponding `draft-*.md`; any divergence is a protocol violation
+- `Summary` must preserve the meaning of `Candidate Conclusion` in the corresponding `draft-*.md`; purely editorial changes (formatting, punctuation, grammar) are permitted but substantive divergence is a protocol violation
 - `Source Lineage` must not be omitted; every field must be filled
 - `Original Source Anchor` must point to an existing file at the time of promotion
 - for `grounded-external` entries, `Original Source URL` must not be omitted; it is the permanent fallback reference if the task directory is later cleaned up

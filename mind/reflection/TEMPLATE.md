@@ -16,7 +16,8 @@
 - current task ID
 
 ## Result Evaluation
-- whether the result met the expected outcome
+- evaluate against `task-profile.md §Success Criteria` — assess each criterion individually
+- evaluate against `plan.md §Completion Check` — verify all declared completion conditions
 - what passed
 - what did not pass
 
@@ -32,14 +33,16 @@
 - runtime risks or failures
 
 ### Issue Detection: Requires External Acquisition
-- `yes` or `no`
+- `yes` — an identified issue (capability gap, process gap, or runtime failure) cannot be resolved without external information
+- `no`
 
 ## Learning Candidates
 - what is worth learning from this task
 - what may be promoted into terminal `Learning`
 
 ### Learning Candidates: Requires External Acquisition
-- `yes` or `no`
+- `yes` — a learning candidate requires external evidence to be properly grounded (the task produced a valuable insight but lacks original source material)
+- `no`
 
 ## Capability Impact
 - which `Capability` may require upgrade, split, addition, or downgrade
@@ -59,3 +62,7 @@
 - `Learning Candidates: Requires External Acquisition` must be `yes` or `no`
 - if either `Requires External Acquisition` is `yes`, `Learning(Acquire)` must be triggered before terminal `Learning`
 - `Capability Impact` and `Inference Triggers` must not be omitted
+- **task-type-conditional rules** (per `SYSTEM.md §Task Type Variants`):
+  - when `Task Type: delivery`: `_output/` must contain a concrete deliverable; `Learning Candidates` may be empty
+  - when `Task Type: learning`: `_output/` must contain a knowledge artifact; `Learning Candidates` must not be empty unless all ACQ events were `exhausted`
+  - when `Task Type: mixed`: both a deliverable and learning output are expected; evaluation criteria from both `delivery` and `learning` apply
