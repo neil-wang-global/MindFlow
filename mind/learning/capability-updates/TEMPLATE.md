@@ -46,6 +46,9 @@ This file defines the fixed structure of `Capability Update Record`.
 
 ## Status
 - `proposed / approved / applied`
+
+## Scan History
+- `{task-id}`: scanned, `{action}` (e.g. `advanced`, `not-relevant`, `skipped`)
 ```
 
 ## Validation Rules

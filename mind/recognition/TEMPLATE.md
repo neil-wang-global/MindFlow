@@ -49,7 +49,7 @@ Every task must produce it before `Analysis` may continue.
 
 ## Mode
 - `standard` — normal full-phase flow
-- `compact` — compressed artifacts; only valid when `Complexity: low` and `Risk: low` (see `SYSTEM.md §Compact Mode` for full eligibility rules)
+- `compact` — compressed artifacts; only valid when `Complexity: low` and `Risk: low` (see `mind/analysis/README.md §Compact Mode` for full eligibility rules)
 
 ## Inference Possibility
 - whether `Inference` may be needed

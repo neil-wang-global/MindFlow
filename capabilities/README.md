@@ -23,6 +23,14 @@ When a `Step` references a capability label that has a corresponding `cap-{name}
 - `Capability` labels should be stable across tasks for traceability
 - see `TEMPLATE.md` for the full authoring rules when creating a new capability definition
 
+## Skill Rule
+
+`Skill` is not a top-level runtime object. A `Capability` may load a `Skill`, but:
+
+- `Capability` is not `Skill`
+- `Skill` is only an execution resource that provides tool-level functionality
+- `Skill` selection is made at runtime by the executing agent; it is not declared in `Plan`
+
 ## Bootstrap
 
 During bootstrap (before any `cap-{name}.md` files exist):

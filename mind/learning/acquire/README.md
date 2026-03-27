@@ -35,6 +35,7 @@ Use search tools to identify candidate URLs relevant to the knowledge gap.
 
 - Issue at least 2 search queries with different phrasings to ensure coverage
 - Select at least 2 candidate URLs per query when possible
+- If the first query identifies a primary authoritative source (e.g., official RFC, specification, canonical documentation), the second query may be narrowed to confirming alternatives or counterpoints rather than broad re-search
 - If initial queries return no relevant results, refine query terms and retry once before declaring the search phase complete
 - Record all candidate URLs
 - Do not read, quote, or use any summary text from search results

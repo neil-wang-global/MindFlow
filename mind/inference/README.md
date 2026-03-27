@@ -20,7 +20,7 @@ The decision to trigger `Inference` is made by the module that encounters the ga
 - during `Analysis`: `Analysis` triggers `Inference` before completing `analysis.md`
 - during `Reflection`: `Reflection` triggers `Inference` before completing `reflection-report.md`
 - during terminal `Learning`: terminal `Learning` triggers `Inference` before finalizing `tl-{task-id}.md`
-- `user-request`: the user may explicitly request inference during any of the three phases above; if the request occurs outside these phases (e.g., during `Execution Control`), the inference must be deferred to the next eligible phase (`Reflection`) — `Current Phase` must not change for the deferral
+- `user-request`: the user may explicitly request inference during any of the three phases above; if the request occurs outside these phases (e.g., during `Execution Control`), the inference must be deferred to the next eligible phase (`Reflection`) — `Current Phase` must not change for the deferral; the runtime must acknowledge the request and inform the user that inference will be addressed during `Reflection`
 
 ## Required Reads
 

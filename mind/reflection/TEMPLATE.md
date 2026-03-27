@@ -37,8 +37,9 @@
 - `no`
 
 ## Learning Candidates
-- what is worth learning from this task
-- what may be promoted into terminal `Learning`
+Each candidate must include its source location so terminal `Learning` can trace it:
+
+- {title} — source: `_output/{file} §{Section}` or `cache/{file} §{Section}` or `needs-external-acquisition`
 
 ### Learning Candidates: Requires External Acquisition
 - `yes` — a learning candidate requires external evidence to be properly grounded (the task produced a valuable insight but lacks original source material)

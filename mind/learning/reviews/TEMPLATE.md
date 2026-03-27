@@ -43,6 +43,7 @@ This file defines the fixed structure of learning review records.
   - the excerpt omits surrounding context in a way that inverts the original meaning
 - if `no`, Decision must be `rejected`
 - paraphrase or semantic similarity does not satisfy the match requirement; only normalized substring presence qualifies
+- **relaxed match fallback**: if exact substring match fails after standard normalization, attempt a relaxed match that additionally strips markdown formatting characters (`*`, `_`, `#`, `>`, backticks). If relaxed match succeeds, `Source Anchor Verified` may be set to `yes` with a note in `Reason` explaining the normalization applied. If both exact and relaxed match fail, `Source Anchor Verified` must be `no`
 - for `task-output` sources where the `Source Anchor` includes a `§{Section}` reference, the substring match is performed against the content of that section only, not the entire file
 
 ## Conflict Check
@@ -66,6 +67,10 @@ This file defines the fixed structure of learning review records.
 ## Capability Impact
 - whether any `Capability` may be affected
 - write `none` if there is no impact
+
+## Scan History
+(only used when `Decision: deferred`)
+- `{task-id}`: scanned, `{action}` (e.g. `re-opened`, `still-deferred`, `converted-to-rejected`)
 ```
 
 ## Validation Rules

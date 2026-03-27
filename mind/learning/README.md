@@ -17,9 +17,13 @@ This directory defines the `Learning` module.
 - `Learning(Acquire)`: see `mind/learning/acquire/README.md`
 - terminal `Learning`: defined in this file (below)
 
+## Phase Entry
+
+Upon entering terminal `Learning`, set `state.md`: `Current Phase: terminal-learning`.
+
 ## Terminal Learning Protocol
 
-Terminal `Learning` runs after `Reflection` and after all `Learning(Acquire)` events (including reflection-triggered ones) have completed. Upon entering, set `state.md`: `Current Phase: terminal-learning`. Upon completion, the final `Current Phase` and `Overall Status` depend on the entry state — see `SYSTEM.md §Phase Transition Protocol` step 9.
+Terminal `Learning` runs after `Reflection` and after all `Learning(Acquire)` events (including reflection-triggered ones) have completed. Upon completion, the final `Current Phase` and `Overall Status` depend on the entry state — see `SYSTEM.md §Phase Transition Protocol` step 4.
 
 Because `tl-{task-id}.md` is written at this stage, it can consume both `reflection-report.md` and all ACQ event results simultaneously.
 
@@ -27,7 +31,7 @@ Its input sources may vary, but its output path is fixed.
 
 ### Inference Trigger Point
 
-If terminal `Learning` requires abstraction beyond what source materials directly state, trigger `Inference` before step 1. The inference output is written to `cache/` and may be referenced as a `task-output` source in `tl-{task-id}.md`. See `mind/inference/README.md`.
+After completing §Required Reads and before step 1, evaluate whether `Inference` is needed. If terminal `Learning` requires abstraction beyond what source materials directly state, trigger `Inference` at this point. The inference output is written to `cache/` and may be referenced as a `task-output` source in `tl-{task-id}.md`. See `mind/inference/README.md`.
 
 ### Pre-Write Reads
 
@@ -42,8 +46,8 @@ It must execute in this order:
    - **Standalone clarity**: could a reader with no task context understand the conclusion?
    - **No information injection**: does the conclusion introduce claims not present in the `Original Excerpt`?
    - **Sufficient support**: does the `Original Excerpt` contain enough evidence to support every claim in the conclusion?
-   - **Excerpt fidelity**: re-read the source file and confirm `Original Excerpt` is a verbatim substring (do not rely on memory)
-   If any check fails, revise the conclusion (or excerpt, if the excerpt was incomplete) in `tl-{task-id}.md` now — this is the only stage where revision is permitted. **After step 2 completes, `tl-{task-id}.md` is frozen — no further edits are permitted for the remainder of the task.**
+   - **Excerpt fidelity**: re-read the source file and confirm `Original Excerpt` is a verbatim substring (do not rely on memory); apply the same whitespace normalization and substring match logic defined in `mind/learning/reviews/TEMPLATE.md §Source Anchor Verified`
+   If any check fails, revise the conclusion (or excerpt, if the excerpt was incomplete) in `tl-{task-id}.md` now — this is the only stage where revision is permitted. **After step 2 completes, `tl-{task-id}.md` is frozen — no further edits are permitted for the remainder of the task. Reads are always permitted; frozen means write-locked only.**
 3. if `tl-{task-id}.md` has `Candidate Knowledge: none`, skip steps 4 and 5 and proceed directly to step 6; otherwise generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
 4. **dispatch an independent subagent** to generate each `review-{task-id}-{slug}.md`
    - the subagent prompt must provide: the `draft-*.md` path, the `Source Anchor` path, the output target, and an explicit instruction that the subagent must not carry any context from the drafting session; the subagent must have access to file read and search tools (e.g., Grep) to perform Source Anchor verification
@@ -70,6 +74,8 @@ These checks are referenced from `SYSTEM.md §Self-Check Points`. Each must pass
 
 Before writing `tl-{task-id}.md`: read `state.md §Learning(Acquire) Log` and verify all ACQ labels are consistent with `acquire/search-log.md` and `acquire/verification-report.md`. On failure: pause and resolve the label mismatch before writing.
 
+**Resolve action**: `state.md §Learning(Acquire) Log` is the authoritative first-written record. If the mismatch is a numbering error (e.g., `ACQ-001` in `state.md` but `ACQ-002` in `search-log.md` for the same event), normalize all files to the label recorded in `state.md`. If the mismatch is structural (e.g., an event exists in one file but not another), investigate which file is incomplete and fill the missing entry before proceeding.
+
 ### Excerpt Fidelity Check
 
 Before writing `draft-*.md`: verify that each `Original Excerpt` in `tl-{task-id}.md` is a verbatim substring of the referenced source file content (read the source file, do not rely on memory). On failure: correct the excerpt in `tl-{task-id}.md` (only if still in step 2 of terminal Learning; if already frozen, the candidate must not be promoted).
@@ -86,6 +92,7 @@ Before marking task as `completed`: verify `_output/` is not empty and all Steps
 
 Before writing `tl-{task-id}.md`, the runtime must read:
 
+- `mind/soul/core.md`
 - `tasks/{task-id}/reflection-report.md`
 - `tasks/{task-id}/task-profile.md` (for task type, goal, and success criteria context)
 - `tasks/{task-id}/plan.md` (or `analysis-plan.md` in compact mode — for Step structure and capability usage)

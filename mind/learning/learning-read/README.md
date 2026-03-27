@@ -33,6 +33,7 @@ It must not read for knowledge purposes:
 
 - `tasks/{task-id}/learning-read.md`
 - `tasks/{task-id}/state.md` (initial creation)
+- `§Scan History` field in pending cross-task item files (append current task-id and action — this is a scan tracking side-effect, not a knowledge write)
 
 ## Outputs
 
@@ -52,6 +53,13 @@ It must not read for knowledge purposes:
 - the excluded areas (always the same three directories)
 
 `learning-read.md` must record files that were actually read, not abstract statements like "knowledge base consulted".
+
+## Exit Validation
+
+Before transitioning out of `Learning(Read)`, verify:
+
+- `learning-read.md` exists in `tasks/{task-id}/`
+- all `TEMPLATE.md §Validation Rules` pass
 
 ## Fixed Rules
 

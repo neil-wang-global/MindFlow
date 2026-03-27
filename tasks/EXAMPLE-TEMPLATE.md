@@ -294,3 +294,244 @@ tasks/20260324-api-rate-limiter/
 ## Next Promotion Target
 - `mind/learning/knowledge-base/drafts/draft-concept-20260324-rate-limiting-tradeoffs.md`
 ```
+
+## Example: draft-*.md (written to mind/learning/knowledge-base/drafts/)
+
+```md
+# Draft Knowledge
+
+## Type
+- concept
+
+## Task ID
+- 20260324-api-rate-limiter
+
+## Summary
+- Token bucket allows bursts; sliding window enforces smoother rates. Choice depends on traffic pattern.
+
+## From Task Learning
+- mind/learning/task-learning/tl-20260324-api-rate-limiter.md
+- candidate knowledge item reference: KDC-001
+
+## Source Type
+- grounded-external
+
+## Source Anchor
+- tasks/20260324-api-rate-limiter/acquire/raw-sources/src-001-token-bucket.md
+  - ACQ Event: ACQ-001
+  - Verification Report: tasks/20260324-api-rate-limiter/acquire/verification-report.md §ACQ-001
+  - Verification Status: passed
+
+## Original Excerpt
+> "Token bucket allows bursts up to bucket capacity while maintaining a long-term average rate. Sliding window provides smoother rate enforcement but requires more memory for window tracking."
+
+## Candidate Conclusion
+- For APIs needing burst tolerance, token bucket is preferred. For strict per-second smoothness, sliding window is preferred. The choice depends on traffic pattern.
+
+## Review Status
+- pending
+
+## Review Target
+- mind/learning/reviews/review-20260324-rate-limiting-tradeoffs.md
+
+## Notes
+- none
+```
+
+## Example: review-*.md (written to mind/learning/reviews/)
+
+```md
+# Learning Review
+
+## Subject
+- Token bucket vs sliding window trade-offs
+
+## Source Task
+- 20260324-api-rate-limiter
+
+## Candidate File
+- mind/learning/knowledge-base/drafts/draft-concept-20260324-rate-limiting-tradeoffs.md
+
+## Verification Mode
+- independent-subagent
+
+## Summary Verified
+- yes
+
+## Source Anchor Verified
+- yes
+
+## Conflict Check
+- no-conflict
+
+## Decision
+- accepted
+
+## Reason
+- Source anchor verified via Grep substring match. Summary is a direct condensation of the candidate conclusion. No conflicting entries in approved/.
+
+## Promotion Target
+- mind/learning/knowledge-base/approved/kb-concept-rate-limiting-tradeoffs.md
+
+## Capability Impact
+- none
+```
+
+## Example: kb-*.md (written to mind/learning/knowledge-base/approved/)
+
+```md
+# Knowledge Base Entry
+
+## Type
+- concept
+
+## Summary
+- Token bucket allows bursts; sliding window enforces smoother rates. Choice depends on traffic pattern.
+
+## Source Lineage
+- Task ID: 20260324-api-rate-limiter
+- Task Learning Record: mind/learning/task-learning/tl-20260324-api-rate-limiter.md
+- Draft File: mind/learning/knowledge-base/drafts/draft-concept-20260324-rate-limiting-tradeoffs.md
+- Review File: mind/learning/reviews/review-20260324-rate-limiting-tradeoffs.md
+- Original Source Anchor: tasks/20260324-api-rate-limiter/acquire/raw-sources/src-001-token-bucket.md
+- Original Source URL: https://example.com/rate-limiting-algorithms
+
+## Key Evidence
+> "Token bucket allows bursts up to bucket capacity while maintaining a long-term average rate. Sliding window provides smoother rate enforcement but requires more memory for window tracking."
+
+## Review Status
+- accepted
+
+## Approved By Review
+- mind/learning/reviews/review-20260324-rate-limiting-tradeoffs.md
+
+## Applicability
+- Applies to: API rate limiting design, traffic shaping middleware
+- Does not apply to: non-networked resource throttling
+
+## Notes
+- none
+```
+
+---
+
+## Compact Mode Example
+
+Below is a compact mode task example. In compact mode, `analysis.md` and `plan.md` are merged into a single `analysis-plan.md`.
+
+### Example Task Directory (Compact)
+
+```text
+tasks/20260325-fix-typo-readme/
+├── learning-read.md
+├── state.md
+├── task-profile.md
+├── analysis-plan.md          (replaces both analysis.md and plan.md)
+├── reflection-report.md
+├── _output/
+│   └── readme-fix.md
+└── cache/
+```
+
+### Example: task-profile.md (Compact)
+
+```md
+# Task Profile
+
+## Task ID
+- 20260325-fix-typo-readme
+
+## Task Type
+- delivery
+
+## Goal
+- Fix a spelling error in the project README introduction section
+
+## Inputs
+- sources/README.md
+
+## Success Criteria
+- The typo is corrected
+- No other content is changed
+
+## Complexity
+- low
+
+## Risk
+- low
+
+## Capability Needs
+- cap-text-editing
+
+## Constraints
+- Change only the identified typo; do not rewrite surrounding text
+
+## Task-level Learning Possibility
+- `not-expected`
+
+## Mode
+- compact
+
+## Inference Possibility
+- not needed
+
+## Notes
+- none
+```
+
+### Example: analysis-plan.md (Compact)
+
+```md
+# Analysis and Plan (Compact)
+
+## Task ID
+- 20260325-fix-typo-readme
+
+## Problem Definition
+- A spelling error in the project README needs correction
+
+## Success Conditions
+- The typo is fixed and no other content is altered
+
+## Required Reads
+- mind/soul/core.md
+- tasks/20260325-fix-typo-readme/learning-read.md
+- tasks/20260325-fix-typo-readme/task-profile.md
+
+## Risks
+- none
+
+## Step-level Learning Need
+- Step 1: not-needed
+
+## Goal
+- Correct the typo in the README
+
+## Runtime State
+- the fixed runtime state file is: `tasks/20260325-fix-typo-readme/state.md`
+
+## Global Constraints
+- default final result directory: `tasks/20260325-fix-typo-readme/_output/`
+
+### Step 1
+- Name: Fix typo
+- Goal: Correct the spelling error
+- Capability: cap-text-editing
+- Dispatch Mode: sequential
+- Output Isolation: writes only to `_output/readme-fix.md`
+- Constraints: `mind/soul/core.md`
+- Inputs: `sources/README.md`
+- Outputs: `_output/readme-fix.md`
+- Publish To Sources: none
+- Learning: not-needed
+- Depends On: none
+- Completion Criteria: Typo is corrected; diff shows only the single character change
+- Failure Policy: retry
+- Instructions: Read the README, locate the typo, produce the corrected version.
+
+## Handoffs
+- single-step task — no inter-step handoff
+
+## Completion Check
+- `_output/readme-fix.md` exists with the corrected text
+```

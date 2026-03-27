@@ -87,5 +87,5 @@ For `task-output`:
 - `Candidate Knowledge` must not be omitted
 - `Potential Capability Impact` must not be omitted
 - `Next Promotion Target` must not be omitted
-- for `grounded-external` items, the `ACQ-{NNN}` label referenced in `Acquisition Event` must match a corresponding entry in `state.md §Learning(Acquire) Log`; if the labels are inconsistent, terminal Learning must pause and report the mismatch before proceeding
+- for `grounded-external` items, the `ACQ-{NNN}` label referenced in `Acquisition Event` must match a corresponding entry in `state.md §Learning(Acquire) Log` (see `SYSTEM.md §ACQ Label Consistency Rule`)
 - if the corresponding `reflection-report.md` contains non-empty `Learning Candidates`, then `Next Promotion Target` must not be `none` — it must point to at least one `draft-*.md` target; writing `none` when the reflection has identified learning candidates is a protocol violation and must not occur silently; if promotion is genuinely not possible, the reason must be stated explicitly in a `Promotion Suppressed Reason` field; a valid suppression reason includes: all grounded-external candidates were blocked because every relevant ACQ-{NNN} event returned `exhausted` (zero passed sources) — in this case, write `Promotion Suppressed Reason: ACQ-{NNN} exhausted — no verifiable sources available` and do not fabricate alternatives

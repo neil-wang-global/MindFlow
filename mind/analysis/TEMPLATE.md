@@ -52,7 +52,10 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
   - `optional`: learning may occur but is not mandatory
   - `not-needed`: this Step is not expected to produce learnable knowledge
 - this is the primary Step-level declaration; `plan.md` must carry forward the same classification per Step
-- must be consistent with `task-profile.md §Task-level Learning Possibility` — mapping: `acquire-likely` maps to `acquire-required` or `optional` at step level; `not-expected` maps to `not-needed` at step level; if task-level is `not-expected`, no Step should be `acquire-required` without explicit justification
+- must be consistent with `task-profile.md §Task-level Learning Possibility`:
+  - task-level values (from `task-profile.md`): `acquire-likely / terminal-only / not-expected`
+  - mapping: `acquire-likely` → `acquire-required` or `optional`; `terminal-only` → `terminal-only`; `not-expected` → `not-needed`
+  - if task-level is `not-expected`, no Step should be `acquire-required` without explicit justification
 
 ## Possible Inference Trigger
 - which points may require inference

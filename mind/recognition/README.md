@@ -39,6 +39,15 @@ Before producing `task-profile.md`, the runtime must read:
 - whether task-level learning may be required
 - whether `Inference` may be needed
 
+## Exit Validation
+
+Before transitioning out of `Recognition`, verify:
+
+- `task-profile.md` exists in `tasks/{task-id}/`
+- all `TEMPLATE.md §Validation Rules` pass
+- if inputs are severely insufficient, that is stated in `Constraints`
+- if the task may drift, `Risk` is not `low`
+
 ## Not Responsible For
 
 - producing `Plan`

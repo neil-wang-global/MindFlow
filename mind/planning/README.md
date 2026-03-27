@@ -39,6 +39,13 @@ Before producing `plan.md`, the runtime must read:
 - `tasks/{task-id}/plan.md` (see `TEMPLATE.md` for structure)
 - update `tasks/{task-id}/state.md`
 
+## Plan Output Rules
+
+- Default formal result directory: `tasks/{task-id}/_output/`
+- Intermediate handoff files go to: `tasks/{task-id}/cache/`
+- At least one final-output `Step` must write to `_output/`
+- Writing to `sources/` is optional and only allowed when explicitly declared in the relevant `Step`
+
 ## Key Principles
 
 - every task generates a new `Plan`; old `Plan`s must not be reused
@@ -78,3 +85,12 @@ Use multi-task parallel mode when:
 ## Pre-Write Verification
 
 Before writing `plan.md`, verify that `analysis.md §Step-level Learning Need` values are carried forward consistently into each Step's `Learning` field. On failure: fix the inconsistency in `plan.md` before writing it.
+
+## Exit Validation
+
+Before transitioning out of `Planning` (i.e., before setting `Current Phase: execution-control`), verify:
+
+- `plan.md` exists in `tasks/{task-id}/`
+- all `TEMPLATE.md §Planning Rules` pass
+- dispatch field values conform to `SYSTEM.md §Dispatch Field Consistency`
+- `Step Status Map` in `state.md` has been populated from `plan.md`

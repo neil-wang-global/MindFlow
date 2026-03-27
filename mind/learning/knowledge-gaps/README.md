@@ -36,12 +36,19 @@ Where:
 ## Exhaustion Reason
 - why all sources failed (inaccessible, content mismatch, etc.)
 
+## Attempted Strategies
+- list the search queries and approaches that were tried in the origin task
+- future tasks must use different strategies to avoid repeating the same failed searches
+
 ## Status
 - `open` / `resolved`
 
 ## Resolution
 - write `none` when `Status: open`
 - when resolved: the task ID and ACQ event that successfully acquired the knowledge
+
+## Scan History
+- `{task-id}`: scanned, `{action}` (e.g. `retry-planned`, `not-relevant`, `resolved`)
 ```
 
 ## Lifecycle
@@ -55,4 +62,5 @@ Where:
 - a gap file must not be created for ACQ events that completed successfully
 - a gap file must reference a real ACQ event recorded in the origin task's `state.md`
 - `Status: open` gaps must not be deleted; they are resolved by updating the `Status` field
+- `Attempted Strategies` must not be omitted; future retry tasks must consult this field and use different search approaches
 - `Learning(Read)` scans this directory read-only; it does not modify gap files

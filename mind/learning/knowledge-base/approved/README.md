@@ -26,6 +26,17 @@ When `approved/` contains knowledge files, an `INDEX.md` file must be maintained
 
 If `INDEX.md` does not exist or `approved/` is empty, `Learning(Read)` records `Approved Knowledge Reads: none`.
 
+### INDEX.md Structure
+
+```md
+# Approved Knowledge Index
+
+| File | Type | Summary |
+|------|------|---------|
+| kb-concept-xxx.md | concept | one-line summary |
+| kb-method-yyy.md | method | one-line summary |
+```
+
 ## Prohibitions
 
 - task-level temporary conclusions must not be placed here

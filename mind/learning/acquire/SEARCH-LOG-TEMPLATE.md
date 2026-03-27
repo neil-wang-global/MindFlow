@@ -12,7 +12,7 @@ Records the search queries issued and the candidate URLs identified. Only URLs a
 
 ## Multi-Event Note
 
-A single task may trigger `Learning(Acquire)` multiple times. Each trigger produces a separate `ACQ-{NNN}` section within this file. Label consistency rules: see `SYSTEM.md §ACQ Label Consistency Rule`.
+A single task may trigger `Learning(Acquire)` multiple times. Each trigger produces a separate `ACQ-{NNN}` section within this file. All ACQ labels must be consistent across files — see `SYSTEM.md §ACQ Label Consistency Rule`.
 
 ## Fixed Structure
 

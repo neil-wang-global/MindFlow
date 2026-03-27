@@ -17,7 +17,7 @@ This file defines the fixed structure of the task runtime state file.
 
 ## Current Phase
 - `learning-read / recognition / analysis / planning / execution-control / learning-acquire / reflection / terminal-learning / completed / cancelled`
-- note: in compact mode, `planning` may be skipped — the runtime transitions directly from `analysis` to `execution-control` (see `SYSTEM.md §Compact Mode`)
+- note: in compact mode, `planning` may be skipped — the runtime transitions directly from `analysis` to `execution-control` (see `mind/analysis/README.md §Compact Mode`)
 
 ## Current Step
 - the `Step` currently being executed
@@ -93,4 +93,4 @@ See `SYSTEM.md §Phase Transition Protocol` for the complete transition sequence
 - for every Step with `Learning: acquire-required`, a corresponding Step-triggered entry must appear before that Step is marked `completed`
 - if `reflection-report.md` sets either `Requires External Acquisition` to `yes`, a Reflection-triggered entry must appear before terminal `Learning` begins
 - a Step-triggered `skipped` entry must include an explicit reason
-- each triggered entry must record the ACQ-{NNN} label; labels must be consistent across `tl-{task-id}.md` and `search-log.md` (see `SYSTEM.md §ACQ Label Consistency Rule`)
+- each triggered entry must record the ACQ-{NNN} label; label consistency rules: see `SYSTEM.md §ACQ Label Consistency Rule`

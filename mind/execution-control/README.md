@@ -44,20 +44,26 @@ Before running `Execution Control`, the runtime must read:
 
 ## Transition to Reflection
 
-When all Steps are completed:
-- set `Overall Status: completed` in the Step-execution sense
-- set `Ready For Reflection: yes`
-- set `Current Phase: reflection`
+Transition to `Reflection` occurs in three scenarios, each with a different `Overall Status`:
 
-When `escalate-to-reflection` triggers: see §Failure Policy Protocols below.
+- **all Steps completed normally**: set `Overall Status: completed`, `Ready For Reflection: yes`, `Current Phase: reflection`
+- **`stop` triggered**: set `Overall Status: failed`, mark Step as `failed`, set `Ready For Reflection: yes`, `Current Phase: reflection`
+- **`escalate-to-reflection` triggered**: set `Overall Status: blocked`, mark Step as `failed`, set `Ready For Reflection: yes`, `Current Phase: reflection`
 
 ## Pre-Step Verification
 
 Before executing a Step with `Learning: acquire-required`, verify that `state.md §Learning(Acquire) Log` has a placeholder entry for this Step. On failure: add the missing entry to `state.md` before proceeding.
 
-## Cancellation Handling
+## Cancellation Protocol
 
-When a task is cancelled by the user during execution, follow `SYSTEM.md §Cancellation Protocol`. `Execution Control` must immediately stop the current Step, set `Overall Status: cancelled`, and hand control to `Reflection` for lightweight review.
+When a task is cancelled by the user before completion:
+
+1. Stop the current Step immediately. Set `Overall Status: cancelled`, record reason
+2. Preserve all files already produced
+3. Run a lightweight `Reflection`: set `Current Phase: reflection`, produce `reflection-report.md` covering only `Result Evaluation` (what was completed so far), `Process Review` (where the task was when cancelled), and `Issue Detection` (any issues worth noting). `Learning Candidates`, `Capability Impact`, and `Inference Triggers` may be written as `none — task cancelled`
+4. After lightweight `Reflection`, run terminal `Learning` as normal — if there are no learning candidates, `tl-{task-id}.md` is still written with `Candidate Knowledge: none`
+5. After terminal `Learning` completes, `Current Phase` and `Overall Status` are set automatically per `SYSTEM.md §Phase Transition Protocol` step 4 (entry status is `cancelled`)
+6. A cancelled task is a terminal state
 
 ## Step Execution Protocol
 
@@ -93,7 +99,7 @@ When a `Step` with `Learning: acquire-required` encounters a knowledge gap:
 
 ## Failure Policy Protocols
 
-`Execution Control` is responsible for executing these protocols when a `Step` fails. The four policies and their cross-module effects are summarized in `SYSTEM.md §Failure Policies`; full operational details follow.
+Every `Step` must declare one of these policies: `retry`, `rework`, `stop`, `escalate-to-reflection`. Both `stop` and `escalate-to-reflection` hand control to `Reflection` (see §Transition to Reflection above). Full operational details follow.
 
 ### retry
 
@@ -127,6 +133,16 @@ When a `Step` with `Learning: acquire-required` encounters a knowledge gap:
 3. Do not advance to next Step
 4. Hand control to `Reflection`
 5. After `Reflection`, terminal `Learning` runs as normal
+
+## Exit Validation
+
+Before transitioning out of `Execution Control` to `Reflection`, verify:
+
+- all Steps in `Step Status Map` are either `completed` or `failed` (none remain `pending` or `running`)
+- `Ready For Reflection` is set to `yes`
+- `Overall Status` is one of `completed / failed / blocked`
+- `_output/` is not empty (when `Overall Status: completed`)
+- all declared handoff files in `plan.md §Handoffs` exist in `cache/` or `_output/`
 
 ## Key Principles
 

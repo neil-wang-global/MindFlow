@@ -11,7 +11,7 @@ When `Recognition` determines `Complexity: low` and `Risk: low`, the task uses c
 
 ## Compact Mode Constraints
 
-See `SYSTEM.md §Compact Mode` for full eligibility rules and exit conditions. Key constraints:
+See `mind/analysis/README.md §Compact Mode` for full eligibility rules and exit conditions. Key constraints:
 
 - the Plan may contain only a single Step
 - all other rules (file handoff, Learning pipeline, state tracking) remain in full effect

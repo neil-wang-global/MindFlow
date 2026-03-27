@@ -45,11 +45,18 @@ Before producing `reflection-report.md`, the runtime must read:
 - learning candidates
 - capability impact
 - inference triggers
-- whether external acquisition is required — both for `Issue Detection` and for `Learning Candidates`; each has a `Requires External Acquisition` sub-heading (see `TEMPLATE.md`); if either is `yes`, `Learning(Acquire)` must be triggered post-reflection before terminal `Learning` begins (see `SYSTEM.md §Phase Transition Protocol` step 7–8)
+- whether external acquisition is required — both for `Issue Detection` and for `Learning Candidates`; each has a `Requires External Acquisition` sub-heading (see `TEMPLATE.md`); if either is `yes`, `Learning(Acquire)` must be triggered post-reflection before terminal `Learning` begins (see `SYSTEM.md §Phase Transition Protocol` steps 2–3)
 
 ## Inference Trigger
 
 If `Reflection` identifies an inference trigger in its review, it triggers `Inference` before completing `reflection-report.md`. See `mind/inference/README.md`.
+
+## Exit Validation
+
+Before transitioning out of `Reflection`, verify:
+
+- `reflection-report.md` exists in `tasks/{task-id}/`
+- all `TEMPLATE.md §Validation Rules` pass
 
 ## Purpose
 
