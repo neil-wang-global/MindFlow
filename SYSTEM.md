@@ -40,29 +40,15 @@ The main flow is the same for all task types (`delivery / learning / mixed`). Th
 
 ## Compact Mode
 
-When `Recognition` determines that a task has `Complexity: low` and `Risk: low`, the task may use compact mode. Compact mode does not skip any phase — it compresses their artifacts:
+When `Recognition` determines `Complexity: low` and `Risk: low`, the task may use compact mode. Compact mode compresses artifacts — it does not skip phases. Must be declared in `task-profile.md` as `## Mode\n- compact`.
 
-- `Analysis` and `Planning` may be written as a single combined file `tasks/{task-id}/analysis-plan.md` using `mind/analysis/COMPACT-TEMPLATE.md`; the file must still contain the required sections from both `analysis/TEMPLATE.md` and `planning/TEMPLATE.md`, but sections with no meaningful content may be written as a single line (e.g., `## Risks\n- none`)
-- The `Plan` may contain a single `Step`
-- `Reflection` may be abbreviated: `Result Evaluation`, `Process Review`, and `Issue Detection` are still required; other sections may be written as `none` if genuinely empty
+- `Analysis` and `Planning` merge into `tasks/{task-id}/analysis-plan.md` (see `mind/analysis/COMPACT-TEMPLATE.md`)
+- Single `Step` only; `Reflection` may abbreviate optional sections
 - All other rules (file handoff, Learning pipeline, state tracking) remain in full effect
-- Compact mode must be declared in `task-profile.md` as `## Mode\n- compact` so that subsequent phases know the format
 
-Compact mode must not be used when:
-- `Complexity` is `medium` or `high`
-- `Risk` is `medium` or `high`
-- the task requires `Learning(Acquire)`
-- the task has more than one `Step`
+Compact mode must not be used when: `Complexity` or `Risk` is `medium`/`high`, `Learning(Acquire)` is required, or more than one `Step` is needed.
 
-### Compact Mode Exit
-
-Compact mode is declared by `Recognition` before `Analysis` runs. If `Analysis` discovers that compact mode is no longer appropriate (e.g., the task requires multiple Steps or `Learning(Acquire)`), the runtime must:
-
-1. Remove the `## Mode\n- compact` declaration from `task-profile.md`
-2. Produce separate `analysis.md` and `plan.md` instead of `analysis-plan.md`
-3. Record the exit reason in `analysis.md §Notes`
-
-This is the only point where compact mode may be exited; once `analysis-plan.md` is written, compact mode is committed.
+**Exit**: if `Analysis` discovers compact mode is no longer appropriate, it must remove the compact declaration from `task-profile.md`, produce separate `analysis.md` and `plan.md`, and record the exit reason in `analysis.md §Notes`. This is the only exit point; once `analysis-plan.md` is written, compact mode is committed.
 
 ## Constraint Loading Rule
 
@@ -149,7 +135,7 @@ Every phase transition must update `tasks/{task-id}/state.md`. The complete tran
 1. `Learning(Read)` creates `state.md` with `Current Phase: learning-read`; before transitioning, verify `learning-read.md` exists and passes its validation rules
 2. `Recognition` sets `Current Phase: recognition`; before transitioning, verify `task-profile.md` exists and passes its validation rules (see `mind/recognition/TEMPLATE.md §Validation Rules`)
 3. `Analysis` sets `Current Phase: analysis`; before transitioning, verify `analysis.md` (or `analysis-plan.md` in compact mode) exists and passes its validation rules (see `mind/analysis/TEMPLATE.md §Validation Rules`)
-4. `Planning` sets `Current Phase: planning`; after `plan.md` is written and passes its validation rules, sets `Current Phase: execution-control`, populates `Step Status Map`, sets `Current Step` to Step 1. **In compact mode**: `analysis-plan.md` combines both Analysis and Planning artifacts; once written and validated, the runtime transitions directly from step 3 to `Current Phase: execution-control`, skipping the separate `planning` phase marker — step 3 and step 4 are satisfied by a single file. The runtime must still perform the same `state.md` updates as normal mode: populate `Step Status Map` from `analysis-plan.md` and set `Current Step` to Step 1
+4. `Planning` sets `Current Phase: planning`; after `plan.md` is written and passes its validation rules, sets `Current Phase: execution-control`, populates `Step Status Map`, sets `Current Step` to Step 1. **In compact mode**: `analysis-plan.md` satisfies both steps 3 and 4; the runtime transitions directly from `analysis` to `execution-control` (the `planning` phase marker is skipped); `state.md` updates (Step Status Map, Current Step) still apply
 5. `Execution Control` maintains `Current Step` and `Step Status Map` throughout
 6. Transition to `Reflection` occurs in three scenarios, each with a different `Overall Status`:
    - **all Steps completed normally**: set `Overall Status: completed`, `Ready For Reflection: yes`, `Current Phase: reflection`
@@ -159,7 +145,7 @@ Every phase transition must update `tasks/{task-id}/state.md`. The complete tran
 8. When `Learning(Acquire)` is triggered:
    - **mid-step**: set `Current Phase: learning-acquire`, mark Step as `blocked`; upon completion, restore `Current Phase: execution-control`, mark Step as `running`
    - **post-reflection**: set `Current Phase: learning-acquire`; upon completion, set `Current Phase: terminal-learning`
-9. Terminal `Learning` runs; upon completion, determine the final state from `Overall Status` at entry: if `running` → set `Current Phase: completed`, `Overall Status: completed`; if `cancelled` → set `Current Phase: cancelled`, `Overall Status: cancelled`; if `failed` → set `Current Phase: completed`, `Overall Status: failed`
+9. Terminal `Learning` runs; upon completion, set final state based on `Overall Status` at entry: `running` → `completed/completed`; `cancelled` → `cancelled/cancelled`; `failed` → `completed/failed` (format: `Current Phase / Overall Status`)
 
 ### Inference State Rule
 
@@ -189,7 +175,7 @@ Both `Learning(Acquire)` Stage 3 (verification) and terminal `Learning` step 4 (
 
 #### Subagent Unavailability Degradation
 
-If the runtime environment does not support independent subagent dispatch, degraded verification modes apply. See `mind/learning/acquire/README.md §Subagent Unavailability` and `mind/learning/README.md §Subagent Unavailability`. The degradation must be recorded in `reflection-report.md §Issue Detection` so that a future task with subagent support can re-attempt the review.
+If the runtime environment does not support independent subagent dispatch, degraded verification modes apply. See `mind/learning/acquire/README.md §Subagent Unavailability` and `mind/learning/README.md §Subagent Unavailability`. The degradation must be recorded in `reflection-report.md §Issue Detection` so that a future task with subagent support can re-attempt the review. If subagent unavailability persists across multiple tasks, human review escalation is available — see `mind/learning/reviews/TEMPLATE.md §Human Review Escalation`.
 
 ### Capability Update Advancement
 
@@ -204,6 +190,14 @@ If the runtime environment does not support independent subagent dispatch, degra
 - If 2 or more deferred reviews are found, the current task's `Plan` must include a dedicated `Step` to re-evaluate them
 - A deferred review remaining unresolved for more than two subsequent tasks must be flagged in `reflection-report.md §Issue Detection` and must be either re-opened or explicitly converted to `rejected`
 - Re-evaluation produces a new `review-{new-task-id}-{slug}.md` that references and supersedes the deferred review
+
+### Knowledge Gap Retry Advancement
+
+- `Learning(Read)` scans `mind/learning/knowledge-gaps/` for files with `Status: open`
+- If an open knowledge gap is relevant to the current task's goal (as determined by `Analysis`), the `Plan` should include a `Step` with `Learning: acquire-required` targeting that gap; the `Step` instructions must reference the gap file and note the previous exhaustion reason so a different search strategy can be used
+- If the gap is not relevant to the current task, no action is required — the gap remains `open` for a future relevant task
+- A knowledge gap remaining `open` for more than three subsequent tasks (regardless of relevance) must be flagged in `reflection-report.md §Issue Detection`
+- When a future task successfully acquires the knowledge, terminal `Learning` must update the gap file to `Status: resolved` and fill the `Resolution` field
 
 ### Dispatch Field Consistency
 
@@ -299,11 +293,13 @@ During bootstrap, some subsystems may not yet be fully configured:
 
 ## Self-Check Points
 
-At these critical junctures, the runtime must pause and explicitly verify consistency before proceeding. If any check fails, the runtime must **stop and resolve** the inconsistency before continuing — do not skip, defer, or work around a failed self-check.
+At critical junctures, the runtime must pause and explicitly verify consistency before proceeding. If any check fails, **stop and resolve** — do not skip, defer, or work around a failed self-check.
 
-1. **Before writing `plan.md`**: verify that `analysis.md §Step-level Learning Need` values are carried forward consistently into each Step's `Learning` field. On failure: fix the inconsistency in `plan.md` before writing it.
-2. **Before executing a Step with `Learning: acquire-required`**: verify that `state.md §Learning(Acquire) Log` has a placeholder entry for this Step. On failure: add the missing entry to `state.md` before proceeding.
-3. **Before writing `tl-{task-id}.md`**: read `state.md §Learning(Acquire) Log` and verify all ACQ labels are consistent with `acquire/search-log.md` and `acquire/verification-report.md`. On failure: pause and resolve the label mismatch before writing.
-4. **Before writing `draft-*.md`**: verify that each `Original Excerpt` in `tl-{task-id}.md` is a verbatim substring of the referenced source file content (read the source file, do not rely on memory). On failure: correct the excerpt in `tl-{task-id}.md` (only if still in step 2 of terminal Learning; if already frozen, the candidate must not be promoted).
-5. **Before writing `kb-*.md`**: verify the corresponding `review-*.md` has `Decision: accepted`, `Verification Mode: independent-subagent`, `Summary Verified: yes`, and `Source Anchor Verified: yes`. On failure: do not write the `kb-*.md`; the candidate remains in `drafts/`.
-6. **Before marking task as `completed`**: verify `_output/` is not empty and all Steps in `Step Status Map` are `completed` (or `failed` with escalation handled). On failure: do not mark the task as completed; investigate the missing output or unfinished Step.
+Each check is defined in the module responsible for the artifact. The index below shows where to find each check:
+
+1. **Before writing `plan.md`** — see `mind/planning/README.md §Pre-Write Verification`
+2. **Before executing a Step with `Learning: acquire-required`** — see `mind/execution-control/README.md §Pre-Step Verification`
+3. **Before writing `tl-{task-id}.md`** — see `mind/learning/README.md §ACQ Label Reconciliation`
+4. **Before writing `draft-*.md`** — see `mind/learning/README.md §Excerpt Fidelity Check`
+5. **Before writing `kb-*.md`** — see `mind/learning/README.md §Promotion Gate Check`
+6. **Before marking task as `completed`** — see `mind/learning/README.md §Task Completion Check`

@@ -51,6 +51,14 @@ When all Steps are completed:
 
 When `escalate-to-reflection` triggers: see §Failure Policy Protocols below.
 
+## Pre-Step Verification
+
+Before executing a Step with `Learning: acquire-required`, verify that `state.md §Learning(Acquire) Log` has a placeholder entry for this Step. On failure: add the missing entry to `state.md` before proceeding.
+
+## Cancellation Handling
+
+When a task is cancelled by the user during execution, follow `SYSTEM.md §Cancellation Protocol`. `Execution Control` must immediately stop the current Step, set `Overall Status: cancelled`, and hand control to `Reflection` for lightweight review.
+
 ## Step Execution Protocol
 
 `Step` execution follows these rules:

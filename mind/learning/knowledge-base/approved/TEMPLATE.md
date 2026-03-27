@@ -36,6 +36,11 @@ This file defines the fixed structure of `mind/learning/knowledge-base/approved/
   - `mind/learning/knowledge-base/archived/kb-{type}-{slug}-superseded-by-{task-id}.md`
   - omit this field if this is a new entry, not a revision of an existing one
 
+## Key Evidence
+- the `Original Excerpt` carried forward from `draft-*.md`, preserved here to maintain traceability even if the task directory and raw sources are later cleaned up
+- must be a verbatim copy of the `Original Excerpt` from the draft file — no modification permitted
+- this field ensures the source anchor chain remains verifiable at the approved knowledge level without requiring access to task-level files
+
 ## Review Status
 - `accepted`
 
@@ -58,5 +63,6 @@ This file defines the fixed structure of `mind/learning/knowledge-base/approved/
 - `Source Lineage` must not be omitted; every field must be filled
 - `Original Source Anchor` must point to an existing file at the time of promotion
 - for `grounded-external` entries, `Original Source URL` must not be omitted; it is the permanent fallback reference if the task directory is later cleaned up
+- `Key Evidence` must not be omitted; must be a verbatim copy of the `Original Excerpt` from the corresponding `draft-*.md`
 - `Applicability` must not be omitted
 - a file without a corresponding review record must not enter `approved/`

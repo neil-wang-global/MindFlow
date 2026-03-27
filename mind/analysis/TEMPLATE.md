@@ -38,8 +38,7 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
   - `sequential`: why this Step must run in order (e.g., depends on prior output, shared mutable state)
   - `subagent`: why this Step is decomposable (e.g., independent sub-problems, isolated inputs/outputs); state decomposition boundary and merge method
   - `parallel-branch`: why this Step can run alongside others (e.g., no shared output, independent work branch); state parallel group, synchronization point, and merge owner
-- per-Step field values: `Dispatch Mode`, `Parallel Group`, `Synchronization Point`, `Merge Owner`, `Output Isolation`
-- value domains defined in `SYSTEM.md §Dispatch Field Consistency`
+- per-Step field values must use the canonical dispatch fields and value domains defined in `SYSTEM.md §Dispatch Field Consistency`
 
 ## Risks
 - key risks

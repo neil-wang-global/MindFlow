@@ -74,3 +74,7 @@ Use multi-task parallel mode when:
 - branch outputs can be validated and integrated through files
 
 `Planning` must prefer the highest safe parallelism level, but must not force parallelism when coordination cost, conflict risk, or validation cost would outweigh the gain.
+
+## Pre-Write Verification
+
+Before writing `plan.md`, verify that `analysis.md §Step-level Learning Need` values are carried forward consistently into each Step's `Learning` field. On failure: fix the inconsistency in `plan.md` before writing it.

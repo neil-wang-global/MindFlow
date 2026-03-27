@@ -17,6 +17,7 @@ This file defines the fixed structure of the task runtime state file.
 
 ## Current Phase
 - `learning-read / recognition / analysis / planning / execution-control / learning-acquire / reflection / terminal-learning / completed / cancelled`
+- note: in compact mode, `planning` may be skipped — the runtime transitions directly from `analysis` to `execution-control` (see `SYSTEM.md §Compact Mode`)
 
 ## Current Step
 - the `Step` currently being executed

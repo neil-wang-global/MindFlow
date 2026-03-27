@@ -23,6 +23,7 @@ This file defines the fixed structure of learning review records.
 
 ## Verification Mode
 - `independent-subagent` — this review was conducted by a subagent with no shared context with the drafting agent
+- `human-reviewed` — this review was conducted or approved by a human reviewer (valid when independent subagent dispatch is unavailable; see §Human Review Escalation below)
 - `same-context` — this review was conducted in the same execution context as drafting (not valid; must result in Decision: rejected)
 
 ## Summary Verified
@@ -80,7 +81,7 @@ This file defines the fixed structure of learning review records.
 - `Promotion Target` must not be omitted
 - `Capability Impact` must not be omitted
 - `Conflict Check` must not be omitted; must be `no-conflict` or `conflict-found`
-- `Decision: accepted` is only valid when all of the following hold: `Verification Mode` is `independent-subagent`, `Summary Verified` is `yes`, `Source Anchor Verified` is `yes`, and `Conflict Check` is either `no-conflict` or `conflict-found` with explicit resolution stated in `Reason`
+- `Decision: accepted` is only valid when all of the following hold: `Verification Mode` is `independent-subagent` or `human-reviewed`, `Summary Verified` is `yes`, `Source Anchor Verified` is `yes`, and `Conflict Check` is either `no-conflict` or `conflict-found` with explicit resolution stated in `Reason`
 
 ## Deferred Decision Lifecycle
 
@@ -103,3 +104,14 @@ This file defines the fixed structure of learning review records.
 - the corresponding `draft-*.md` must be moved from `drafts/` to `archived/` — it must not remain in `drafts/` indefinitely
 - if the rejected knowledge may become relevant under different conditions, a note must be recorded in `Reason` stating those conditions; the knowledge may then re-enter the pipeline via a new draft in a future task
 - a `rejected` review must not be re-opened or overridden; if the same knowledge is reconsidered, a new `draft-*.md` and `review-*.md` must be created in the context of a new task
+
+## Human Review Escalation
+
+When the runtime environment does not support independent subagent dispatch, the default degradation is `same-context` → forced `rejected`. To prevent the learning pipeline from permanently stalling, the following escalation path is available:
+
+- **Trigger**: the runtime has accumulated 2 or more consecutive `same-context` rejections across tasks (tracked via `reflection-report.md §Issue Detection` entries noting subagent unavailability)
+- **Action**: the runtime may present the `draft-*.md` and its `Source Anchor` file to the user for human review
+- **If the user confirms**: the review is written with `Verification Mode: human-reviewed`; `Decision: accepted` is permitted
+- **If the user declines or is unavailable**: the review remains `same-context` → `rejected` as before
+- `human-reviewed` reviews must record in `Reason`: who reviewed (e.g., `human: project owner`) and what was verified (Summary accuracy, Source Anchor match, Conflict Check)
+- this mode does not bypass the `Summary Verified`, `Source Anchor Verified`, or `Conflict Check` requirements — all fields must still be filled accurately by the reviewing party
