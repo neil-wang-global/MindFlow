@@ -114,7 +114,7 @@ This file defines the fixed structure of learning review records.
 
 When the runtime environment does not support independent subagent dispatch, the default degradation is `same-context` → forced `rejected`. To prevent the learning pipeline from permanently stalling, the following escalation path is available:
 
-- **Trigger**: the runtime has accumulated 2 or more consecutive `same-context` rejections across tasks (tracked via `reflection-report.md §Issue Detection` entries noting subagent unavailability)
+- **Trigger**: `Learning(Read)` scans `mind/learning/reviews/` and detects 2 or more `review-*.md` files with `Verification Mode: same-context` (tracked as part of `§Pending Cross-Task Items` in `learning-read.md`)
 - **Action**: the runtime may present the `draft-*.md` and its `Source Anchor` file to the user for human review
 - **If the user confirms**: the review is written with `Verification Mode: human-reviewed`; `Decision: accepted` is permitted
 - **If the user declines or is unavailable**: the review remains `same-context` → `rejected` as before

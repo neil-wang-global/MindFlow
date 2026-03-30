@@ -24,7 +24,7 @@ Before producing `analysis.md`, the runtime must read:
 
 Note: approved knowledge files are accessed via `learning-read.md §Approved Knowledge Reads`. If specific approved knowledge needs deeper reading, read those files directly.
 
-If `learning-read.md §Pending Cross-Task Items` reports 3+ pending capability updates or 2+ deferred reviews, `Analysis` must include dedicated maintenance `Step`(s) in `§Step Drafts` to address them.
+If `learning-read.md §Pending Cross-Task Items` reports pending items exceeding `SYSTEM.md §Cross-Task Staleness Thresholds`, `Analysis` must include dedicated maintenance `Step`(s) in `§Step Drafts` to address them.
 
 ## Inputs
 
