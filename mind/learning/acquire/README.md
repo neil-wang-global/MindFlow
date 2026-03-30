@@ -83,7 +83,7 @@ If the runtime environment does not support independent subagent dispatch for St
 - all sources are treated as `downgraded`
 - the event is marked `exhausted` with reason `independent verification unavailable`
 - this degradation is recorded via `Verification Mode: same-context` in `verification-report.md`; `Reflection` will detect and surface this in `reflection-report.md §Issue Detection` when processing the verification results
-- note: `downgraded` sources from `same-context` verification may still enter the learning pipeline if human review escalation is triggered at the terminal Learning review stage — see `mind/learning/reviews/TEMPLATE.md §Human Review Escalation`
+- since the event is `exhausted`, the corresponding `Candidate Knowledge` items in `tl-{task-id}.md` must list `Derived Conclusion: none — ACQ-{NNN} exhausted` and must not be promoted (per `task-learning/TEMPLATE.md`); the knowledge gap enters `mind/learning/knowledge-gaps/` for future retry with independent subagent support
 
 ## Multi-Event Structure
 

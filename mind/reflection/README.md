@@ -54,8 +54,11 @@ When a task is cancelled, `Reflection` runs in lightweight mode. Set `Current Ph
 - `Result Evaluation`: what was completed so far
 - `Process Review`: where the task was when cancelled
 - `Issue Detection`: any issues worth noting
+- `Issue Detection: Requires External Acquisition`: must be `no` (cancelled tasks do not trigger new acquisition — see `mind/execution-control/README.md §Cancellation Protocol`)
 
-`Learning Candidates`, `Capability Impact`, and `Inference Triggers` may be written as `none — task cancelled`.
+`Learning Candidates` may be written as `none — task cancelled`.
+`Learning Candidates: Requires External Acquisition` must be `no`.
+`Capability Impact` and `Inference Triggers` may be written as `none — task cancelled`.
 
 ## Inference Trigger
 
