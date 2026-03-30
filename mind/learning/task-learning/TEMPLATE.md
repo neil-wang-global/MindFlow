@@ -53,7 +53,7 @@ Otherwise, each candidate knowledge item must include a source anchor. Items wit
 
 For `grounded-external`:
 - **Acquisition Event**: ACQ-{NNN} (must reference one of the events listed under `External Acquisition`)
-- **Grounded Source**: `tasks/{task-id}/acquire/raw-sources/src-{NNN}-{slug}.md`
+- **Source Anchor**: `tasks/{task-id}/acquire/raw-sources/src-{NNN}-{slug}.md`
 - **Verification Status**: must be `passed` (confirmed in the verification report of the referenced ACQ-{NNN})
 - **Original Excerpt**: > "verbatim quote copied directly from the raw source file — must be read from file, not recalled from memory"
 - **Derived Conclusion**: the conclusion drawn from the above excerpt — written only after Original Excerpt is set

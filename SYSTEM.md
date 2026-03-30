@@ -113,24 +113,24 @@ Both `Learning(Acquire)` Stage 3 (verification) and terminal `Learning` step 4 (
 ### Capability Update Advancement
 
 - `Learning(Read)` scans `mind/learning/capability-updates/` for files with `Status: proposed` or `Status: approved`
-- If 3 or more pending capability updates are found, the current task's `Plan` must include a dedicated `Step` to review and advance them
-- Staleness is tracked via `§Scan History` in each file — if the scan count exceeds two, it must be flagged in `reflection-report.md §Issue Detection`
+- Thresholds and staleness actions: see §Cross-Task Staleness Thresholds table above
+- Staleness is tracked via `§Scan History` in each file
 - Reflection-triggered capability updates must be created with `Status: proposed` and must not be advanced to `approved` or `applied` within the same task
 
 ### Deferred Review Advancement
 
 - `Learning(Read)` scans `mind/learning/reviews/` for files with `Decision: deferred`
-- If 2 or more deferred reviews are found, the current task's `Plan` must include a dedicated `Step` to re-evaluate them
-- Staleness is tracked via `§Scan History` in each file — if the scan count exceeds two, it must be flagged in `reflection-report.md §Issue Detection` and must be either re-opened or explicitly converted to `rejected`
+- Thresholds and staleness actions: see §Cross-Task Staleness Thresholds table above
+- Staleness is tracked via `§Scan History` in each file
 - Re-evaluation produces a new `review-{new-task-id}-{slug}.md` that references and supersedes the deferred review
 
 ### Knowledge Gap Retry Advancement
 
 - `Learning(Read)` scans `mind/learning/knowledge-gaps/` for files with `Status: open`
 - Gaps with `Status: permanent` are skipped — they require human intervention
-- If an open knowledge gap is relevant to the current task's goal (as determined by `Analysis`), the `Plan` should include a `Step` with `Learning: acquire-required` targeting that gap; the `Step` instructions must reference the gap file and note the previous exhaustion reason so a different search strategy can be used
-- If the gap is not relevant to the current task, no action is required — the gap remains `open` for a future relevant task
-- Staleness is tracked via `§Scan History` in each file — if the scan count exceeds three, it must be flagged in `reflection-report.md §Issue Detection`
+- Thresholds and staleness actions: see §Cross-Task Staleness Thresholds table above
+- Staleness is tracked via `§Scan History` in each file
+- If an open gap is relevant to the current task's goal (as determined by `Analysis`), the `Plan` should include a `Step` with `Learning: acquire-required` targeting that gap; the `Step` instructions must reference the gap file and note the previous exhaustion reason so a different search strategy can be used
 - When a future task successfully acquires the knowledge, terminal `Learning` must update the gap file to `Status: resolved` and fill the `Resolution` field
 
 ### Dispatch Field Consistency

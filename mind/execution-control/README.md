@@ -135,7 +135,7 @@ Before transitioning out of `Execution Control` to `Reflection`, verify:
 
 - all Steps in `Step Status Map` are either `completed` or `failed` (none remain `pending` or `running`); **exception**: when `Overall Status: cancelled`, pending Steps are permitted — only the current Step must have been stopped and recorded
 - `Ready For Reflection` is set to `yes`
-- `Overall Status` is one of `completed / failed / blocked`
+- `Overall Status` is one of `completed / failed / blocked / cancelled`
 - `_output/` is not empty (when `Overall Status: completed`)
 - all declared handoff files in `plan.md §Handoffs` exist in `cache/` or `_output/`
 

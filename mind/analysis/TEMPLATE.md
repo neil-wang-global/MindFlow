@@ -30,7 +30,7 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 - what each stage must solve
 
 ## Step Drafts
-- `Step 1`: goal / dependencies / candidate capability / Dispatch Mode / Parallel Group / Synchronization Point / Merge Owner / Output Isolation
+- `Step 1`: goal / dependencies / candidate capability / Dispatch Mode / Parallel Group / Synchronization Point / Merge Owner / Output Isolation / Learning
 - `Step N`: (same fields)
 
 ## Dispatch Assessment

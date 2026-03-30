@@ -341,7 +341,7 @@ Each candidate must include its source location so terminal `Learning` can trace
 **Source Type**: grounded-external
 
 - **Acquisition Event**: ACQ-001
-- **Grounded Source**: `tasks/20260324-api-rate-limiter/acquire/raw-sources/src-001-token-bucket.md`
+- **Source Anchor**: `tasks/20260324-api-rate-limiter/acquire/raw-sources/src-001-token-bucket.md`
 - **Verification Status**: passed
 - **Original Excerpt**: > "Token bucket allows bursts up to bucket capacity while maintaining a long-term average rate. Sliding window provides smoother rate enforcement but requires more memory for window tracking."
 - **Derived Conclusion**: For APIs needing burst tolerance, token bucket is preferred. For strict per-second smoothness, sliding window is preferred. The choice depends on traffic pattern.

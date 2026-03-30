@@ -64,7 +64,7 @@ If the runtime environment does not support independent subagent dispatch for st
 - the review must be written with `Verification Mode: same-context`
 - per `reviews/TEMPLATE.md`, this forces `Decision: rejected` — the knowledge does not enter `approved/`
 - this degradation must be recorded in `tl-{task-id}.md §Notes`
-- **Human review escalation**: if 2 or more consecutive tasks have produced `same-context` rejections, the runtime may escalate to human review — see `reviews/TEMPLATE.md §Human Review Escalation` for the full protocol
+- **Human review escalation**: if the escalation trigger defined in `reviews/TEMPLATE.md §Human Review Escalation` is met, the runtime may escalate to human review — see that section for the full protocol
 
 ## Self-Check Points (terminal Learning)
 
