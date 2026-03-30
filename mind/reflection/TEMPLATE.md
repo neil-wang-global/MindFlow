@@ -24,7 +24,9 @@
 ## Process Review
 - which parts of the process were appropriate
 - which parts of the process were problematic
-- dispatch and merge assessment: compare dispatch fields in `plan.md` against actual execution in `state.md`
+- dispatch and merge assessment — for each Step, compare planned vs actual:
+  - Step {N}: Dispatch Mode: {planned} → {actual}; outcome: {consistent / deviated — reason}
+  - (if parallel: merge result: {as-planned / adjusted — reason})
 
 ## Issue Detection
 - capability gaps

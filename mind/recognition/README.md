@@ -21,8 +21,7 @@ Before producing `task-profile.md`, the runtime must read:
 
 ## Inputs
 
-- `Learning(Read)` audit result (`learning-read.md`)
-- the raw task statement
+- the raw task statement (user request)
 - current task context
 
 ## Outputs

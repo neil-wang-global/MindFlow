@@ -48,7 +48,7 @@ It must execute in this order:
    - **Sufficient support**: does the `Original Excerpt` contain enough evidence to support every claim in the conclusion?
    - **Excerpt fidelity**: re-read the source file and confirm `Original Excerpt` is a verbatim substring (do not rely on memory); apply the same whitespace normalization and substring match logic defined in `mind/learning/reviews/TEMPLATE.md §Source Anchor Verified`
    If any check fails, revise the conclusion (or excerpt, if the excerpt was incomplete) in `tl-{task-id}.md` now — this is the only stage where revision is permitted. **After step 2 completes, `tl-{task-id}.md` is frozen — no further edits are permitted for the remainder of the task. Reads are always permitted; frozen means write-locked only.**
-3. if `tl-{task-id}.md` has `Candidate Knowledge: none`, skip steps 4 and 5 and proceed directly to step 6; otherwise read `mind/learning/knowledge-base/drafts/TEMPLATE.md` and generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
+3. if `tl-{task-id}.md` has `Candidate Knowledge: none`, skip steps 4 and 5 and proceed directly to step 6 (steps 6 and 7 always execute regardless of whether knowledge candidates exist); otherwise read `mind/learning/knowledge-base/drafts/TEMPLATE.md` and generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
 4. **dispatch an independent subagent** to generate each `review-{task-id}-{slug}.md`; the subagent must read `mind/learning/reviews/TEMPLATE.md` before writing
    - the subagent prompt must provide: the `draft-*.md` path, the `Source Anchor` path, the output target, and an explicit instruction that the subagent must not carry any context from the drafting session; the subagent must have access to file read and search tools (e.g., Grep) to perform Source Anchor verification
    - the agent that wrote the `draft-*.md` must not also write the corresponding `review-*.md`
@@ -78,7 +78,7 @@ Before writing `tl-{task-id}.md`: read `state.md §Learning(Acquire) Log` and ve
 
 ### Excerpt Fidelity Check
 
-Before writing `draft-*.md`: verify that each `Original Excerpt` in `tl-{task-id}.md` is a verbatim substring of the referenced source file content (read the source file, do not rely on memory). On failure: correct the excerpt in `tl-{task-id}.md` (only if still in step 2 of terminal Learning; if already frozen, the candidate must not be promoted).
+This check is the final sub-step of step 2 (self-review), executed **before** `tl-{task-id}.md` is frozen. For each `Original Excerpt` in `tl-{task-id}.md`, verify it is a verbatim substring of the referenced source file content (read the source file, do not rely on memory). On failure: correct the excerpt in `tl-{task-id}.md` now — this is permitted because step 2 has not yet completed. Once this check passes, step 2 is complete and `tl-{task-id}.md` is frozen.
 
 ### Promotion Gate Check
 

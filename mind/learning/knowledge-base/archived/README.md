@@ -24,3 +24,4 @@ Before moving a file here, add the following field at the top of its `Source Lin
 - content must not be treated as current active knowledge
 - files must not be deleted; they are permanent traceability records
 - a file must not be moved here without first adding the `Superseded By` field
+- when moving a `kb-*.md` to `archived/`, the corresponding entry must be removed from `approved/INDEX.md`

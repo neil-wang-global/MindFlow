@@ -20,7 +20,7 @@ This principle minimizes context noise and ensures that each module's rules are 
 
 There are two categories of loadable resources:
 
-1. **Module READMEs** — each module's `README.md` is the self-contained authority for that module. It is loaded when the runtime **enters** that module.
+1. **Module READMEs** — loaded per §Core Design Principle above.
 2. **Shared constraint sources** — files like `mind/soul/core.md` that are referenced by multiple modules. These are loaded whenever a module's `Required Reads` declares them. Each module that declares `core.md` must read it independently — Soul constraints must not be carried forward from a prior phase's memory.
 
 Before entering any module or any `Step`, the AI must read that module's `README.md` (and `TEMPLATE.md` when producing an artifact). The `Required Reads` declared in that `README.md` are mandatory inputs for that phase and must also be read. Do not recursively chase secondary references from within those input files — only the module's own `README.md` defines what must be read. `SYSTEM.md` is assumed loaded at task start.
@@ -76,7 +76,7 @@ The cross-module transition rules that no single module owns:
    - **yes**: trigger `Learning(Acquire)` post-reflection — set `Current Phase: learning-acquire`; upon completion, set `Current Phase: terminal-learning`
    - **no**: set `Current Phase: terminal-learning` and proceed directly to terminal `Learning`
 3. When `Learning(Acquire)` is triggered **mid-step**: set `Current Phase: learning-acquire`, mark Step as `blocked`; upon completion, restore `Current Phase: execution-control`, mark Step as `running`
-4. Terminal `Learning` runs; upon completion, set final state based on `Overall Status` at entry: `running` → `completed/completed`; `cancelled` → `cancelled/cancelled`; `failed` → `completed/failed`; `blocked` → `completed/blocked` (format: `Current Phase / Overall Status`)
+4. Terminal `Learning` runs; upon completion, set final state based on `Overall Status` at entry: `completed` → `completed/completed`; `cancelled` → `cancelled/cancelled`; `failed` → `completed/failed`; `blocked` → `completed/blocked` (format: `Current Phase / Overall Status`)
 
 ### Inference State Rule
 
@@ -101,6 +101,14 @@ Only approved knowledge may be reused by future `Learning(Read)`.
 ### Independent Subagent Review
 
 Both `Learning(Acquire)` Stage 3 (verification) and terminal `Learning` step 4 (review) must be executed by an independent subagent that does not share execution context with the agent that produced the artifact being reviewed. Degradation rules are defined in each module's README.
+
+### Cross-Task Staleness Thresholds
+
+| Item Type | Mandatory Plan Step Threshold | Staleness Flag Threshold | Action on Staleness |
+|-----------|------------------------------|--------------------------|---------------------|
+| Capability Updates | 3+ pending | scan count > 2 | flag in reflection |
+| Deferred Reviews | 2+ pending | scan count > 2 | re-open or reject |
+| Knowledge Gaps | relevant to task | scan count > 3 | flag in reflection |
 
 ### Capability Update Advancement
 
@@ -148,11 +156,12 @@ When a session resumes after interruption:
 2. Read the `state.md` of the unfinished task to determine `Current Phase` and `Current Step`
 3. Resume execution from the recorded phase and step — do not restart from the beginning
 4. Before resuming, read the `README.md` of the module corresponding to `Current Phase`; also read `mind/soul/core.md` (Soul constraints must be reloaded on recovery regardless of phase)
-5. **Planning recovery**: when `Current Phase: planning` and `plan.md` already exists, complete the `state.md` updates (set `Current Phase: execution-control`, populate `Step Status Map`, set `Current Step` to Step 1) without re-running Planning
-6. **Compact mode recovery**: when `Current Phase: analysis` but `analysis-plan.md` already exists, the task is in compact mode and analysis is complete — resume by transitioning directly to `execution-control` (populate `Step Status Map` and `Current Step` if not yet populated)
-7. When `Current Phase: learning-acquire`, check `acquire/` directory to determine the sub-stage (search-log exists? raw-sources populated? verification-report exists?) and resume from the incomplete sub-stage
-8. When `Current Phase: terminal-learning`, check which terminal Learning step was last completed: if `tl-{task-id}.md` does not exist, resume from step 1; if `tl-{task-id}.md` exists but no `draft-*.md`, resume from step 3; if `draft-*.md` exists but no `review-*.md`, resume from step 4; if `review-*.md` exists but no `kb-*.md` (and review is accepted), resume from step 5
-9. If `state.md` is missing or corrupted, treat the task as non-resumable and report the issue
+5. **Early-phase recovery**: when `Current Phase` is `learning-read`, `recognition`, or `analysis`, check whether the phase's output artifact exists (`learning-read.md`, `task-profile.md`, or `analysis.md` / `analysis-plan.md` respectively); if the artifact exists and is complete, advance to the next phase; if missing or incomplete, re-execute the current phase
+6. **Planning recovery**: when `Current Phase: planning` and `plan.md` already exists, complete the `state.md` updates (set `Current Phase: execution-control`, populate `Step Status Map`, set `Current Step` to Step 1) without re-running Planning
+7. **Compact mode recovery**: when `Current Phase: analysis` but `analysis-plan.md` already exists, the task is in compact mode and analysis is complete — resume by transitioning directly to `execution-control` (populate `Step Status Map` and `Current Step` if not yet populated)
+8. When `Current Phase: learning-acquire`, check `acquire/` directory to determine the sub-stage (search-log exists? raw-sources populated? verification-report exists?) and resume from the incomplete sub-stage
+9. When `Current Phase: terminal-learning`, check which terminal Learning step was last completed: if `tl-{task-id}.md` does not exist, resume from step 1; if `tl-{task-id}.md` exists but no `draft-*.md`, resume from step 3; if `draft-*.md` exists but no `review-*.md`, resume from step 4; if `review-*.md` exists but no `kb-*.md` (and review is accepted), resume from step 5
+10. If `state.md` is missing or corrupted, treat the task as non-resumable and report the issue
 
 ## Self-Check Points
 
@@ -163,6 +172,6 @@ Each check is defined in the module responsible for the artifact:
 1. **Before writing `plan.md`** — see `mind/planning/README.md §Pre-Write Verification`
 2. **Before executing a Step with `Learning: acquire-required`** — see `mind/execution-control/README.md §Pre-Step Verification`
 3. **Before writing `tl-{task-id}.md`** — see `mind/learning/README.md §ACQ Label Reconciliation`
-4. **Before writing `draft-*.md`** — see `mind/learning/README.md §Excerpt Fidelity Check`
+4. **Final sub-step of terminal Learning step 2 (before freeze)** — see `mind/learning/README.md §Excerpt Fidelity Check`
 5. **Before writing `kb-*.md`** — see `mind/learning/README.md §Promotion Gate Check`
 6. **Before marking task as `completed`** — see `mind/learning/README.md §Task Completion Check`

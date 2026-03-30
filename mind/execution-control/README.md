@@ -28,6 +28,7 @@ If these fields are missing or inconsistent, `Execution Control` must not procee
 
 Before running `Execution Control`, the runtime must read:
 
+- `mind/soul/core.md`
 - `tasks/{task-id}/state.md`
 - `tasks/{task-id}/plan.md`
 - the `Capability` definition files referenced by the current `Plan` (if they exist)
@@ -61,7 +62,7 @@ When a task is cancelled by the user before completion:
 1. Stop the current Step immediately. Set `Overall Status: cancelled`, record reason
 2. Preserve all files already produced
 3. Run a lightweight `Reflection` — see `mind/reflection/README.md §Lightweight Reflection` for scope rules
-4. After lightweight `Reflection`, run terminal `Learning` as normal — if there are no learning candidates, `tl-{task-id}.md` is still written with `Candidate Knowledge: none`
+4. After lightweight `Reflection`, skip the post-reflection `Learning(Acquire)` check (cancelled tasks do not trigger new acquisition) and proceed directly to terminal `Learning` — if there are no learning candidates, `tl-{task-id}.md` is still written with `Candidate Knowledge: none`
 5. After terminal `Learning` completes, `Current Phase` and `Overall Status` are set automatically per `SYSTEM.md §Phase Transition Protocol` step 4 (entry status is `cancelled`)
 6. A cancelled task is a terminal state
 

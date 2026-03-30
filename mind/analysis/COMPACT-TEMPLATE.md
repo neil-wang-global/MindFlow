@@ -39,6 +39,9 @@ See `mind/analysis/README.md §Compact Mode` for full eligibility rules and exit
 ## Step-level Learning Need
 - Step 1: `acquire-required / terminal-only / optional / not-needed`
 
+## Possible Inference Trigger
+- which points may require inference (write `none` if not applicable)
+
 ## Goal
 - the final outcome this task must reach
 

@@ -94,6 +94,9 @@ tasks/20260324-api-rate-limiter/
 ## Task-level Learning Possibility
 - `acquire-likely` — rate limiting algorithms may require external research
 
+## Mode
+- standard
+
 ## Inference Possibility
 - not needed
 
@@ -137,6 +140,59 @@ tasks/20260324-api-rate-limiter/
 
 ## Learning(Acquire) Log
 - Step 1: gap-encountered → ACQ-001 triggered
+```
+
+## Example: analysis.md
+
+```md
+# Analysis Output
+
+## Task ID
+- 20260324-api-rate-limiter
+
+## Problem Definition
+- Design a rate limiting middleware supporting token bucket and sliding window algorithms
+- Must integrate with existing API gateway and distributed cache infrastructure
+
+## Success Conditions
+- Middleware passes integration tests
+- Latency < 5ms per request
+- Both algorithm variants are configurable
+
+## Required Reads
+- mind/soul/core.md
+- tasks/20260324-api-rate-limiter/learning-read.md
+- tasks/20260324-api-rate-limiter/task-profile.md
+
+## Stage Breakdown
+- Stage 1: Research — compare rate limiting algorithms
+- Stage 2: Implementation — build the middleware
+- Stage 3: Validation — test and produce final design document
+
+## Step Drafts
+- Step 1: goal: research algorithms / dependencies: none / capability: cap-research / Dispatch Mode: sequential / Output Isolation: cache/step-1-research-notes.md
+- Step 2: goal: implement middleware / dependencies: Step 1 / capability: cap-code-generation / Dispatch Mode: sequential / Output Isolation: cache/step-2-implementation.md
+- Step 3: goal: test and validate / dependencies: Step 2 / capability: cap-code-generation / Dispatch Mode: sequential / Output Isolation: _output/rate-limiter-design.md
+
+## Dispatch Assessment
+- Step 1: sequential — depends on no prior output, but Step 2 requires its result
+- Step 2: sequential — depends on Step 1 research output
+- Step 3: sequential — depends on Step 2 implementation
+
+## Risks
+- Token bucket vs sliding window choice may affect latency profile — mitigated by benchmarking in Step 3
+- Distributed cache integration may introduce network latency — mitigated by latency budget in constraints
+
+## Step-level Learning Need
+- Step 1: acquire-required — external research on algorithms
+- Step 2: terminal-only — implementation artifacts may yield reusable patterns
+- Step 3: not-needed — validation step
+
+## Possible Inference Trigger
+- none
+
+## Notes
+- none
 ```
 
 ## Example: plan.md (sequential — simplified Step format)

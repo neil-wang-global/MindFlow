@@ -59,7 +59,7 @@ For `grounded-external`:
 - **Derived Conclusion**: the conclusion drawn from the above excerpt — written only after Original Excerpt is set
 
 For `task-output`:
-- **Source Anchor**: `tasks/{task-id}/_output/{filename}.md §{Section}` or `tasks/{task-id}/cache/{filename}.md §{Section}`
+- **Source Anchor**: `tasks/{task-id}/_output/{filename}.md §{Section}` or `tasks/{task-id}/cache/{filename}.md §{Section}` (`§{Section}` may be omitted when the entire file is the source)
 - **Original Excerpt**: > "verbatim quote copied directly from the output or cache file — must be read from file, not recalled from memory"
 - **Derived Conclusion**: the conclusion drawn from the above excerpt — written only after Original Excerpt is set
 
