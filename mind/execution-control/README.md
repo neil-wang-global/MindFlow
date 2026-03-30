@@ -70,7 +70,7 @@ When a task is cancelled by the user before completion:
 
 `Step` execution follows these rules:
 
-- read declared constraints before running
+- read declared constraints before running; if a declared constraint file does not exist, treat this as a pre-step verification failure — do not proceed; record the missing file in `state.md §Last Failure` and apply the Step's `Failure Policy`
 - read declared input files
 - call the declared `Capability`
 - write declared output files

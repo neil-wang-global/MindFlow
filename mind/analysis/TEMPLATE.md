@@ -24,6 +24,7 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 
 ## Required Reads
 - which files were actually read before running `Analysis`
+- must include `mind/soul/core.md`, `learning-read.md`, `task-profile.md`; also include any `cap-{name}.md` files read from `capabilities/` (omit if no capability definition files exist yet)
 
 ## Stage Breakdown
 - what stages the task should be divided into

@@ -30,7 +30,7 @@ This file defines the fixed structure of `Learning(Read)`.
 ## Pending Cross-Task Items
 - list any `cu-*.md` files in `mind/learning/capability-updates/` with `Status: proposed` or `Status: approved`
 - list any `review-*.md` files in `mind/learning/reviews/` with `Decision: deferred`
-- list any `review-*.md` files in `mind/learning/reviews/` with `Verification Mode: same-context` (count these for human review escalation detection per `reviews/TEMPLATE.md §Human Review Escalation`)
+- list any `review-*.md` files in `mind/learning/reviews/` with `Verification Mode: same-context` (count these for human review escalation detection per `reviews/TEMPLATE.md §Human Review Escalation`; if count >= 2, flag as `human-review-escalation-trigger: yes` so `Analysis` can include a maintenance Step for human review)
 - list any `gap-*.md` files in `mind/learning/knowledge-gaps/` with `Status: open`
 - write `none` if no pending items exist
 
