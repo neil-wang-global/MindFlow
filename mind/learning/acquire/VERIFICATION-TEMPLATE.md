@@ -12,7 +12,7 @@ The verification report must be produced by an independent subagent that does no
    - every URL listed in the event's `Fetch Plan` must have a corresponding `src-*.md` file whose `ACQ Event` field matches this event; any URL with no such file must be recorded as `missing`
    - every `src-*.md` file whose `ACQ Event` field declares this event must have its URL listed in this event's `Fetch Plan`; any file that declares this event but whose URL is not in the Fetch Plan must be recorded as `unplanned` and treated as an unverifiable source
    - any `src-*.md` file with an `ACQ Event` field that does not match any known ACQ-{NNN} event must be recorded as `unplanned` and treated as an unverifiable source
-4. Independently re-access each URL in the `src-*.md` files to confirm accessibility and content match
+4. Independently verify each URL in the `src-*.md` files — per `acquire/README.md §Verification flexibility`, header or partial re-fetch is sufficient; full content re-fetch and exact match are not required; confirm accessibility and that the domain/source type matches declared metadata
 
 ## File Path
 

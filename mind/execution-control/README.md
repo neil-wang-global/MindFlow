@@ -96,7 +96,7 @@ When a `Step` with `Learning: acquire-required` encounters a knowledge gap:
 1. Pause the `Step`. Update `state.md`: `Current Phase: learning-acquire`, mark Step as `blocked`
 2. Execute `Learning(Acquire)` to completion (see `mind/learning/acquire/README.md`)
 3. After completion, resume: re-read the `Step`'s `Constraints` and `Inputs`, set `Current Phase: execution-control`, mark Step as `running`
-4. If exhausted (zero passed sources): apply the `Step`'s declared `Failure Policy`
+4. If exhausted (zero passed sources) and the Step cannot proceed without the acquired knowledge: apply the Step's declared `Failure Policy`. If the Step can still produce valid output without the acquired knowledge, proceed — record the exhausted event in `state.md` and note the workaround in the Step's output
 
 ## Failure Policy Protocols
 
