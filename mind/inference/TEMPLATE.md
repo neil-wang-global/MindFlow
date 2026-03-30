@@ -49,7 +49,7 @@ This file defines the fixed structure of `Inference` output.
 - what additional information would change the conclusion
 
 ## Status
-- `provisional` / `accepted-into-analysis` / `accepted-into-reflection` / `rejected`
+- `provisional` / `accepted-into-analysis` / `accepted-into-reflection` / `accepted-into-terminal-learning` / `rejected`
 ```
 
 ## Validation Rules

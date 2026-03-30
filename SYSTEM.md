@@ -153,7 +153,7 @@ All `ACQ-{NNN}` labels must be consistent across `state.md §Learning(Acquire) L
 
 When a session resumes after interruption:
 
-1. Scan `tasks/` for directories containing `state.md` where `Overall Status` is not `completed` and not `cancelled`
+1. Scan `tasks/` for directories containing `state.md` where `Current Phase` is not `completed` and not `cancelled` (note: when terminal `Learning` completes, `Current Phase` is always set to `completed` or `cancelled` per §Phase Transition Protocol step 4, regardless of `Overall Status`; such tasks are finished and must not be recovered)
 2. Read the `state.md` of the unfinished task to determine `Current Phase` and `Current Step`
 3. Resume execution from the recorded phase and step — do not restart from the beginning
 4. Before resuming, read the `README.md` of the module corresponding to `Current Phase`; also read `mind/soul/core.md` (Soul constraints must be reloaded on recovery regardless of phase)

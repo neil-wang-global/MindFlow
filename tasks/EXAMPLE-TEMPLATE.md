@@ -170,9 +170,9 @@ tasks/20260324-api-rate-limiter/
 - Stage 3: Validation — test and produce final design document
 
 ## Step Drafts
-- Step 1: goal: research algorithms / dependencies: none / capability: cap-research / Dispatch Mode: sequential / Output Isolation: cache/step-1-research-notes.md
-- Step 2: goal: implement middleware / dependencies: Step 1 / capability: cap-code-generation / Dispatch Mode: sequential / Output Isolation: cache/step-2-implementation.md
-- Step 3: goal: test and validate / dependencies: Step 2 / capability: cap-code-generation / Dispatch Mode: sequential / Output Isolation: _output/rate-limiter-design.md
+- Step 1: goal: research algorithms / dependencies: none / capability: cap-research / Dispatch Mode: sequential / Output Isolation: cache/step-1-research-notes.md / Learning: acquire-required
+- Step 2: goal: implement middleware / dependencies: Step 1 / capability: cap-code-generation / Dispatch Mode: sequential / Output Isolation: cache/step-2-implementation.md / Learning: terminal-only
+- Step 3: goal: test and validate / dependencies: Step 2 / capability: cap-code-generation / Dispatch Mode: sequential / Output Isolation: _output/rate-limiter-design.md / Learning: not-needed
 
 ## Dispatch Assessment
 - Step 1: sequential — depends on no prior output, but Step 2 requires its result

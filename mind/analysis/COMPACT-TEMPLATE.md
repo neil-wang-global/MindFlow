@@ -14,6 +14,7 @@ When `Recognition` determines `Complexity: low` and `Risk: low`, the task uses c
 See `mind/analysis/README.md §Compact Mode` for full eligibility rules and exit conditions. Key constraints:
 
 - the Plan may contain only a single Step
+- `Stage Breakdown` and `Dispatch Assessment` are omitted because compact mode has only a single sequential Step — these sections provide no value when there is no multi-step decomposition or dispatch decision to make
 - all other rules (file handoff, Learning pipeline, state tracking) remain in full effect
 
 ## Fixed Structure
