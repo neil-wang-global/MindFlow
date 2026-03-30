@@ -93,6 +93,8 @@ All events share the same `acquire/` directory. The `search-log.md` and `verific
 
 ## Output Structure
 
+The `acquire/` directory and its `raw-sources/` subdirectory are created on the first ACQ event trigger — they are not created during Task Initialization (only `_output/` and `cache/` are created at that point).
+
 ```text
 tasks/{task-id}/acquire/
 ├── search-log.md              (one ACQ-{NNN} section per event)

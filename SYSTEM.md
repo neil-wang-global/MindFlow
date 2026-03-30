@@ -116,6 +116,7 @@ Both `Learning(Acquire)` Stage 3 (verification) and terminal `Learning` step 4 (
 - Thresholds and staleness actions: see §Cross-Task Staleness Thresholds table above
 - Staleness is tracked via `§Scan History` in each file
 - Reflection-triggered capability updates must be created with `Status: proposed` and must not be advanced to `approved` or `applied` within the same task
+- **Advancement workflow**: when `Analysis` identifies pending capability updates exceeding thresholds, a maintenance `Step` must be included in the `Plan`; that `Step` is responsible for reviewing the `cu-*.md`, advancing `proposed → approved` (if the change is confirmed valid), and `approved → applied` (if the target capability file is updated); `applied` status requires the `Applied Changes` and `Validation` fields to be filled
 
 ### Deferred Review Advancement
 

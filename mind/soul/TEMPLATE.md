@@ -49,6 +49,6 @@ This file does not pre-fill specific content. It defines only the formal structu
 
 ## Authoring Rules
 
-- every line must be capable of constraining `Recognition / Analysis / Reflection / Learning / Inference`
+- every line must be capable of constraining at least one module in the main flow (`Recognition / Analysis / Planning / Execution Control / Reflection / Learning / Inference`)
 - avoid vague words such as “try to” or “generally”
 - `Learning Policy` must be able to directly determine which knowledge may enter `knowledge-base/approved/`
