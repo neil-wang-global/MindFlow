@@ -75,6 +75,7 @@ The cross-module transition rules that no single module owns:
 2. After `Reflection` completes, check whether either `Requires External Acquisition` sub-heading in `reflection-report.md` is `yes`:
    - **yes**: trigger `Learning(Acquire)` post-reflection — set `Current Phase: learning-acquire`; upon completion, set `Current Phase: terminal-learning`
    - **no**: set `Current Phase: terminal-learning` and proceed directly to terminal `Learning`
+   - (In both cases, `Ready For Reflection` is reset to `no` — reflection is complete, not pending)
 3. When `Learning(Acquire)` is triggered **mid-step**: set `Current Phase: learning-acquire`, mark Step as `blocked`; upon completion, restore `Current Phase: execution-control`, mark Step as `running`
 4. Terminal `Learning` runs; upon completion, set final state based on `Overall Status` at entry: `completed` → `completed/completed`; `cancelled` → `cancelled/cancelled`; `failed` → `completed/failed`; `blocked` → `completed/blocked` (format: `Current Phase / Overall Status`)
 
@@ -127,6 +128,7 @@ Both `Learning(Acquire)` Stage 3 (verification) and terminal `Learning` step 4 (
 ### Knowledge Gap Retry Advancement
 
 - `Learning(Read)` scans `mind/learning/knowledge-gaps/` for files with `Status: open`
+- Gaps with `Status: permanent` are skipped — they require human intervention
 - If an open knowledge gap is relevant to the current task's goal (as determined by `Analysis`), the `Plan` should include a `Step` with `Learning: acquire-required` targeting that gap; the `Step` instructions must reference the gap file and note the previous exhaustion reason so a different search strategy can be used
 - If the gap is not relevant to the current task, no action is required — the gap remains `open` for a future relevant task
 - Staleness is tracked via `§Scan History` in each file — if the scan count exceeds three, it must be flagged in `reflection-report.md §Issue Detection`
@@ -146,7 +148,7 @@ These fields must remain structurally consistent across `analysis.md`, `plan.md`
 
 ### ACQ Label Consistency Rule
 
-All `ACQ-{NNN}` labels must be consistent across `state.md §Learning(Acquire) Log`, `acquire/search-log.md`, `acquire/verification-report.md`, and `tl-{task-id}.md`. If a mismatch is detected, the runtime must pause and resolve before proceeding.
+All `ACQ-{NNN}` labels must be consistent across `state.md §Learning(Acquire) Log`, `acquire/search-log.md`, `acquire/verification-report.md`, and `tl-{task-id}.md`. Resolution protocol: see `mind/learning/README.md §ACQ Label Reconciliation`.
 
 ## Recovery Protocol
 

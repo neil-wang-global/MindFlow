@@ -41,7 +41,10 @@ Where:
 - future tasks must use different strategies to avoid repeating the same failed searches
 
 ## Status
-- `open` / `resolved`
+- `open` / `resolved` / `permanent`
+
+## Retry Count
+- number of tasks that have attempted to resolve this gap (incremented by each retry task)
 
 ## Resolution
 - write `none` when `Status: open`
@@ -63,4 +66,5 @@ Where:
 - a gap file must reference a real ACQ event recorded in the origin task's `state.md`
 - `Status: open` gaps must not be deleted; they are resolved by updating the `Status` field
 - `Attempted Strategies` must not be omitted; future retry tasks must consult this field and use different search approaches
-- `Learning(Read)` scans this directory read-only; it does not modify gap files
+- `Learning(Read)` scans this directory read-only; it does not modify gap files except `§Scan History` (per `learning-read/README.md §Write Scope`)
+- when a retry task attempts resolution, it must increment `Retry Count`; if `Retry Count` reaches 3 and the gap is still unresolved, the resolving task must set `Status: permanent` — the gap requires human intervention and is no longer automatically retried

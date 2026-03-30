@@ -55,7 +55,7 @@ It must execute in this order:
    - `Verification Mode` in the review file must be `independent-subagent`; any review written in the same context as its draft is invalid
 5. only review records with `Decision: accepted` may generate `kb-{type}-{slug}.md`; read `mind/learning/knowledge-base/approved/TEMPLATE.md` before writing; when a `kb-*.md` is written to `approved/`, `INDEX.md` must be created or updated to list the new entry with its Type and one-line Summary
 6. for each `exhausted` ACQ event in `tl-{task-id}.md §External Acquisition`, create `mind/learning/knowledge-gaps/gap-{task-id}-{slug}.md` with `Status: open` (see `mind/learning/knowledge-gaps/README.md` for structure); this enables future tasks' `Learning(Read)` to detect and retry the unresolved knowledge gap
-7. if needed, generate `cu-{task-id}-{capability-name}.md` based on accepted review records or directly from `reflection-report.md §Capability Impact`; reflection-triggered capability updates must be created with `Status: proposed`
+7. if needed, generate `cu-{task-id}-{capability-name}.md` based on accepted review records; if `reflection-report.md §Capability Impact` identifies a capability change not covered by any review record, create the `cu-*.md` with `Status: proposed` (requires review before activation)
 
 ## Subagent Unavailability
 
@@ -63,7 +63,7 @@ If the runtime environment does not support independent subagent dispatch for st
 
 - the review must be written with `Verification Mode: same-context`
 - per `reviews/TEMPLATE.md`, this forces `Decision: rejected` — the knowledge does not enter `approved/`
-- this degradation must be recorded in `reflection-report.md §Issue Detection`
+- this degradation must be recorded in `tl-{task-id}.md §Notes`
 - **Human review escalation**: if 2 or more consecutive tasks have produced `same-context` rejections, the runtime may escalate to human review — see `reviews/TEMPLATE.md §Human Review Escalation` for the full protocol
 
 ## Self-Check Points (terminal Learning)
@@ -78,7 +78,7 @@ Before writing `tl-{task-id}.md`: read `state.md §Learning(Acquire) Log` and ve
 
 ### Excerpt Fidelity Check
 
-This check is the final sub-step of step 2 (self-review), executed **before** `tl-{task-id}.md` is frozen. For each `Original Excerpt` in `tl-{task-id}.md`, verify it is a verbatim substring of the referenced source file content (read the source file, do not rely on memory). On failure: correct the excerpt in `tl-{task-id}.md` now — this is permitted because step 2 has not yet completed. Once this check passes, step 2 is complete and `tl-{task-id}.md` is frozen.
+Defined inline in §Execution Steps step 2. Verification: re-read source file, confirm `Original Excerpt` is a verbatim substring (apply whitespace normalization per `reviews/TEMPLATE.md §Source Anchor Verified`). On failure: correct in `tl-{task-id}.md` before freeze. Once this check passes, step 2 is complete and the file is frozen.
 
 ### Promotion Gate Check
 
