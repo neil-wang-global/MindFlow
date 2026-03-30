@@ -54,6 +54,10 @@ Each candidate must include its source location so terminal `Learning` can trace
 ## Inference Triggers
 - which points may justify conditional `Inference`
 
+## Inference References
+(include this section only if Inference was triggered during Reflection)
+- format: `tasks/{task-id}/cache/inference-{slug}.md` — status: `accepted-into-reflection` / `rejected`
+
 ## Notes
 - only supplementary notes required at the reflection stage
 ```

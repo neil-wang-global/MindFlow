@@ -74,6 +74,10 @@ For `task-output`:
 (include this section only when `reflection-report.md` has non-empty `Learning Candidates` but promotion is genuinely not possible)
 - state why promotion was suppressed (e.g., `ACQ-{NNN} exhausted — no verifiable sources available`)
 
+## Inference References
+(include this section only if Inference was triggered during terminal Learning)
+- format: `tasks/{task-id}/cache/inference-{slug}.md` — status: `accepted-into-terminal-learning` / `rejected`
+
 ## Notes
 - supplementary notes (e.g., subagent unavailability degradation, unusual conditions)
 - write `none` if nothing to note
