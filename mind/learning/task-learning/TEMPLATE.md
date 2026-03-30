@@ -91,6 +91,7 @@ For `task-output`:
 - `Candidate Knowledge` must not be omitted
 - `Potential Capability Impact` must not be omitted
 - `Next Promotion Target` must not be omitted
+- `Notes` must not be omitted; write `none` if nothing to note
 - for `grounded-external` items, the `ACQ-{NNN}` label referenced in `Acquisition Event` must match a corresponding entry in `state.md §Learning(Acquire) Log` (see `SYSTEM.md §ACQ Label Consistency Rule`)
 - if the corresponding `reflection-report.md` contains non-empty `Learning Candidates`, then `Next Promotion Target` must not be `none` — it must point to at least one `draft-*.md` target; if promotion is genuinely not possible, state the reason in `Promotion Suppressed Reason` (see §Promotion Suppression Rules below)
 

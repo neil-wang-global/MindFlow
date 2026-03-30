@@ -69,7 +69,7 @@ This file defines the fixed structure of learning review records.
 - write `none` if there is no impact
 
 ## Scan History
-(only used when `Decision: deferred`)
+(only used when `Decision: deferred`; omit this section entirely when `Decision` is `accepted` or `rejected`)
 - `{task-id}`: scanned, `{action}` (e.g. `re-opened`, `still-deferred`, `converted-to-rejected`)
 ```
 
@@ -87,6 +87,7 @@ This file defines the fixed structure of learning review records.
 - `Capability Impact` must not be omitted
 - `Conflict Check` must not be omitted; must be `no-conflict` or `conflict-found`
 - `Decision: accepted` is only valid when all of the following hold: `Verification Mode` is `independent-subagent` or `human-reviewed`, `Summary Verified` is `yes`, `Source Anchor Verified` is `yes`, and `Conflict Check` is either `no-conflict` or `conflict-found` with explicit resolution stated in `Reason`
+- `Scan History` must be present when `Decision: deferred`; must be omitted when `Decision` is `accepted` or `rejected`
 
 ## Deferred Decision Lifecycle
 

@@ -89,5 +89,6 @@ When Step 1's `Learning` is `acquire-required`, acquisition artifacts are writte
 - `Required Reads` must not be omitted
 - `Risks` must not be omitted; use `none` if genuinely empty
 - `Step-level Learning Need` must use exactly one of: `acquire-required / terminal-only / optional / not-needed`
+- `Possible Inference Trigger` must not be omitted; write `none` if not applicable
 - the single Step must follow all planning rules defined in `mind/planning/TEMPLATE.md §Planning Rules`
 - `state.md` must be updated as normal after this file is written (see `mind/planning/README.md §Phase Entry`)

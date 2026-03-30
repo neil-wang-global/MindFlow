@@ -25,6 +25,7 @@ This file defines the fixed structure of the task runtime state file.
 
 ## Overall Status
 - `running / blocked / failed / completed / cancelled`
+- note: when terminal `Learning` completes, `Current Phase` and `Overall Status` are set as a pair per `SYSTEM.md §Phase Transition Protocol` step 4 (e.g., `Current Phase: completed` + `Overall Status: completed`; or `Current Phase: completed` + `Overall Status: failed`)
 
 ## Step Status Map
 - `Step 1: pending / running / completed / failed / blocked`

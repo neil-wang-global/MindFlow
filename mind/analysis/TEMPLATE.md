@@ -76,3 +76,4 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 - `Step Drafts` must be mappable to concrete `Step`s in the subsequent `Plan`
 - `Step-level Learning Need` must use exactly one of: `acquire-required / terminal-only / optional / not-needed` per Step
 - classifications must be consistent with `task-profile.md §Task-level Learning Possibility`
+- `Possible Inference Trigger` must not be omitted; write `none` if not applicable

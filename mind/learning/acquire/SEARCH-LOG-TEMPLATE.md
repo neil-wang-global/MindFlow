@@ -61,3 +61,4 @@ A single task may trigger `Learning(Acquire)` multiple times. Each trigger produ
 - `Trigger` within each event must be either `step-triggered: Step {N}` or `reflection-triggered`
 - `Knowledge Gap or Problem` must not be omitted for each event
 - per `acquire/README.md §Non-Negotiable Constraints`, only URLs and selection rationale are permitted
+- `Fetch Plan` must not be omitted for each event; the verification subagent cross-checks this list against `raw-sources/` files (see `VERIFICATION-TEMPLATE.md §Execution Requirement`)

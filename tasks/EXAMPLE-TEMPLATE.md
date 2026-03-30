@@ -351,6 +351,9 @@ Each candidate must include its source location so terminal `Learning` can trace
 
 ## Next Promotion Target
 - `mind/learning/knowledge-base/drafts/draft-concept-20260324-rate-limiting-tradeoffs.md`
+
+## Notes
+- none
 ```
 
 ## Example: draft-*.md (written to mind/learning/knowledge-base/drafts/)
