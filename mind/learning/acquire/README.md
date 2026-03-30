@@ -82,7 +82,7 @@ If the runtime environment does not support independent subagent dispatch for St
 - the verification report must be written with `Verification Mode: same-context` annotation
 - all sources are treated as `downgraded`
 - the event is marked `exhausted` with reason `independent verification unavailable`
-- this degradation must be recorded in `reflection-report.md §Issue Detection`
+- this degradation is recorded via `Verification Mode: same-context` in `verification-report.md`; `Reflection` will detect and surface this in `reflection-report.md §Issue Detection` when processing the verification results
 - note: `downgraded` sources from `same-context` verification may still enter the learning pipeline if human review escalation is triggered at the terminal Learning review stage — see `mind/learning/reviews/TEMPLATE.md §Human Review Escalation`
 
 ## Multi-Event Structure

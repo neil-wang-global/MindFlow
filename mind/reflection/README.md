@@ -25,6 +25,7 @@ Before producing `reflection-report.md`, the runtime must read:
 - `tasks/{task-id}/cache/`
 - `tasks/{task-id}/_output/`
 - if publish-back exists, the `sources/` publish-back paths declared in `Plan`
+- `tasks/{task-id}/acquire/verification-report.md` (if `Learning(Acquire)` was executed — to assess verification outcomes and detect degradation)
 
 ## Inputs
 

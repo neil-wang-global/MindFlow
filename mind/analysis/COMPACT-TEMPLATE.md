@@ -42,6 +42,10 @@ See `mind/analysis/README.md §Compact Mode` for full eligibility rules and exit
 ## Possible Inference Trigger
 - which points may require inference (write `none` if not applicable)
 
+## Inference References
+(include this section only if Inference was triggered during Analysis)
+- format: `tasks/{task-id}/cache/inference-{slug}.md` — status: `accepted-into-analysis` / `rejected`
+
 ## Goal
 - the final outcome this task must reach
 
