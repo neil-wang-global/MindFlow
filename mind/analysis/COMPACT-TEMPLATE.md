@@ -67,7 +67,6 @@ See `mind/analysis/README.md §Compact Mode` for full eligibility rules and exit
 - Outputs:
 - Publish To Sources: none
 - Learning: `acquire-required / terminal-only / optional / not-needed`
-- If Learning is `acquire-required`, acquisition artifacts are written to `tasks/{task-id}/acquire/` per `mind/learning/acquire/README.md`
 - Depends On: none
 - Completion Criteria:
 - Failure Policy: `retry / rework / stop / escalate-to-reflection`
@@ -79,6 +78,10 @@ See `mind/analysis/README.md §Compact Mode` for full eligibility rules and exit
 ## Completion Check
 - what must be true before the task is considered complete
 ```
+
+## Acquire Path Rule
+
+When Step 1's `Learning` is `acquire-required`, acquisition artifacts are written to `tasks/{task-id}/acquire/` per `mind/learning/acquire/README.md`.
 
 ## Validation Rules
 

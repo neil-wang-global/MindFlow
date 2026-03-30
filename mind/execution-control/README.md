@@ -133,7 +133,7 @@ Every `Step` must declare one of these policies: `retry`, `rework`, `stop`, `esc
 
 Before transitioning out of `Execution Control` to `Reflection`, verify:
 
-- all Steps in `Step Status Map` are either `completed` or `failed` (none remain `pending` or `running`)
+- all Steps in `Step Status Map` are either `completed` or `failed` (none remain `pending` or `running`); **exception**: when `Overall Status: cancelled`, pending Steps are permitted — only the current Step must have been stopped and recorded
 - `Ready For Reflection` is set to `yes`
 - `Overall Status` is one of `completed / failed / blocked`
 - `_output/` is not empty (when `Overall Status: completed`)
