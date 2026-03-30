@@ -27,6 +27,7 @@
 - dispatch and merge assessment — for each Step, compare planned vs actual:
   - Step {N}: Dispatch Mode: {planned} → {actual}; outcome: {consistent / deviated — reason}
   - (if parallel: merge result: {as-planned / adjusted — reason})
+- publish-back assessment — if any Step declared `Publish To Sources` with a value other than `none`, verify the declared target was actually written; note any mismatch
 
 ## Issue Detection
 - capability gaps

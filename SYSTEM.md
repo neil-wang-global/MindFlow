@@ -75,7 +75,7 @@ The cross-module transition rules that no single module owns:
 2. After `Reflection` completes, check whether either `Requires External Acquisition` sub-heading in `reflection-report.md` is `yes`:
    - **yes**: trigger `Learning(Acquire)` post-reflection — set `Current Phase: learning-acquire`, `Ready For Reflection: no`; upon completion, set `Current Phase: terminal-learning`
    - **no**: set `Current Phase: terminal-learning`, `Ready For Reflection: no`, and proceed directly to terminal `Learning`
-3. When `Learning(Acquire)` is triggered **mid-step**: set `Current Phase: learning-acquire`, mark Step as `blocked`; upon completion, restore `Current Phase: execution-control`, mark Step as `running`
+3. When `Learning(Acquire)` is triggered **mid-step**: set `Current Phase: learning-acquire`, mark Step as `blocked`; `Overall Status` remains `running`; upon completion, restore `Current Phase: execution-control`, mark Step as `running`
 4. Terminal `Learning` runs; upon completion, set final state based on `Overall Status` at entry: `completed` → `completed/completed`; `cancelled` → `cancelled/cancelled`; `failed` → `completed/failed`; `blocked` → `completed/blocked` (format: `Current Phase / Overall Status`)
 
 ### Inference State Rule
@@ -158,7 +158,7 @@ When a session resumes after interruption:
 2. Read the `state.md` of the unfinished task to determine `Current Phase` and `Current Step`
 3. Resume execution from the recorded phase and step — do not restart from the beginning
 4. Before resuming, read the `README.md` of the module corresponding to `Current Phase`; also read `mind/soul/core.md` (Soul constraints must be reloaded on recovery regardless of phase)
-5. **Early-phase recovery**: when `Current Phase` is `learning-read`, `recognition`, or `analysis`, check whether the phase's output artifact exists (`learning-read.md`, `task-profile.md`, or `analysis.md` / `analysis-plan.md` respectively); if the artifact exists and passes its `TEMPLATE.md §Validation Rules`, advance to the next phase; if missing or incomplete, re-execute the current phase
+5. **Early-phase recovery**: when `Current Phase` is `learning-read`, `recognition`, or `analysis`, check whether the phase's output artifact exists (`learning-read.md`, `task-profile.md`, or `analysis.md` / `analysis-plan.md` respectively); if the artifact exists and passes its `TEMPLATE.md §Validation Rules`, update `state.md` to the next phase and advance; if missing or incomplete, re-execute the current phase
 6. **Execution-control recovery**: when `Current Phase: execution-control`, read `Step Status Map` to find the first non-completed Step; set `Current Step` to that Step and resume execution; if the interrupted Step was `running`, re-read its Constraints and Inputs before resuming
 7. **Reflection recovery**: when `Current Phase: reflection`, check whether `reflection-report.md` exists and passes `TEMPLATE.md §Validation Rules`; verify `Overall Status` is one of `completed / failed / blocked` (as set by Execution Control before entering Reflection); if complete, advance to the post-reflection ACQ check (§Phase Transition Protocol step 2); if missing or incomplete, re-execute Reflection
 8. **Planning recovery**: when `Current Phase: planning` and `plan.md` already exists, complete the `state.md` updates (set `Current Phase: execution-control`, populate `Step Status Map`, set `Current Step` to Step 1) without re-running Planning
