@@ -13,7 +13,7 @@ This directory defines the formal audit record of `Learning(Read)`.
 `Learning(Read)` may only read:
 
 - `mind/soul/core.md`
-- `mind/learning/knowledge-base/approved/`
+- `mind/learning/knowledge-base/approved/` — must read `INDEX.md` first (if it exists) and then read each `kb-*.md` whose Summary is relevant to the current task goal; relevance is determined by comparing the one-line Summary against the task statement; if no entries are relevant, record `Approved Knowledge Reads: none` with a one-sentence justification
 
 It must also scan for pending cross-task items (read-only inspection — not as knowledge sources, but findings may trigger mandatory maintenance steps in the Plan per `SYSTEM.md §Capability Update Advancement` and `§Deferred Review Advancement`):
 

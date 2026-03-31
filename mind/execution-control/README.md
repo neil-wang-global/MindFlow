@@ -57,6 +57,8 @@ Before executing a Step with `Learning: acquire-required`, verify that `state.md
 
 For Steps with `Learning: optional`: Pre-Step Verification is not required, but if a knowledge gap is encountered during execution, the Step may trigger `Learning(Acquire)` using the same mid-step mechanism as `acquire-required` (see §Learning(Acquire) Mid-Step State Management). If triggered, a log entry must be added to `state.md §Learning(Acquire) Log` at that point. If no gap is encountered, no log entry is required.
 
+Steps with `Learning: terminal-only` or `Learning: not-needed` must not trigger `Learning(Acquire)`. If a knowledge gap is encountered in such a Step, the Step must proceed without external acquisition — use available context, apply the Step's `Failure Policy` if the gap is blocking, or note the gap for `Reflection` to surface.
+
 ## Cancellation Protocol
 
 When a task is cancelled by the user before completion:

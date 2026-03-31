@@ -74,7 +74,7 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
   - `optional`: learning may occur but is not mandatory
   - `not-needed`: no learnable knowledge expected
 - `Depends On` must not be omitted; use `none` when there is no dependency
-- `Completion Criteria` must be written as checkable conditions
+- `Completion Criteria` must be written as objectively checkable conditions — each condition must reference a specific observable artifact, state, or measurable outcome (e.g., "file X exists", "test passes", "output contains Y"); tautological conditions like "step is complete" are not valid
 - `Failure Policy` must be one of `retry / rework / stop / escalate-to-reflection`
 - `Dispatch Mode` must be one of `sequential / subagent / parallel-branch`
 - when `Dispatch Mode` is `sequential`: `Parallel Group`, `Synchronization Point`, `Merge Owner`, `Subagent / Branch Scope`, and `Merge / Sync Rule` may be omitted (they default to `none`)

@@ -96,6 +96,7 @@ For `task-output`:
 - every item listed in `reflection-report.md §Learning Candidates` must have a corresponding `KDC-{NNN}` entry in `Candidate Knowledge`; if a reflection candidate is intentionally excluded, it must still appear as a KDC entry with `Derived Conclusion: excluded — {reason}` and must not be promoted
 - `Potential Capability Impact` must not be omitted
 - `Next Promotion Target` must not be omitted
+- if `Candidate Knowledge` is `none`, `Next Promotion Target` must be `none`
 - `Notes` must not be omitted; write `none` if nothing to note
 - for `grounded-external` items, the `ACQ-{NNN}` label referenced in `Acquisition Event` must match a corresponding entry in `state.md §Learning(Acquire) Log` (see `SYSTEM.md §ACQ Label Consistency Rule`)
 - if the corresponding `reflection-report.md` contains non-empty `Learning Candidates`, then `Next Promotion Target` must not be `none` — it must point to at least one `draft-*.md` target; if promotion is genuinely not possible, state the reason in `Promotion Suppressed Reason` (see §Promotion Suppression Rules below)
