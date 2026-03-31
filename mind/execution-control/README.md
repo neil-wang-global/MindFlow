@@ -76,7 +76,7 @@ When a task is cancelled by the user before completion:
 
 - read declared constraints before running; if a declared constraint file does not exist, treat this as a pre-step verification failure — do not proceed; record the missing file in `state.md §Last Failure` and apply the Step's `Failure Policy`
 - read declared input files
-- call the declared `Capability`
+- call the declared `Capability` (when no `cap-{name}.md` exists for the label, the label is a classification identifier only — proceed with the Step's Instructions directly; see `capabilities/README.md §Bootstrap`)
 - write declared output files
 - if `Publish To Sources` is not `none`, copy or write the declared content to the `sources/` target path after the primary output is written
 - hand off through files, never implicit context
