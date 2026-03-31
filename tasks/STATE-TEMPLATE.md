@@ -92,6 +92,7 @@ See `SYSTEM.md §Phase Transition Protocol` for the complete transition sequence
 - `Ready For Reflection` may only be `yes / no`
 - `Learning(Acquire) Log` must not be omitted
 - for every Step with `Learning: acquire-required`, a corresponding Step-triggered entry must appear before that Step is marked `completed`
+- for Steps with `Learning: optional`, a Step-triggered entry is required only if `Learning(Acquire)` was actually triggered during that Step; no entry is required if no gap was encountered
 - if `reflection-report.md` sets either `Requires External Acquisition` to `yes`, a Reflection-triggered entry must appear before terminal `Learning` begins
 - a Step-triggered `skipped` entry must include an explicit reason
 - each triggered entry must record the ACQ-{NNN} label; label consistency rules: see `SYSTEM.md §ACQ Label Consistency Rule`

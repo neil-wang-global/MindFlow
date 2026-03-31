@@ -55,6 +55,8 @@ Transition to `Reflection` occurs in three scenarios, each with a different `Ove
 
 Before executing a Step with `Learning: acquire-required`, verify that `state.md §Learning(Acquire) Log` has an entry for this Step. On failure: add a placeholder entry `Step {N}: pending` to `state.md` before proceeding. This entry is updated to `gap-encountered → ACQ-{NNN} triggered` if a gap is encountered during the Step, or to `no-gap → skipped (reason: {explicit reason})` when the Step completes without encountering a gap.
 
+For Steps with `Learning: optional`: Pre-Step Verification is not required, but if a knowledge gap is encountered during execution, the Step may trigger `Learning(Acquire)` using the same mid-step mechanism as `acquire-required` (see §Learning(Acquire) Mid-Step State Management). If triggered, a log entry must be added to `state.md §Learning(Acquire) Log` at that point. If no gap is encountered, no log entry is required.
+
 ## Cancellation Protocol
 
 When a task is cancelled by the user before completion:
