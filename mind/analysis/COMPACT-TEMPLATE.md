@@ -6,7 +6,7 @@ When `Recognition` determines `Complexity: low` and `Risk: low`, the task uses c
 
 - file path: `tasks/{task-id}/analysis-plan.md`
 - fixed heading order is required
-- all required sections from both `analysis/TEMPLATE.md` and `planning/TEMPLATE.md` must be present
+- all required sections from both `analysis/TEMPLATE.md` and `planning/TEMPLATE.md` must be present, except those explicitly omitted by §Compact Mode Constraints below
 - sections with no meaningful content may be written as a single line (e.g., `## Risks\n- none`)
 
 ## Compact Mode Constraints

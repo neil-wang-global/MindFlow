@@ -285,7 +285,11 @@ tasks/20260324-api-rate-limiter/
 
 ## Process Review
 - Three-step sequential approach was appropriate
-- Dispatch assessment: all Steps used `sequential` as declared — consistent with plan
+- Dispatch and merge assessment:
+  - Step 1: Dispatch Mode: sequential → sequential; outcome: consistent
+  - Step 2: Dispatch Mode: sequential → sequential; outcome: consistent
+  - Step 3: Dispatch Mode: sequential → sequential; outcome: consistent
+- Publish-back assessment: no Steps declared publish-back
 - Step 1 required external acquisition (ACQ-001), completed successfully
 
 ## Issue Detection

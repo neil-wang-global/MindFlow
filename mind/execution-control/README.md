@@ -53,7 +53,7 @@ Transition to `Reflection` occurs in three scenarios, each with a different `Ove
 
 ## Pre-Step Verification
 
-Before executing a Step with `Learning: acquire-required`, verify that `state.md §Learning(Acquire) Log` has a placeholder entry for this Step. On failure: add the missing entry to `state.md` before proceeding.
+Before executing a Step with `Learning: acquire-required`, verify that `state.md §Learning(Acquire) Log` has an entry for this Step. On failure: add a placeholder entry `Step {N}: pending` to `state.md` before proceeding. This entry is updated to `gap-encountered → ACQ-{NNN} triggered` if a gap is encountered during the Step, or to `no-gap → skipped (reason: {explicit reason})` when the Step completes without encountering a gap.
 
 ## Cancellation Protocol
 
