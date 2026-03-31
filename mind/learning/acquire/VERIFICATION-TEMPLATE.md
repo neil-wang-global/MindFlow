@@ -31,6 +31,10 @@ When a task has multiple acquisition events, all events are verified in a single
 ## Verification Timestamp
 - date and time when verification was performed
 
+## Verification Mode
+- `independent-subagent` — this report was produced by a subagent with no shared context with the fetching agent
+- `same-context` — this report was produced in the same execution context as fetching (degraded; see `acquire/README.md §Subagent Unavailability`)
+
 ## Summary
 - total acquisition events: N
 - total sources verified: N
@@ -109,7 +113,8 @@ List of source IDs that passed verification for this event and may be cited in `
 
 ## Validation Rules
 
-- this file must be produced by an independent subagent
+- `Verification Mode` must not be omitted; must be `independent-subagent` or `same-context`
+- when `Verification Mode: same-context`, all sources are treated as `downgraded` and the event is marked `exhausted` (per `acquire/README.md §Subagent Unavailability`)
 - every ACQ-{NNN} event listed in `search-log.md` must have a corresponding section in this report
 - `Fetch Coverage` must not be omitted for each event; the cross-check between Fetch Plan and raw-sources must be explicit
 - `unplanned` sources must be assigned `Verification Status: failed` and must not appear in any `Passed Sources` list

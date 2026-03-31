@@ -93,6 +93,7 @@ For `task-output`:
 - for `grounded-external` items, the `Acquisition Event` field must reference an existing ACQ-{NNN} entry in this file
 - for `grounded-external` items, the cited `src-{NNN}` must appear in the `Passed Sources` list of the referenced ACQ-{NNN}
 - `Candidate Knowledge` must not be omitted
+- every item listed in `reflection-report.md §Learning Candidates` must have a corresponding `KDC-{NNN}` entry in `Candidate Knowledge`; if a reflection candidate is intentionally excluded, it must still appear as a KDC entry with `Derived Conclusion: excluded — {reason}` and must not be promoted
 - `Potential Capability Impact` must not be omitted
 - `Next Promotion Target` must not be omitted
 - `Notes` must not be omitted; write `none` if nothing to note

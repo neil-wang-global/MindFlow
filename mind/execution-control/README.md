@@ -75,6 +75,7 @@ When a task is cancelled by the user before completion:
 - call the declared `Capability`
 - write declared output files
 - hand off through files, never implicit context
+- before marking a `Step` as `completed`, verify that every condition in the `Step`'s `Completion Criteria` is met; if any condition is not met, the `Step` must not be marked `completed` — apply the `Step`'s `Failure Policy` instead
 
 If a `Step` needs multiple capabilities, split it into multiple `Step`s.
 

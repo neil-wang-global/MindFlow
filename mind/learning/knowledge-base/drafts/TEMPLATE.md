@@ -45,7 +45,7 @@ This file defines the fixed structure of `mind/learning/knowledge-base/drafts/`.
 ## Candidate Conclusion
 - must be copied verbatim from the `Derived Conclusion` of the corresponding `KDC-{NNN}` item in `tl-{task-id}.md`
 - no rephrasing, elaboration, or refinement is permitted at this stage
-- if the conclusion in `tl-` is found to be inadequate, the correct action is to revise `tl-` first, then carry the revised conclusion forward — not to silently diverge in `draft-`
+- since `tl-{task-id}.md` is frozen after step 2 (see `mind/learning/README.md §Execution Steps`), the conclusion must be accepted as-is; if it was inadequate, it should have been revised during step 2's self-review before the freeze
 
 ## Review Status
 - `pending`

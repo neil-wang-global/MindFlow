@@ -55,5 +55,5 @@ Each file stores the complete, unmodified content fetched from one URL. No summa
 - `Fetch Timestamp` must not be omitted
 - `Original Content` must contain the full fetched text — not a summary, not key points, not excerpts
 - `Fetch Completeness` must not be omitted; must be `complete / truncated / partial`; if not `complete`, reason must be stated
-- A file with `Fetch Status: failed` must not contain fabricated content in `Original Content`
+- A file with `Fetch Status: failed` must write `Original Content` as `none — fetch failed` and must not contain fabricated or placeholder content
 - No interpretation fields (key points, relevance, extracted data) are permitted in this file
