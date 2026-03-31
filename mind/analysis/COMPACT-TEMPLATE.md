@@ -78,6 +78,9 @@ See `mind/analysis/README.md §Compact Mode` for full eligibility rules and exit
 
 ## Completion Check
 - what must be true before the task is considered complete
+
+## Notes
+- only additional information required at the analysis stage
 ```
 
 ## Acquire Path Rule

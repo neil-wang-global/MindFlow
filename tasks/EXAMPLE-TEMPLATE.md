@@ -608,4 +608,7 @@ tasks/20260325-fix-typo-readme/
 
 ## Completion Check
 - `_output/readme-fix.md` exists with the corrected text
+
+## Notes
+- none
 ```

@@ -35,9 +35,11 @@ Before entering any module or any `Step`, the AI must read that module's `README
 
 ## Required Main Flow
 
-Every task must follow this exact flow:
+Every task must follow this exact flow — no module may be skipped or reordered:
 
 `Task -> Learning(Read) -> Recognition -> Analysis -> Planning -> Execution Control -> Reflection -> Learning`
+
+Each module transition is guarded by the exiting module's Exit Validation. The next module in the flow must be the one listed above — the runtime must not skip ahead (e.g., Learning(Read) must be followed by Recognition, not Analysis).
 
 ### Artifact Data Flow
 
@@ -67,7 +69,7 @@ The main flow is the same for all task types (`delivery / learning / mixed`). Th
 
 ## Phase Transition Protocol
 
-Every phase transition must update `tasks/{task-id}/state.md`. Each module is responsible for setting its own phase upon entry (see each module's `README.md §Phase Entry`). Exceptions: `Execution Control` phase is set by `Planning` upon plan completion; `Inference` does not set a separate phase (see §Inference State Rule below). Failure to update `state.md` makes the task non-recoverable.
+Every phase transition must update `tasks/{task-id}/state.md`. Each module is responsible for setting its own phase upon entry (see each module's `README.md §Phase Entry`). Exceptions: `Execution Control` phase is set by `Planning` upon plan completion (or by `Analysis` in compact mode — see `mind/analysis/README.md §Compact Mode`); `Inference` does not set a separate phase (see §Inference State Rule below); `Learning(Acquire)` phase is set by the runtime (Mind) at the trigger point, not by the acquire module itself (see steps 2–3 below). Failure to update `state.md` makes the task non-recoverable.
 
 The cross-module transition rules that no single module owns:
 

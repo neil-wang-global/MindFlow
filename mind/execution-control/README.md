@@ -74,6 +74,7 @@ When a task is cancelled by the user before completion:
 - read declared input files
 - call the declared `Capability`
 - write declared output files
+- if `Publish To Sources` is not `none`, copy or write the declared content to the `sources/` target path after the primary output is written
 - hand off through files, never implicit context
 - before marking a `Step` as `completed`, verify that every condition in the `Step`'s `Completion Criteria` is met; if any condition is not met, the `Step` must not be marked `completed` — apply the `Step`'s `Failure Policy` instead
 

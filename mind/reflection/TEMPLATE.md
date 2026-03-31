@@ -17,7 +17,7 @@
 
 ## Result Evaluation
 - evaluate against `task-profile.md §Success Criteria` — assess each criterion individually
-- evaluate against `plan.md §Completion Check` (or `analysis-plan.md §Completion Check` in compact mode) — verify all declared completion conditions
+- evaluate against `plan.md §Completion Check` (or `analysis-plan.md §Completion Check` in compact mode) — verify each declared completion condition individually and state whether it was met or not met
 - what passed
 - what did not pass
 

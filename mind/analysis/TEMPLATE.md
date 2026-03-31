@@ -30,7 +30,7 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 - what each stage must solve
 
 ## Step Drafts
-- `Step 1`: goal / dependencies / candidate capability / Dispatch Mode / Parallel Group / Synchronization Point / Merge Owner / Output Isolation / Learning
+- `Step 1`: goal / dependencies / candidate capability / Dispatch Mode / Output Isolation / Learning (add Parallel Group / Synchronization Point / Merge Owner only when Dispatch Mode is not sequential)
 - `Step N`: (same fields)
 
 ## Dispatch Assessment
@@ -75,5 +75,5 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 - any `Analysis Output` without risk information is incomplete
 - `Step Drafts` must be mappable to concrete `Step`s in the subsequent `Plan`
 - `Step-level Learning Need` must use exactly one of: `acquire-required / terminal-only / optional / not-needed` per Step
-- classifications must be consistent with `task-profile.md §Task-level Learning Possibility`
+- classifications must be consistent with `task-profile.md §Task-level Learning Possibility` (mapping: `acquire-likely` → `acquire-required` or `optional`; `terminal-only` → `terminal-only`; `not-expected` → `not-needed`; if task-level is `not-expected`, no Step should be `acquire-required` without explicit justification in `Notes`)
 - `Possible Inference Trigger` must not be omitted; write `none` if not applicable
