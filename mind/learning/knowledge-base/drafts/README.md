@@ -22,3 +22,5 @@ See `TEMPLATE.md` for the formal structure, required fields, validation rules, a
 - every file must be prepared to enter `reviews/`
 - not readable by `Learning(Read)` (see `mind/learning/learning-read/README.md §Read Scope`)
 - if a later `Review` accepts the draft, a `kb-{type}-{slug}.md` is generated from it and written into `approved/`; the original `draft-*.md` remains in `drafts/` as a traceability record
+- if a later `Review` rejects the draft, the `draft-*.md` is moved from `drafts/` to `archived/` (see `reviews/TEMPLATE.md §Rejected Decision Handling`)
+- if a later `Review` defers the draft, the `draft-*.md` remains in `drafts/` until a subsequent task re-opens the review

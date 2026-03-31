@@ -89,7 +89,7 @@ When Step 1's `Learning` is `acquire-required`, acquisition artifacts are writte
 
 ## Validation Rules
 
-- `Required Reads` must not be omitted
+- `Required Reads` must not be omitted; must include `mind/soul/core.md`, `learning-read.md`, `task-profile.md`
 - `Risks` must not be omitted; use `none` if genuinely empty
 - `Step-level Learning Need` must use exactly one of: `acquire-required / terminal-only / optional / not-needed`
 - `Possible Inference Trigger` must not be omitted; write `none` if not applicable

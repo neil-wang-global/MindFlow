@@ -10,7 +10,7 @@ This file defines the fixed structure of individual raw source files saved under
 
 ## Purpose
 
-Each file stores the complete, unmodified content fetched from one URL. No summarization, extraction, paraphrasing, or interpretation is permitted in this file. The content field must contain the text as fetched by the tool, without further modification.
+Each file stores the content fetched from one URL as returned by the fetch tool. The agent must not further summarize, extract, paraphrase, or interpret the fetched content. Tool-level processing (such as HTML-to-markdown conversion or length truncation) is expected and does not violate this rule — the `Fetch Completeness` field records such tool limitations.
 
 ## Fixed Structure
 

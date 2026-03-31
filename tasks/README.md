@@ -29,6 +29,4 @@ The following files do not live inside `tasks/{task-id}/`, but must correspond o
 - old task directories must not be reused
 - task instance content must not be written back into shared template directories
 - `state.md` is the only formal runtime state file
-- `_output/` must not be empty when the task is complete
-- results may be published to `sources/` only when `Plan` explicitly declares it
-- a task directory missing required fixed files is considered incomplete
+- for directory structure and file-level constraints, see `tasks/TEMPLATE.md §Constraints`
