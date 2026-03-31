@@ -155,7 +155,9 @@ It is “knowledge work naturally requires capability division, so the execution
 
 When a task is run under the MindFlow protocol, it must follow this flow:
 
-`Task -> Learning(Read) -> Recognition -> Analysis -> Planning -> Plan -> Execution Control -> [Learning(Acquire)?] -> Reflection -> [Learning(Acquire)?] -> Learning`
+`Task -> Learning(Read) -> Recognition -> Analysis -> Planning -> Execution Control -> Reflection -> Learning`
+
+`Learning(Acquire)` may be triggered conditionally during Execution Control (mid-step) or after Reflection (post-reflection) — see `SYSTEM.md §Phase Transition Protocol` for details.
 
 This means:
 

@@ -151,7 +151,9 @@ MindFlow 的执行层本质上是 MAS。
 
 如果你按 MindFlow 的协议运行任务，每个任务都必须经过这条主流程：
 
-`Task -> Learning(Read) -> Recognition -> Analysis -> Planning -> Plan -> Execution Control -> [Learning(Acquire)?] -> Reflection -> [Learning(Acquire)?] -> Learning`
+`Task -> Learning(Read) -> Recognition -> Analysis -> Planning -> Execution Control -> Reflection -> Learning`
+
+`Learning(Acquire)` 可能在执行控制中途（mid-step）或反思后（post-reflection）被条件触发——详见 `SYSTEM.md §Phase Transition Protocol`。
 
 含义如下：
 

@@ -578,6 +578,9 @@ tasks/20260325-fix-typo-readme/
 ## Step-level Learning Need
 - Step 1: not-needed
 
+## Possible Inference Trigger
+- none
+
 ## Goal
 - Correct the typo in the README
 
