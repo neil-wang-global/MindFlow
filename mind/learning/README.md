@@ -105,6 +105,7 @@ Before writing `tl-{task-id}.md`, the runtime must read:
 - `tasks/{task-id}/_output/`
 - `tasks/{task-id}/cache/`
 - `tasks/{task-id}/acquire/verification-report.md` (if `Learning(Acquire)` was executed)
+- `tasks/{task-id}/acquire/search-log.md` (if `Learning(Acquire)` was executed — required for ACQ Label Reconciliation self-check)
 
 Before running `Learning(Acquire)` mid-flow, also read `mind/learning/acquire/README.md`.
 
