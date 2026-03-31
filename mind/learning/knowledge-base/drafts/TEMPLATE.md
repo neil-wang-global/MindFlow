@@ -65,7 +65,7 @@ This file defines the fixed structure of `mind/learning/knowledge-base/drafts/`.
 - `Source Anchor` must not be omitted; must point to an existing file
 - for `grounded-external`: the cited `src-{NNN}` must appear as `passed` in the `Passed Sources for ACQ-{NNN}` section of the referenced verification report; the `ACQ Event` field must be present and must match the `ACQ Event` field in the raw source file
 - `Original Excerpt` must not be omitted; must be a verbatim quote — no paraphrasing permitted
-- `Candidate Conclusion` must not be omitted; must be copied verbatim from the corresponding `KDC-{NNN}.Derived Conclusion` in `tl-{task-id}.md` — divergence from the tl- record is not permitted; revise `tl-` first if the conclusion needs updating
+- `Candidate Conclusion` must not be omitted; must be copied verbatim from the corresponding `KDC-{NNN}.Derived Conclusion` in `tl-{task-id}.md` — divergence from the tl- record is not permitted (tl is frozen after step 2; any inadequacy should have been caught during step 2's self-review)
 - `Review Status` must always be `pending`
 - `Review Target` must not be omitted
 - drafts without a corresponding review target must not enter `drafts/`

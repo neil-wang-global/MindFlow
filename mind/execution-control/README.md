@@ -30,7 +30,7 @@ Before running `Execution Control`, the runtime must read:
 
 - `mind/soul/core.md`
 - `tasks/{task-id}/state.md`
-- `tasks/{task-id}/plan.md`
+- `tasks/{task-id}/plan.md` (or `analysis-plan.md` in compact mode)
 - the `Capability` definition files referenced by the current `Plan` (if they exist)
 
 ## Outputs
@@ -138,7 +138,7 @@ Before transitioning out of `Execution Control` to `Reflection`, verify:
 - `Ready For Reflection` is set to `yes`
 - `Overall Status` is one of `completed / failed / blocked / cancelled`
 - `_output/` is not empty (when `Overall Status: completed`)
-- all declared handoff files in `plan.md §Handoffs` exist in `cache/` or `_output/`
+- all declared handoff files in `plan.md §Handoffs` (or `analysis-plan.md §Handoffs` in compact mode) exist in `cache/` or `_output/`
 
 ## Key Principles
 

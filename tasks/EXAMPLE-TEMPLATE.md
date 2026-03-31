@@ -350,11 +350,20 @@ Each candidate must include its source location so terminal `Learning` can trace
 - **Original Excerpt**: > "Token bucket allows bursts up to bucket capacity while maintaining a long-term average rate. Sliding window provides smoother rate enforcement but requires more memory for window tracking."
 - **Derived Conclusion**: For APIs needing burst tolerance, token bucket is preferred. For strict per-second smoothness, sliding window is preferred. The choice depends on traffic pattern.
 
+### [KDC-002] Distributed Cache Integration Pattern
+
+**Source Type**: task-output
+
+- **Source Anchor**: `tasks/20260324-api-rate-limiter/_output/rate-limiter-design.md §Cache Integration`
+- **Original Excerpt**: > "Rate limit counters are stored in the distributed cache with TTL matching the rate window. Each request performs an atomic increment-and-check against the cache key."
+- **Derived Conclusion**: Atomic increment-and-check against cache keys with TTL-based expiration is an effective pattern for distributed rate limiting state management.
+
 ## Potential Capability Impact
 - none
 
 ## Next Promotion Target
-- `mind/learning/knowledge-base/drafts/draft-concept-20260324-rate-limiting-tradeoffs.md`
+- KDC-001: promoted to `mind/learning/knowledge-base/drafts/draft-concept-20260324-rate-limiting-tradeoffs.md`
+- KDC-002: promoted to `mind/learning/knowledge-base/drafts/draft-method-20260324-cache-rate-limiting.md`
 
 ## Notes
 - none
