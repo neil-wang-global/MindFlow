@@ -107,6 +107,7 @@ When `reflection-report.md` has non-empty `Learning Candidates` but promotion ca
 Valid suppression reasons:
 
 - all grounded-external candidates were blocked because every relevant ACQ-{NNN} event returned `exhausted` (zero passed sources) — write `Promotion Suppressed Reason: ACQ-{NNN} exhausted — no verifiable sources available`
+- all candidates were intentionally excluded during terminal Learning review — write `Promotion Suppressed Reason: all candidates excluded — {summary of reasons}` (each KDC entry must still have `Derived Conclusion: excluded — {reason}` per the mapping rule above)
 
 Invalid actions when promotion is suppressed:
 
