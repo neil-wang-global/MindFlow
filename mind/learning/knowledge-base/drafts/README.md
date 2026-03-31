@@ -21,4 +21,4 @@ See `TEMPLATE.md` for the formal structure, required fields, validation rules, a
 - every file must come from a clearly identified `Task` and a `tl-{task-id}.md`
 - every file must be prepared to enter `reviews/`
 - not readable by `Learning(Read)` (see `mind/learning/learning-read/README.md §Read Scope`)
-- if a later `Review` accepts the draft, it is converted into `kb-{type}-{slug}.md` and moved into `approved/`
+- if a later `Review` accepts the draft, a `kb-{type}-{slug}.md` is generated from it and written into `approved/`; the original `draft-*.md` remains in `drafts/` as a traceability record

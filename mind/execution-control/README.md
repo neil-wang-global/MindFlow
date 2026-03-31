@@ -59,7 +59,7 @@ Before executing a Step with `Learning: acquire-required`, verify that `state.md
 
 When a task is cancelled by the user before completion:
 
-1. Stop the current Step immediately. Set `Overall Status: cancelled`, record reason
+1. Stop the current Step immediately. Set `Overall Status: cancelled`, `Ready For Reflection: yes`, record reason
 2. Preserve all files already produced
 3. Run a lightweight `Reflection` — see `mind/reflection/README.md §Lightweight Reflection` for scope rules
 4. After lightweight `Reflection`, skip the post-reflection `Learning(Acquire)` check (cancelled tasks do not trigger new acquisition) and proceed directly to terminal `Learning` — if there are no learning candidates, `tl-{task-id}.md` is still written with `Candidate Knowledge: none`

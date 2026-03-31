@@ -24,7 +24,6 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 
 ## Required Reads
 - which files were actually read before running `Analysis`
-- must include `mind/soul/core.md`, `learning-read.md`, `task-profile.md`; also include any `cap-{name}.md` files read from `capabilities/` (omit if no capability definition files exist yet)
 
 ## Stage Breakdown
 - what stages the task should be divided into
@@ -71,7 +70,7 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 
 ## Validation Rules
 
-- `Required Reads` must not be omitted
+- `Required Reads` must not be omitted; must include `mind/soul/core.md`, `learning-read.md`, `task-profile.md`; also include any `cap-{name}.md` files read from `capabilities/` (omit capability reads if no definition files exist yet)
 - any `Analysis Output` without dependency information is incomplete
 - any `Analysis Output` without risk information is incomplete
 - `Step Drafts` must be mappable to concrete `Step`s in the subsequent `Plan`
