@@ -57,6 +57,7 @@ This file defines the fixed structure of `mind/learning/knowledge-base/approved/
 
 ## Validation Rules
 
+- `Type` must not be omitted; must be one of `concept / method / domain / self`; must match the `{type}` in the filename
 - `Review Status` must always be `accepted`
 - `Approved By Review` must not be omitted
 - `Summary` must preserve the meaning of `Candidate Conclusion` in the corresponding `draft-*.md`; purely editorial changes (formatting, punctuation, grammar) are permitted but substantive divergence is a protocol violation

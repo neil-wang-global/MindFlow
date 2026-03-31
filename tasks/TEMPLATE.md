@@ -9,8 +9,9 @@ tasks/{task-id}/
 ├── learning-read.md
 ├── state.md
 ├── task-profile.md
-├── analysis.md
-├── plan.md
+├── analysis.md              (standard mode)
+├── plan.md                  (standard mode)
+├── analysis-plan.md         (compact mode — replaces analysis.md and plan.md)
 ├── reflection-report.md
 ├── _output/
 ├── cache/

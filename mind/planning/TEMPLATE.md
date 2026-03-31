@@ -61,6 +61,10 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 
 ## Planning Rules
 
+- `Task ID` must not be omitted; must match the current task
+- `Goal` must not be omitted
+- `Runtime State` must not be omitted; must reference `tasks/{task-id}/state.md`
+- `Global Constraints` must not be omitted
 - `state.md` already exists (created by `Learning(Read)`); after `plan.md` is written, `Planning` must update `state.md` to populate `Step Status Map` and transition phase (see `mind/planning/README.md §Phase Entry`)
 - the `Capability` field must contain exactly one main capability
 - the `Constraints` field must explicitly list the constraint files that must be read before that `Step` runs
@@ -83,3 +87,7 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - parallel `Step`s must not write to the same undeclared shared output path
 - `Instructions` must be executable actions, not abstract slogans
 - if a Step's `Learning` value differs from `analysis.md §Step-level Learning Need`, the reason must be stated in `Instructions`
+- each Step must have a `Name` field
+- `Output Isolation` must not be omitted
+- `Handoffs` must not be omitted; for single-step tasks, write `single-step task — no inter-step handoff`
+- `Completion Check` (plan-level) must not be omitted

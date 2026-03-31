@@ -70,10 +70,16 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 
 ## Validation Rules
 
+- `Task ID` must not be omitted; must match `task-profile.md §Task ID`
+- `Problem Definition` must not be omitted
+- `Success Conditions` must not be omitted
 - `Required Reads` must not be omitted; must include `mind/soul/core.md`, `learning-read.md`, `task-profile.md`; also include any `cap-{name}.md` files read from `capabilities/` (omit capability reads if no definition files exist yet)
+- `Stage Breakdown` must not be omitted
+- `Step Drafts` must not be omitted; must be mappable to concrete `Step`s in the subsequent `Plan`
+- `Dispatch Assessment` must not be omitted; for each Step, the Dispatch Mode decision and reason must be stated
 - any `Analysis Output` without dependency information is incomplete
 - any `Analysis Output` without risk information is incomplete
-- `Step Drafts` must be mappable to concrete `Step`s in the subsequent `Plan`
+- `Risks` must not be omitted; write `none` if genuinely empty
 - `Step-level Learning Need` must use exactly one of: `acquire-required / terminal-only / optional / not-needed` per Step
 - classifications must be consistent with `task-profile.md §Task-level Learning Possibility` per the mapping rules in `§Step-level Learning Need` above; if task-level is `not-expected`, no Step should be `acquire-required` without explicit justification in `Notes`
 - `Possible Inference Trigger` must not be omitted; write `none` if not applicable

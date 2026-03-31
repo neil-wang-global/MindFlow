@@ -42,8 +42,9 @@ This file defines the fixed structure of `Learning(Read)`.
 
 ## Validation Rules
 
+- `Task ID` must not be omitted; must match the current task
 - `Soul Reads` must not be omitted
 - `Approved Knowledge Reads` may be empty, but the heading must remain; use `none` when there is no match
 - `Read Scope Notes` must not be omitted
 - `Pending Cross-Task Items` must not be omitted; use `none` when there are no pending items
-- `Excluded Areas` must list the full required set
+- `Excluded Areas` must list the full required set: `mind/learning/knowledge-base/drafts/`, `mind/learning/knowledge-base/archived/`, `mind/learning/task-learning/`

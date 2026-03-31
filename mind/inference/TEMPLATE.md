@@ -54,9 +54,15 @@ This file defines the fixed structure of `Inference` output.
 
 ## Validation Rules
 
+- `Task ID` must not be omitted; must match the current task
 - `Trigger` must not be omitted; must be one of: `analysis` / `reflection` / `terminal-learning` / `user-request`
 - `Trigger Artifact` must not be omitted; must point to a specific file and section
+- `Question` must not be omitted
+- `Reasoning` must not be omitted
 - `Provisional Conclusion` must not be omitted
-- `Status` defaults to `provisional` at creation time
+- `Confidence` must not be omitted; must be one of: `high` / `medium` / `low`
+- `Constraints Applied` must not be omitted
+- `Limitations` must not be omitted
+- `Status` must not be omitted; must be one of: `provisional` / `accepted-into-analysis` / `accepted-into-reflection` / `accepted-into-terminal-learning` / `rejected`; defaults to `provisional` at creation time
 - inference output must not be directly promoted to `approved/` knowledge or applied as a capability change
 - if an inference conclusion is later validated by task results or external sources, it may enter the learning pipeline through the normal `tl-{task-id}.md` → `draft-*.md` → `review-*.md` path

@@ -59,6 +59,8 @@ This file defines the fixed structure of `mind/learning/knowledge-base/drafts/`.
 
 ## Validation Rules
 
+- `Type` must not be omitted; must be one of `concept / method / domain / self`; must match the `{type}` in the filename
+- `Task ID` must not be omitted; must match the `{task-id}` in the filename
 - `Summary` must not introduce any claim not present in `Candidate Conclusion`; it must be a condensation only
 - `From Task Learning` must not be omitted; must reference a specific `KDC-{NNN}` item
 - `Source Type` must not be omitted; must be `grounded-external` or `task-output`

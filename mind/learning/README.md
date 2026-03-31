@@ -54,7 +54,7 @@ It must execute in this order:
    - the agent that wrote the `draft-*.md` must not also write the corresponding `review-*.md`
    - `Verification Mode` in the review file must be `independent-subagent`; any review written in the same context as its draft is invalid
 5. process review decisions and promote or archive accordingly:
-   - **accepted**: read `mind/learning/knowledge-base/approved/TEMPLATE.md` and generate `kb-{type}-{slug}.md`; if a `kb-*.md` with the same name already exists in `approved/`, move the existing file to `archived/` first (per `approved/README.md §Prohibitions` and `archived/README.md §Superseded Approved Knowledge`); update `approved/INDEX.md` to list the new entry with its Type and one-line Summary
+   - **accepted**: read `mind/learning/knowledge-base/approved/TEMPLATE.md` and generate `kb-{type}-{slug}.md`; if a `kb-*.md` with the same name already exists in `approved/`, move the existing file to `archived/` first — before moving, add `Superseded By` and `Superseded In Task` fields per `archived/README.md §Superseded Approved Knowledge`, and remove the old entry from `approved/INDEX.md`; then update `approved/INDEX.md` to list the new entry with its Type and one-line Summary
    - **rejected**: move the corresponding `draft-*.md` from `drafts/` to `archived/` (per `reviews/TEMPLATE.md §Rejected Decision Handling` and `archived/README.md §Rejected Drafts`)
    - **deferred**: the corresponding `draft-*.md` remains in `drafts/` (per `reviews/TEMPLATE.md §Deferred Decision Lifecycle`)
 6. process knowledge gap files based on ACQ event outcomes in `tl-{task-id}.md §External Acquisition`:

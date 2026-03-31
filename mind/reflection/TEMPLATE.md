@@ -64,6 +64,7 @@ Each candidate must include its source location so terminal `Learning` can trace
 
 ## Validation Rules
 
+- `Task ID` must not be omitted; must match the current task
 - `Result Evaluation`, `Process Review`, `Issue Detection` must not be omitted
 - `Issue Detection: Requires External Acquisition` must be `yes` or `no`
 - `Learning Candidates` must not be omitted

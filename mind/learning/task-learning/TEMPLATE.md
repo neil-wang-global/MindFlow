@@ -86,6 +86,7 @@ For `task-output`:
 ## Validation Rules
 
 - `Task ID` must not be omitted
+- `Task Summary` must not be omitted
 - `External Acquisition` must not be omitted; if any acquisition occurred, every event must be listed as a separate ACQ-{NNN} entry
 - `exhausted` must not be used to silently suppress learning; the `Impact` sub-field must explain what knowledge could not be grounded and why
 - every item under `Candidate Knowledge` must have a `Source Type`, a source anchor field, an `Original Excerpt`, and a `Derived Conclusion`

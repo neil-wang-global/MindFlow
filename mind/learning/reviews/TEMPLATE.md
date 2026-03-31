@@ -75,6 +75,9 @@ This file defines the fixed structure of learning review records.
 
 ## Validation Rules
 
+- `Subject` must not be omitted
+- `Source Task` must not be omitted; must reference a valid task ID
+- `Candidate File` must not be omitted; must point to an existing `draft-*.md` file
 - `Summary Verified` must not be omitted
 - if `Summary Verified` is `no`, `Decision` must be `rejected`
 - `Verification Mode` must not be omitted

@@ -60,8 +60,15 @@ Every task must produce it before `Analysis` may continue.
 
 ## Validation Rules
 
+- `Task ID` must not be omitted
+- `Task Type` must not be omitted; must be one of `delivery / learning / mixed`
 - if the task goal itself is learning, `Task Type` must not be `delivery`
+- `Goal` must not be omitted
+- `Success Criteria` must not be omitted
+- `Complexity` must not be omitted; must be one of `low / medium / high`
+- `Risk` must not be omitted; must be one of `low / medium / high`
 - if inputs are severely insufficient, that must be explicitly stated in `Constraints`
 - if the task may drift, `Risk` must not be set to low
-- `Mode` must be `standard` or `compact`; `compact` is only valid when both `Complexity: low` and `Risk: low`
-- `Mode` must not be omitted
+- `Task-level Learning Possibility` must not be omitted; must be one of `acquire-likely / terminal-only / not-expected`
+- `Mode` must not be omitted; must be `standard` or `compact`; `compact` is only valid when both `Complexity: low` and `Risk: low`
+- `Inference Possibility` must not be omitted

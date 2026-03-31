@@ -53,6 +53,10 @@ This file defines the fixed structure of `Capability Update Record`.
 
 ## Validation Rules
 
+- `Capability` must not be omitted
+- `Update Type` must not be omitted; must be one of `add / modify / split / deprecate`
+- `Reason` must not be omitted
+- `Source` must not be omitted; must reference a specific task or learning record
 - `Review Reference` must not be omitted; must be either a `review-*.md` path or a `reflection-triggered: ...` pointer — it may not be `none`
 - `Target Capability File` must not be omitted
 - `Planned Changes` must not be omitted
