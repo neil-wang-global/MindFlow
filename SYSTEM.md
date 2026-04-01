@@ -25,6 +25,17 @@ There are two categories of loadable resources:
 
 Before entering any module or any `Step`, the AI must read that module's `README.md` (and `TEMPLATE.md` when producing an artifact). The `Required Reads` declared in that `README.md` are mandatory inputs for that phase and must also be read. Do not recursively chase secondary references from within those input files — only the module's own `README.md` defines what must be read. `SYSTEM.md` is assumed loaded at task start.
 
+### Subagent Soul Constraint
+
+When the main agent dispatches a subagent to execute a sub-operation (e.g., review verification, ACQ Stage 3 verification), the subagent's prompt must include `mind/soul/core.md` in its entirety. Soul constraints must not be lost at subagent boundaries.
+
+Subagent prompts should follow the **minimum context principle**:
+
+- **Must include**: `mind/soul/core.md` (complete content, not a summary)
+- **Must include**: the `README.md` and `TEMPLATE.md` of the module relevant to the sub-operation (e.g., `reviews/TEMPLATE.md` for review subagents)
+- **Should not include**: other modules' README/TEMPLATE files, the full `SYSTEM.md`, or unrelated historical context
+- **Exception**: if the sub-operation requires cross-module information, include only the specific file needed
+
 ## Task Initialization
 
 1. Read `SYSTEM.md` (this file)
