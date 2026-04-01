@@ -32,3 +32,6 @@
 
 ## Scan History
 - 20260401-failure-test: created
+- 20260401-inference-test: scanned (status: proposed, not relevant to current task)
+- 20260401-midstep-acq-test: scanned (status: proposed, threshold not met 1 < 3, no action required)
+- 20260401-pure-learning-test: scanned (status: proposed, threshold not met 1 < 3, no action required)
