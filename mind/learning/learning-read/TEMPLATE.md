@@ -28,11 +28,11 @@ This file defines the fixed structure of `Learning(Read)`.
 - which knowledge is treated as key constraints
 
 ## Pending Cross-Task Items
-- list any `cu-*.md` files in `mind/learning/capability-updates/` with `Status: proposed` or `Status: approved`
-- list any `review-*.md` files in `mind/learning/reviews/` with `Decision: deferred`
-- list any `review-*.md` files in `mind/learning/reviews/` with `Verification Mode: same-context` (count these; if count meets the threshold in `SYSTEM.md §Cross-Task Staleness Thresholds` for Same-Context Rejections, flag as `human-review-escalation-trigger: yes` so `Analysis` can include a maintenance Step for human review)
-- list any `gap-*.md` files in `mind/learning/knowledge-gaps/` with `Status: open`; also count those whose `Exhaustion Reason` contains `independent verification unavailable` — if count meets the threshold in `SYSTEM.md §Cross-Task Staleness Thresholds` for ACQ Verification Gaps, flag as `human-verification-escalation-trigger: yes`
-- write `none` if no pending items exist
+- **Capability Updates**: list any `cu-*.md` files in `mind/learning/capability-updates/` with `Status: proposed` or `Status: approved`; write `none` if empty
+- **Deferred Reviews**: list any `review-*.md` files in `mind/learning/reviews/` with `Decision: deferred`; write `none` if empty
+- **Same-Context Rejections**: count `review-*.md` files in `mind/learning/reviews/` with `Verification Mode: same-context`; write the count; if count meets the threshold in `SYSTEM.md §Cross-Task Staleness Thresholds` for Same-Context Rejections, write `human-review-escalation-trigger: yes`; otherwise write `human-review-escalation-trigger: no`
+- **Knowledge Gaps**: list any `gap-*.md` files in `mind/learning/knowledge-gaps/` with `Status: open`; write `none` if empty; also count those whose `Exhaustion Reason` contains `independent verification unavailable`; if count meets the threshold in `SYSTEM.md §Cross-Task Staleness Thresholds` for ACQ Verification Gaps, write `human-verification-escalation-trigger: yes`; otherwise write `human-verification-escalation-trigger: no`
+- write `none` for the entire section only if all four sub-categories are empty
 
 ## Excluded Areas
 - `mind/learning/knowledge-base/drafts/`

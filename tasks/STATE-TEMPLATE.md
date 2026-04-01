@@ -50,7 +50,7 @@ This file defines the fixed structure of the task runtime state file.
 
 ## Learning(Acquire) Log
 - records the outcome of every `Learning(Acquire)` event in this task:
-  - **Step-triggered (acquire-required)**: `Step {N}: gap-encountered → ACQ-{NNN} triggered` | `Step {N}: no-gap → skipped (reason: {explicit reason})`
+  - **Step-triggered (acquire-required)**: `Step {N}: pending` (placeholder added by Pre-Step Verification) → updated to `Step {N}: gap-encountered → ACQ-{NNN} triggered` | `Step {N}: no-gap → skipped (reason: {explicit reason})`
   - **Step-triggered (optional)**: uses the same format as acquire-required; the only difference is that a `skipped` entry is not required when no gap is encountered (per `mind/execution-control/README.md §Pre-Step Verification`)
   - **Reflection-triggered**: `Reflection: external-acquisition-required → ACQ-{NNN} triggered` | `Reflection: no-external-acquisition-required`
 - when an ACQ event is in progress, append the current stage: `ACQ-{NNN}: stage-1-search-complete` / `ACQ-{NNN}: stage-2-fetch-complete` / `ACQ-{NNN}: stage-3-verification-complete`
