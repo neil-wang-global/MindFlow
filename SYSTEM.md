@@ -25,6 +25,16 @@ There are two categories of loadable resources:
 
 Before entering any module or any `Step`, the AI must read that module's `README.md` (and `TEMPLATE.md` when producing an artifact). The `Required Reads` declared in that `README.md` are mandatory inputs for that phase and must also be read. Do not recursively chase secondary references from within those input files — only the module's own `README.md` defines what must be read. `SYSTEM.md` is assumed loaded at task start.
 
+### Soul Auto-Load Rule
+
+`mind/soul/core.md` must be loaded on every module entry. This is a cross-module invariant — Soul constraints apply to all phases without exception.
+
+Every module's Required Reads (or Read Scope) must include `mind/soul/core.md`. If a module's README omits this line, it is a protocol defect that must be corrected. The redundancy between this global rule and per-module declarations is intentional: it prevents omission when new modules are added.
+
+This rule also covers:
+- Recovery (§Recovery Protocol step 4 mandates soul reload)
+- Subagent dispatch (§Subagent Soul Constraint mandates soul inclusion in prompts)
+
 ### Subagent Soul Constraint
 
 When the main agent dispatches a subagent to execute a sub-operation (e.g., review verification, ACQ Stage 3 verification), the subagent's prompt must include `mind/soul/core.md` in its entirety. Soul constraints must not be lost at subagent boundaries.
@@ -179,7 +189,7 @@ When a session resumes after interruption:
 8. **Planning recovery**: when `Current Phase: planning` and `plan.md` already exists, complete the `state.md` updates (set `Current Phase: execution-control`, populate `Step Status Map`, set `Current Step` to Step 1) without re-running Planning
 9. **Compact mode recovery**: when `Current Phase: analysis` but `analysis-plan.md` already exists, the task is in compact mode and analysis is complete — resume by transitioning directly to `execution-control` (populate `Step Status Map` and `Current Step` if not yet populated)
 10. When `Current Phase: learning-acquire`, determine the trigger context: if any Step in `Step Status Map` is `blocked`, this is a mid-step ACQ — after completion, restore `Current Phase: execution-control` and resume that Step; if `reflection-report.md` exists and no Step is `blocked`, this is a post-reflection ACQ — after completion, set `Current Phase: terminal-learning`. Then check `acquire/` directory to determine the sub-stage (search-log exists? raw-sources populated? verification-report exists?) and resume from the incomplete sub-stage
-11. When `Current Phase: terminal-learning`, check which terminal Learning step was last completed: if `tl-{task-id}.md` does not exist, resume from step 1; if `tl-{task-id}.md` exists but no `draft-*.md` (and `Candidate Knowledge` is not `none`), resume from step 3; if `draft-*.md` exists but no `review-*.md`, resume from step 4; if `review-*.md` exists but no `kb-*.md` (and review is accepted), resume from step 5; if all promotion is done (or `Candidate Knowledge: none`), resume from step 6 (gap processing and capability updates — these steps always execute)
+11. When `Current Phase: terminal-learning`, check which terminal Learning step was last completed: if `tl-{task-id}.md` does not exist, resume from step 1; if `tl-{task-id}.md` exists but no `draft-*.md` (and `Candidate Knowledge` is not `none`), resume from step 3; if `draft-*.md` exists but no `review-*.md`, resume from step 4; if `review-*.md` exists but no `kb-*.md` (and review is accepted), resume from step 5; if all promotion is done (or `Candidate Knowledge: none`), resume from step 6 (gap processing and capability updates — these steps always execute). After completing the remaining terminal Learning steps on recovery, re-evaluate `Knowledge Outcome` per `mind/learning/README.md §Knowledge Outcome Determination` — the value may have been left at its initialization default (`not-applicable`) if the original session was interrupted before the determination step
 12. If `state.md` is missing or corrupted, treat the task as non-resumable and report the issue
 
 ## Self-Check Points

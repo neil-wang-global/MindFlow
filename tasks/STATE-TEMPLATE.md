@@ -62,6 +62,7 @@ This file defines the fixed structure of the task runtime state file.
   - **Step-triggered (optional)**: uses the same format as acquire-required; the only difference is that a `skipped` entry is not required when no gap is encountered (per `mind/execution-control/README.md §Pre-Step Verification`)
   - **Reflection-triggered**: `Reflection: external-acquisition-required → ACQ-{NNN} triggered` | `Reflection: no-external-acquisition-required`
 - when an ACQ event is in progress, append the current stage: `ACQ-{NNN}: stage-1-search-complete` / `ACQ-{NNN}: stage-2-fetch-complete` / `ACQ-{NNN}: stage-3-verification-complete`
+  - when verification runs in degraded mode, append after the stage-3 entry: `verification-mode: same-context` or `verification-mode: human-reviewed`
 - write `none` if no Step has `Learning: acquire-required` or `Learning: optional`, and reflection did not require external acquisition
 ```
 
