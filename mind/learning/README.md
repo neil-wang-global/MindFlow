@@ -109,6 +109,16 @@ Before writing `tl-{task-id}.md`, the runtime must read:
 
 Before running `Learning(Acquire)` mid-flow, also read `mind/learning/acquire/README.md`.
 
+## Exit Validation
+
+Before setting the final task state (per `SYSTEM.md §Phase Transition Protocol` step 4), verify:
+
+- `tl-{task-id}.md` exists in `mind/learning/task-learning/`
+- all promotion decisions have been processed (accepted → `kb-*.md` written; rejected → `draft-*.md` moved to `archived/`; deferred → `draft-*.md` remains in `drafts/`)
+- gap files have been created or updated per §Execution Steps step 6
+- `cu-*.md` files have been created per §Execution Steps step 7 (if applicable)
+- §Task Completion Check passes
+
 ## Subdirectory Overview
 
 - `knowledge-base/`: system-level knowledge assets
