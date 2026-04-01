@@ -75,7 +75,7 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - `Learning` must be one of `acquire-required / terminal-only / optional / not-needed`
   - `acquire-required`: this Step may encounter a knowledge gap; if it does, `Learning(Acquire)` must be triggered; when the Step completes, record in `state.md` whether acquisition was triggered or skipped with explicit reason
   - `terminal-only`: learning captured at terminal Learning from task-internal artifacts only
-  - `optional`: learning may occur but is not mandatory
+  - `optional`: learning may occur but is not mandatory; if a knowledge gap is encountered during execution, `Learning(Acquire)` may be triggered using the same mid-step mechanism as `acquire-required` (see `mind/execution-control/README.md §Pre-Step Verification`)
   - `not-needed`: no learnable knowledge expected
 - `Depends On` must not be omitted; use `none` when there is no dependency
 - `Completion Criteria` must be written as objectively checkable conditions — each condition must reference a specific observable artifact, state, or measurable outcome (e.g., "file X exists", "test passes", "output contains Y"); tautological conditions like "step is complete" are not valid

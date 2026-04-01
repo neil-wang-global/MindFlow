@@ -85,6 +85,16 @@ If the runtime environment does not support independent subagent dispatch for St
 - this degradation is recorded via `Verification Mode: same-context` in `verification-report.md`; `Reflection` will detect and surface this in `reflection-report.md §Issue Detection` when processing the verification results
 - since the event is `exhausted`, the corresponding `Candidate Knowledge` items in `tl-{task-id}.md` must list `Derived Conclusion: none — ACQ-{NNN} exhausted` and must not be promoted (per `task-learning/TEMPLATE.md`); the knowledge gap enters `mind/learning/knowledge-gaps/` for future retry with independent subagent support
 
+### Human Verification Escalation
+
+When `Learning(Read)` detects 2 or more `gap-*.md` files in `mind/learning/knowledge-gaps/` with `Exhaustion Reason` containing `independent verification unavailable`, the runtime may escalate verification to human review:
+
+- **Action**: present the `raw-sources/` files and their metadata to the user for manual verification (URL accessibility, content match, credibility)
+- **If the user confirms**: the verification report is written with `Verification Mode: human-reviewed`; sources confirmed by the user may be marked `passed`
+- **If the user declines or is unavailable**: the standard degradation applies — the event remains `exhausted`
+- `human-reviewed` verification must record in `verification-report.md §Notes`: who reviewed and what was verified
+- this mode does not bypass the `Fetch Coverage` cross-check or the `Content Match → Verification Status Mapping` — all fields must still be filled accurately by the reviewing party
+
 ## Multi-Event Structure
 
 A task may trigger `Learning(Acquire)` more than once. Each trigger is a separate acquisition event identified as `ACQ-001`, `ACQ-002`, etc.

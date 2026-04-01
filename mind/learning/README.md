@@ -83,7 +83,7 @@ Before writing `tl-{task-id}.md`: read `state.md §Learning(Acquire) Log` and ve
 
 ### Excerpt Fidelity Check
 
-Defined inline in §Execution Steps step 2. Verification: re-read source file, confirm `Original Excerpt` is a verbatim substring (apply whitespace normalization per `reviews/TEMPLATE.md §Source Anchor Verified`). On failure: correct in `tl-{task-id}.md` before freeze. Once this check passes, step 2 is complete and the file is frozen.
+Defined inline in §Execution Steps step 2. Verification: re-read source file, confirm `Original Excerpt` is a verbatim substring (apply whitespace normalization per `reviews/TEMPLATE.md §Source Anchor Verified`); **use a search tool (e.g., Grep with literal/fixed-string mode) to perform the substring check rather than relying on memory-based comparison**. On failure: correct in `tl-{task-id}.md` before freeze. Once this check passes, step 2 is complete and the file is frozen.
 
 ### Promotion Gate Check
 
