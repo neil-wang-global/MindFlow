@@ -111,6 +111,8 @@ Both `Learning(Acquire)` Stage 3 (verification) and terminal `Learning` step 4 (
 | Capability Updates | 3+ pending | scan count > 2 | flag in reflection |
 | Deferred Reviews | 2+ pending | scan count > 2 | re-open or reject |
 | Knowledge Gaps | relevant to task | scan count > 3 | flag in reflection |
+| Same-Context Rejections | 2+ accumulated | — | human review escalation |
+| ACQ Verification Gaps | 2+ with `independent verification unavailable` | — | human verification escalation |
 
 ### Capability Update Advancement
 

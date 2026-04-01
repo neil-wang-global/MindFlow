@@ -18,8 +18,8 @@ This directory defines the formal audit record of `Learning(Read)`.
 It must also scan for pending cross-task items (read-only inspection — not as knowledge sources, but findings may trigger mandatory maintenance steps in the Plan per `SYSTEM.md §Capability Update Advancement` and `§Deferred Review Advancement`):
 
 - `mind/learning/capability-updates/` — files with `Status: proposed` or `Status: approved`
-- `mind/learning/reviews/` — files with `Decision: deferred`; also scan for files with `Verification Mode: same-context` to count accumulated same-context rejections and detect human review escalation triggers per `reviews/TEMPLATE.md §Human Review Escalation`
-- `mind/learning/knowledge-gaps/` — files with `Status: open` (unresolved knowledge gaps from prior tasks' exhausted ACQ events; a future task encountering the same knowledge need may trigger a new `Learning(Acquire)` event with different search strategies)
+- `mind/learning/reviews/` — files with `Decision: deferred`; also scan for files with `Verification Mode: same-context` to count accumulated same-context rejections and detect human review escalation triggers per `SYSTEM.md §Cross-Task Staleness Thresholds`
+- `mind/learning/knowledge-gaps/` — files with `Status: open` (unresolved knowledge gaps from prior tasks' exhausted ACQ events); also scan `Exhaustion Reason` for `independent verification unavailable` entries to detect human verification escalation triggers per `SYSTEM.md §Cross-Task Staleness Thresholds`
 
 It must not read for knowledge purposes:
 

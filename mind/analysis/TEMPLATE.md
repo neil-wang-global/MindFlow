@@ -83,3 +83,4 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 - `Step-level Learning Need` must use exactly one of: `acquire-required / terminal-only / optional / not-needed` per Step
 - classifications must be consistent with `task-profile.md §Task-level Learning Possibility` per the mapping rules in `§Step-level Learning Need` above; if task-level is `not-expected`, no Step should be `acquire-required` without explicit justification in `Notes`
 - `Possible Inference Trigger` must not be omitted; write `none` if not applicable
+- if `learning-read.md §Pending Cross-Task Items` reports items exceeding `SYSTEM.md §Cross-Task Staleness Thresholds`, `Step Drafts` must include at least one dedicated maintenance Step to address them; omitting the maintenance Step when thresholds are exceeded is a validation failure

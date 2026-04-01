@@ -163,6 +163,7 @@ tasks/20260324-api-rate-limiter/
 - mind/soul/core.md
 - tasks/20260324-api-rate-limiter/learning-read.md
 - tasks/20260324-api-rate-limiter/task-profile.md
+- (no cap-*.md files read — capability definition files do not exist yet; labels used as classification identifiers only)
 
 ## Stage Breakdown
 - Stage 1: Research — compare rate limiting algorithms
