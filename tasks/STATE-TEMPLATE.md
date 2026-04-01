@@ -16,7 +16,8 @@ This file defines the fixed structure of the task runtime state file.
 - current task ID
 
 ## Current Phase
-- `learning-read / recognition / analysis / planning / execution-control / learning-acquire / reflection / terminal-learning / completed / cancelled`
+- active phases: `learning-read / recognition / analysis / planning / execution-control / learning-acquire / reflection / terminal-learning`
+- terminal states: `completed / cancelled` (set only by terminal `Learning` upon task conclusion — see `SYSTEM.md §Phase Transition Protocol` step 4)
 - note: in compact mode, `planning` may be skipped — the runtime transitions directly from `analysis` to `execution-control` (see `mind/analysis/README.md §Compact Mode`)
 
 ## Current Step
@@ -25,7 +26,7 @@ This file defines the fixed structure of the task runtime state file.
 
 ## Overall Status
 - `running / blocked / failed / completed / cancelled`
-- note: when terminal `Learning` completes, `Current Phase` and `Overall Status` are set as a pair per `SYSTEM.md §Phase Transition Protocol` step 4 (e.g., `Current Phase: completed` + `Overall Status: completed`; or `Current Phase: completed` + `Overall Status: failed`)
+- note: when terminal `Learning` completes, `Current Phase` and `Overall Status` are set as a pair per `SYSTEM.md §Phase Transition Protocol` step 4: `completed → completed/completed`; `cancelled → cancelled/cancelled`; `failed → completed/failed`; `blocked → completed/blocked` (format: `Current Phase / Overall Status`)
 
 ## Step Status Map
 - `Step 1: pending / running / completed / failed / blocked`
@@ -49,10 +50,11 @@ This file defines the fixed structure of the task runtime state file.
 
 ## Learning(Acquire) Log
 - records the outcome of every `Learning(Acquire)` event in this task:
-  - **Step-triggered**: `Step {N}: gap-encountered → ACQ-{NNN} triggered` | `Step {N}: no-gap → skipped (reason: {explicit reason})`
+  - **Step-triggered (acquire-required)**: `Step {N}: gap-encountered → ACQ-{NNN} triggered` | `Step {N}: no-gap → skipped (reason: {explicit reason})`
+  - **Step-triggered (optional)**: uses the same format as acquire-required; the only difference is that a `skipped` entry is not required when no gap is encountered (per `mind/execution-control/README.md §Pre-Step Verification`)
   - **Reflection-triggered**: `Reflection: external-acquisition-required → ACQ-{NNN} triggered` | `Reflection: no-external-acquisition-required`
 - when an ACQ event is in progress, append the current stage: `ACQ-{NNN}: stage-1-search-complete` / `ACQ-{NNN}: stage-2-fetch-complete` / `ACQ-{NNN}: stage-3-verification-complete`
-- write `none` if no Step has `Learning: acquire-required` and reflection did not require external acquisition
+- write `none` if no Step has `Learning: acquire-required` or `Learning: optional`, and reflection did not require external acquisition
 ```
 
 ## Initialization Rules

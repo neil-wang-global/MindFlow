@@ -72,6 +72,7 @@ Each candidate must include its source location so terminal `Learning` can trace
 - if either `Requires External Acquisition` is `yes`, `Learning(Acquire)` must be triggered before terminal `Learning`
 - `Capability Impact` and `Inference Triggers` must not be omitted
 - `Process Review` must include the dispatch and merge assessment subsection; for each Step, the planned vs actual Dispatch Mode comparison must be stated; omission is only permitted in lightweight reflection mode (cancelled tasks) where the assessment may be noted as `incomplete — task cancelled`
+- in compact mode (single Step, always sequential), the dispatch assessment may be abbreviated to: `Step 1: Dispatch Mode: sequential → sequential; outcome: consistent` — no further elaboration required
 - **task-type-conditional rules** (per `SYSTEM.md §Task Type Variants`):
   - when `Task Type: delivery`: `_output/` must contain a concrete deliverable; `Learning Candidates` may be empty
   - when `Task Type: learning`: `_output/` must contain a knowledge artifact; `Learning Candidates` must not be empty unless all ACQ events were `exhausted`

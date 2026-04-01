@@ -22,7 +22,7 @@ This file defines the fixed structure of `Inference` output.
 
 ## Trigger Artifact
 - the specific file and section that triggered the inference
-- e.g. `tasks/{task-id}/analysis.md §Complexity Assessment`
+- e.g. `tasks/{task-id}/analysis.md §Risks`
 
 ## Question
 - the specific question or gap that inference is attempting to address

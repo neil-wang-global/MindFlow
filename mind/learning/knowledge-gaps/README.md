@@ -67,4 +67,5 @@ Where:
 - `Status: open` gaps must not be deleted; they are resolved by updating the `Status` field
 - `Attempted Strategies` must not be omitted; future retry tasks must consult this field and use different search approaches
 - `Learning(Read)` scans this directory read-only; it does not modify gap files except `§Scan History` (per `learning-read/README.md §Write Scope`)
-- when a retry task's `Learning(Acquire)` targets this gap (regardless of success or failure), terminal `Learning` must increment `Retry Count` in the gap file; if `Retry Count` reaches 3 and the gap is still unresolved, the task must set `Status: permanent` — the gap requires human intervention and is no longer automatically retried
+- when a retry task's `Learning(Acquire)` targets this gap and the event is `exhausted`, terminal `Learning` must increment `Retry Count` in the gap file; if `Retry Count` reaches 3 and the gap is still unresolved, the task must set `Status: permanent` — the gap requires human intervention and is no longer automatically retried
+- when a retry task's `Learning(Acquire)` targets this gap and the event `completed` successfully, terminal `Learning` must update `Status: resolved` and fill the `Resolution` field — `Retry Count` is not incremented for a successful resolution

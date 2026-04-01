@@ -22,6 +22,7 @@ Before producing `reflection-report.md`, the runtime must read:
 - `tasks/{task-id}/task-profile.md` (for `§Success Criteria` — used in `Result Evaluation`)
 - `tasks/{task-id}/state.md`
 - `tasks/{task-id}/plan.md` (or `analysis-plan.md` in compact mode — including dispatch fields and parallel merge rules)
+- `tasks/{task-id}/analysis.md` (or `analysis-plan.md` in compact mode — for the original Dispatch Assessment and risk analysis that inform `Process Review`)
 - `tasks/{task-id}/cache/`
 - `tasks/{task-id}/_output/`
 - if publish-back exists, the `sources/` publish-back paths declared in `Plan`

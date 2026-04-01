@@ -47,9 +47,11 @@ Before running `Execution Control`, the runtime must read:
 
 Transition to `Reflection` occurs in three scenarios, each with a different `Overall Status`:
 
-- **all Steps completed normally**: set `Overall Status: completed`, `Ready For Reflection: yes`, `Current Phase: reflection`
-- **`stop` triggered**: set `Overall Status: failed`, mark Step as `failed`, set `Ready For Reflection: yes`, `Current Phase: reflection`
-- **`escalate-to-reflection` triggered**: set `Overall Status: blocked`, mark Step as `failed`, set `Ready For Reflection: yes`, `Current Phase: reflection`
+- **all Steps completed normally**: set `Overall Status: completed`, `Ready For Reflection: yes`
+- **`stop` triggered**: set `Overall Status: failed`, mark Step as `failed`, set `Ready For Reflection: yes`
+- **`escalate-to-reflection` triggered**: set `Overall Status: blocked`, mark Step as `failed`, set `Ready For Reflection: yes`
+
+`Current Phase: reflection` is set by the `Reflection` module upon entry (per `SYSTEM.md §Phase Transition Protocol` — each module sets its own phase).
 
 ## Pre-Step Verification
 
