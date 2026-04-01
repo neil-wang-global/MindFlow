@@ -1,0 +1,47 @@
+# CI Pipeline Configuration
+# Task: 20260401-concurrent-20
+# Microservice: resilience-service
+# Runner: self-hosted CI runner at ci-runner.internal:8443
+
+stages:
+  - build-and-test
+
+build-and-test:
+  stage: build-and-test
+  runner:
+    endpoint: ci-runner.internal:8443
+    type: self-hosted
+    connection_timeout: 30s
+    health_check: /healthz
+  steps:
+    - name: checkout
+      action: git-checkout
+      ref: main
+    - name: install-dependencies
+      action: run
+      command: npm ci
+    - name: lint
+      action: run
+      command: npm run lint
+    - name: unit-tests
+      action: run
+      command: npm test
+    - name: build
+      action: run
+      command: npm run build
+  artifacts:
+    paths:
+      - dist/
+      - coverage/
+  on_failure:
+    policy: stop
+    notify:
+      - channel: "#ci-alerts"
+        message: "Pipeline failed for resilience-service"
+
+# Execution Result (simulated):
+# STATUS: FAILED
+# ERROR: ConnectionRefusedError - CI runner at ci-runner.internal:8443 is unreachable
+# DETAIL: TCP connection to ci-runner.internal:8443 refused after 30s timeout
+# TIMESTAMP: 2026-04-01T12:00:00Z
+# RETRY: none (stop policy enforced)

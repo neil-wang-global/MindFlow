@@ -35,4 +35,4 @@
 - none
 
 ## Scan History
-- (none yet)
+- 20260401-concurrent-22: scanned, partially relevant (thread pool sizing relates to thread pool bulkhead variant)

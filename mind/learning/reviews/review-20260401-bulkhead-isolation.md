@@ -35,3 +35,4 @@
 
 ## Scan History
 - 20260401-deferred-review-test: created, Decision: deferred — awaiting additional source cross-validation
+- 20260401-concurrent-22: scanned, directly relevant to task goal (bulkhead variant research)
