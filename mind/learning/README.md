@@ -91,7 +91,7 @@ Before writing `kb-*.md`: verify the corresponding `review-*.md` has `Decision: 
 
 ### Task Completion Check
 
-Before setting the final state per `SYSTEM.md §Phase Transition Protocol` step 4: when `Overall Status` at entry is `completed`, verify `_output/` is not empty and all Steps in `Step Status Map` are `completed` (or `failed` with escalation handled). On failure: do not mark the task as completed; investigate the missing output or unfinished Step. When `Overall Status` at entry is `failed`, `blocked`, or `cancelled`, the `_output/` non-empty check is waived — proceed to set the final state.
+Before setting the final state per `SYSTEM.md §Phase Transition Protocol` step 4: when `Overall Status` at entry is `completed`, verify `_output/` is not empty and all Steps in `Step Status Map` are `completed` (or `failed` with escalation handled) — no Step may remain `pending`. On failure: do not mark the task as completed; investigate the missing output or unfinished Step. When `Overall Status` at entry is `blocked` or `failed`, Steps may remain `pending` if the failure/block occurred before they were reached; the `_output/` non-empty check is waived — proceed to set the final state. When `Overall Status` at entry is `cancelled`, the `_output/` non-empty check is waived — proceed to set the final state.
 
 ### Knowledge Outcome Determination
 
