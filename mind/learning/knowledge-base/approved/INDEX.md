@@ -9,3 +9,5 @@
 | kb-concept-cap-impossibility.md | concept | CAP theorem: no distributed data store can simultaneously provide consistency, availability, and partition tolerance; practical choice is CP vs AP |
 | kb-concept-cap-classification.md | concept | Distributed databases classified as CP (MongoDB, Redis) or AP (Cassandra, CouchDB) based on partition behavior; no distributed NoSQL is CA |
 | kb-concept-pacelc-extension.md | concept | PACELC extends CAP with latency-consistency trade-off during normal operation; four models (PA/EL, PA/EC, PC/EL, PC/EC) |
+| kb-concept-adaptive-concurrency-gradient.md | concept | Adaptive concurrency control uses a TCP Vegas-inspired gradient algorithm to dynamically adjust microservice concurrency limits based on baseline vs actual latency |
+| kb-concept-envoy-adaptive-concurrency.md | concept | Envoy proxy implements an adaptive concurrency filter using the gradient algorithm from Netflix's concurrency-limits library, dynamically adjusting outstanding request limits based on sampled latencies |
