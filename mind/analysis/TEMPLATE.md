@@ -32,6 +32,7 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 ## Step Drafts
 - `Step 1`: goal / dependencies / candidate capability / Dispatch Mode / Output Isolation / Learning (add Parallel Group / Synchronization Point / Merge Owner only when Dispatch Mode is not sequential)
 - `Step N`: (same fields)
+- when 3+ Steps have `Learning: acquire-required`, assess pairwise independence: each Step's learning goal must target a distinct knowledge sub-domain with minimal overlap (see `mind/planning/TEMPLATE.md §Step Independence Check`)
 
 ## Dispatch Assessment
 - for each Step, state the `Dispatch Mode` decision and the reason:

@@ -28,6 +28,14 @@ This file defines the fixed structure of the task runtime state file.
 - `running / blocked / failed / completed / cancelled`
 - note: when terminal `Learning` completes, `Current Phase` and `Overall Status` are set as a pair per `SYSTEM.md §Phase Transition Protocol` step 4: `completed → completed/completed`; `cancelled → cancelled/cancelled`; `failed → completed/failed`; `blocked → completed/blocked` (format: `Current Phase / Overall Status`)
 
+## Knowledge Outcome
+- `fully-acquired / partially-acquired / not-acquired / not-applicable`
+- `fully-acquired`: all ACQ events completed successfully (all stages passed)
+- `partially-acquired`: at least one ACQ event completed successfully, but one or more were exhausted
+- `not-acquired`: all ACQ events were exhausted, or no ACQ was triggered despite the task expecting external knowledge acquisition
+- `not-applicable`: no ACQ was expected or required (e.g., delivery-only tasks, tasks with `Learning: not-needed` or `Learning: terminal-only` on all Steps)
+- this field is set by terminal `Learning` based on `tl-{task-id}.md §External Acquisition` results — see `mind/learning/README.md §Knowledge Outcome Determination`
+
 ## Step Status Map
 - `Step 1: pending / running / completed / failed / blocked`
 - `Step 2: pending / running / completed / failed / blocked`
@@ -72,6 +80,7 @@ This file defines the fixed structure of the task runtime state file.
 - `Last Failure`: `none`
 - `Retry Count`: `0`
 - `Ready For Reflection`: `no`
+- `Knowledge Outcome`: `not-applicable`
 - `Learning(Acquire) Log`: `none`
 
 ### Step Status Map Initialization (by Planning)
@@ -92,6 +101,7 @@ See `SYSTEM.md §Phase Transition Protocol` for the complete transition sequence
 - `Overall Status` must not be omitted; must be one of the defined values
 - `Step Status Map` must not be omitted
 - `Ready For Reflection` may only be `yes / no`
+- `Knowledge Outcome` must not be omitted; must be one of `fully-acquired / partially-acquired / not-acquired / not-applicable`; terminal `Learning` must set the final value based on ACQ results before setting the terminal state; when any ACQ event has status `exhausted`, `Knowledge Outcome` must not be `fully-acquired`
 - `Learning(Acquire) Log` must not be omitted
 - for every Step with `Learning: acquire-required`, a corresponding Step-triggered entry must appear before that Step is marked `completed`
 - for Steps with `Learning: optional`, a Step-triggered entry is required only if `Learning(Acquire)` was actually triggered during that Step; no entry is required if no gap was encountered

@@ -61,6 +61,7 @@ The subagent must be dispatched with an explicit prompt that includes:
 - the path `tasks/{task-id}/acquire/search-log.md`
 - the path `tasks/{task-id}/acquire/raw-sources/`
 - the output path `tasks/{task-id}/acquire/verification-report.md`
+- `mind/soul/core.md` (complete content — per `SYSTEM.md §Subagent Soul Constraint`)
 - the instruction that this subagent must NOT carry context from Stage 2
 
 The verification subagent must:

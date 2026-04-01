@@ -51,6 +51,15 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 ### Step N
 (same structure as Step 1)
 
+## Step Independence Matrix
+(required only when the Plan has 3 or more Steps AND at least 3 Steps have `Learning: acquire-required`; omit this section otherwise)
+
+| Step Pair | Distinction | Overlap Assessment |
+|-----------|------------|-------------------|
+| Step 1 vs Step 2 | how their learning goals differ | no-overlap / low-overlap / merge-required |
+| Step 1 vs Step 3 | ... | ... |
+| Step 2 vs Step 3 | ... | ... |
+
 ## Handoffs
 - how `Step`s hand off through files
 - how parallel branches merge (if applicable)
@@ -91,3 +100,13 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - `Output Isolation` must not be omitted
 - `Handoffs` must not be omitted; for single-step tasks, write `single-step task — no inter-step handoff`
 - `Completion Check` (plan-level) must not be omitted
+
+### Step Independence Check
+
+When the Plan has 3 or more Steps and at least 3 of those Steps have `Learning: acquire-required`, the `## Step Independence Matrix` section is mandatory:
+
+- for each pair of `acquire-required` Steps (i, j), declare how their learning goals differ
+- `Overlap Assessment` must be one of: `no-overlap`, `low-overlap`, `merge-required`
+- if any pair is assessed as `merge-required`, the Steps must be merged before the Plan is finalized — a Plan with unresolved `merge-required` pairs is invalid
+- `low-overlap` is acceptable only when the overlapping area is less than ~30% of both Steps' scope and serves a different analytical purpose in each Step
+- this check prevents multi-step learning tasks from producing redundant knowledge across Steps

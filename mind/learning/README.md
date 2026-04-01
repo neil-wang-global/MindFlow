@@ -50,11 +50,11 @@ It must execute in this order:
    If any check fails, revise the conclusion (or excerpt, if the excerpt was incomplete) in `tl-{task-id}.md` now — this is the only stage where revision is permitted. **After step 2 completes, `tl-{task-id}.md` is frozen — no further edits are permitted for the remainder of the task. Reads are always permitted; frozen means write-locked only.**
 3. if `tl-{task-id}.md` has `Candidate Knowledge: none`, skip steps 4 and 5 and proceed directly to step 6 (steps 6 and 7 always execute regardless of whether knowledge candidates exist); otherwise read `mind/learning/knowledge-base/drafts/TEMPLATE.md` and generate one or more `draft-{type}-{task-id}-{slug}.md` from `tl-{task-id}.md`
 4. **dispatch an independent subagent** to generate each `review-{task-id}-{slug}.md`; the subagent must read `mind/learning/reviews/TEMPLATE.md` before writing
-   - the subagent prompt must provide: the `draft-*.md` path, the `Source Anchor` path, the output target, and an explicit instruction that the subagent must not carry any context from the drafting session; the subagent must have access to file read and search tools (e.g., Grep) to perform Source Anchor verification
+   - the subagent prompt must provide: the `draft-*.md` path, the `Source Anchor` path, the output target, `mind/soul/core.md` (complete content — per `SYSTEM.md §Subagent Soul Constraint`), and an explicit instruction that the subagent must not carry any context from the drafting session; the subagent must have access to file read and search tools (e.g., Grep) to perform Source Anchor verification
    - the agent that wrote the `draft-*.md` must not also write the corresponding `review-*.md`
    - `Verification Mode` in the review file must be `independent-subagent`; any review written in the same context as its draft is invalid
 5. process review decisions and promote or archive accordingly:
-   - **accepted**: read `mind/learning/knowledge-base/approved/TEMPLATE.md` and generate `kb-{type}-{slug}.md`; if a `kb-*.md` with the same name already exists in `approved/`, move the existing file to `archived/` first — before moving, add `Superseded By` and `Superseded In Task` fields per `archived/README.md §Superseded Approved Knowledge`, and remove the old entry from `approved/INDEX.md`; then update `approved/INDEX.md` to list the new entry with its Type and one-line Summary
+   - **accepted**: read `mind/learning/knowledge-base/approved/TEMPLATE.md` and generate `kb-{type}-{slug}.md`; if a `kb-*.md` with the same name already exists in `approved/`, move the existing file to `archived/` first — before moving, add `Superseded By` and `Superseded In Task` fields per `archived/README.md §Superseded Approved Knowledge`, and remove the old entry from `approved/INDEX.md`; then write the new entry to `mind/learning/knowledge-base/approved/fragments/index-fragment-{task-id}.md` (one table row per promoted entry, using the same `| File | Type | Summary |` format as `INDEX.md`) — do **not** directly edit `approved/INDEX.md` at this step; the merge happens in §Index Merge Protocol
    - **rejected**: move the corresponding `draft-*.md` from `drafts/` to `archived/` (per `reviews/TEMPLATE.md §Rejected Decision Handling` and `archived/README.md §Rejected Drafts`)
    - **deferred**: the corresponding `draft-*.md` remains in `drafts/` (per `reviews/TEMPLATE.md §Deferred Decision Lifecycle`)
 6. process knowledge gap files based on ACQ event outcomes in `tl-{task-id}.md §External Acquisition`:
@@ -93,6 +93,17 @@ Before writing `kb-*.md`: verify the corresponding `review-*.md` has `Decision: 
 
 Before setting the final state per `SYSTEM.md §Phase Transition Protocol` step 4: when `Overall Status` at entry is `completed`, verify `_output/` is not empty and all Steps in `Step Status Map` are `completed` (or `failed` with escalation handled). On failure: do not mark the task as completed; investigate the missing output or unfinished Step. When `Overall Status` at entry is `failed`, `blocked`, or `cancelled`, the `_output/` non-empty check is waived — proceed to set the final state.
 
+### Knowledge Outcome Determination
+
+Before setting the final state, compute `Knowledge Outcome` in `state.md` based on `tl-{task-id}.md §External Acquisition`:
+
+- **no ACQ events exist** and no Step has `Learning: acquire-required`: set `not-applicable`
+- **all ACQ events have status `completed`**: set `fully-acquired`
+- **at least one ACQ `completed` and at least one `exhausted`**: set `partially-acquired`
+- **all ACQ events have status `exhausted`**, or no ACQ was triggered despite a Step having `Learning: acquire-required`: set `not-acquired`
+
+This field provides a semantic signal distinct from `Overall Status` — a task may be `completed/completed` (protocol flow finished) while having `Knowledge Outcome: not-acquired` (knowledge goal not achieved).
+
 ## Required Reads (for terminal Learning)
 
 Before writing `tl-{task-id}.md`, the runtime must read:
@@ -109,14 +120,27 @@ Before writing `tl-{task-id}.md`, the runtime must read:
 
 Before running `Learning(Acquire)` mid-flow, also read `mind/learning/acquire/README.md`.
 
+### Index Merge Protocol
+
+After step 5 completes (or is skipped), if `mind/learning/knowledge-base/approved/fragments/index-fragment-{task-id}.md` exists:
+
+1. read `approved/INDEX.md`
+2. read `fragments/index-fragment-{task-id}.md`
+3. append the fragment rows to the end of the `INDEX.md` table
+4. delete the fragment file
+
+This protocol ensures `INDEX.md` updates are atomic per task — each task merges its own fragment exactly once during its terminal Learning, eliminating concurrent write contention. The fragment file serves as a crash-safe intermediate: if the task is interrupted after writing `kb-*.md` but before merging, recovery can detect the orphaned fragment and complete the merge.
+
 ## Exit Validation
 
 Before setting the final task state (per `SYSTEM.md §Phase Transition Protocol` step 4), verify:
 
 - `tl-{task-id}.md` exists in `mind/learning/task-learning/`
 - all promotion decisions have been processed (accepted → `kb-*.md` written; rejected → `draft-*.md` moved to `archived/`; deferred → `draft-*.md` remains in `drafts/`)
+- no orphaned fragment files exist for the current task in `approved/fragments/` (the merge must have been completed)
 - gap files have been created or updated per §Execution Steps step 6
 - `cu-*.md` files have been created per §Execution Steps step 7 (if applicable)
+- `Knowledge Outcome` has been set in `state.md` per §Knowledge Outcome Determination
 - §Task Completion Check passes
 
 ## Subdirectory Overview
