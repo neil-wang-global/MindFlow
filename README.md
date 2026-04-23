@@ -8,6 +8,8 @@ MindFlow is an AI-native autonomous decision system for knowledge management, co
 
 It is not just a multi-agent orchestrator, and it is not just a knowledge base. It is closer to an editable digital persona system: you define a `Soul`, let the system absorb methodology and working styles that match your standards, internalize them into `Capability` components, execute work through those capabilities, reflect on outcomes, strengthen cognition, and keep evolving without drifting away from your own principles.
 
+![MindFlow intro](images/intro-en.png)
+
 This repository currently provides:
 
 - runtime protocol
