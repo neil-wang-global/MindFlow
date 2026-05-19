@@ -36,3 +36,7 @@
 
 ## Scan History
 - 20260401-concurrent-22: scanned, partially relevant (thread pool sizing relates to thread pool bulkhead variant)
+- 20260401-fix-val-06: scanned, not relevant to task goal (narrative writing techniques)
+- 20260401-fix-val-05: scanned, not relevant to task goal (gRPC load balancing)
+- 20260401-fix-val-01: scanned, not relevant to task goal (CAP theorem database selection)
+- 20260401-fix-val-03: scanned, not relevant to task goal (Raft leader election / QuantumDB X9)

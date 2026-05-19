@@ -35,3 +35,11 @@
 
 ## Scan History
 - 20260401-concurrent-24: created, Decision: deferred — requires validation against multi-cloud deployment scenarios
+- 20260401-fix-val-02: scanned, not relevant to task goal (Zanzibar sharding)
+- 20260401-fix-val-06: scanned, not relevant to task goal (narrative writing techniques)
+- 20260401-fix-val-05: scanned, not relevant to task goal (gRPC load balancing) but related to service discovery domain
+- 20260401-fix-val-03: scanned, not relevant to task goal (Raft leader election / QuantumDB X9)
+- 20260401-fix-val-01: scanned, not relevant to task goal (CAP theorem database selection)
+- 20260401-fix-val-08: scanned, not relevant to task goal (OTel Collector pipeline); deferral conditions unchanged — still requires multi-datacenter Consul deployment documentation
+- 20260401-fix-val-04: scanned, not relevant to task goal (Envoy telemetry observability); deferral conditions unchanged — still requires multi-datacenter Consul deployment documentation
+- 20260401-fix-val-01: maintenance Step 3 reviewed — kept deferred (deferral reason unchanged: requires multi-datacenter Consul deployment documentation; current task on CAP database selection does not provide relevant evidence)

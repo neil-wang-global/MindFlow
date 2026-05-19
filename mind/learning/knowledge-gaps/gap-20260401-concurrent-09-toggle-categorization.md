@@ -34,3 +34,8 @@
 
 ## Scan History
 - 20260401-concurrent-09: created, Status: open — ACQ-001 exhausted due to tool unavailability
+- 20260401-fix-val-02: scanned, not relevant to task goal (Zanzibar sharding)
+- 20260401-fix-val-06: scanned, not relevant to task goal (narrative writing techniques)
+- 20260401-fix-val-05: scanned, not relevant to task goal (gRPC load balancing)
+- 20260401-fix-val-01: scanned, not relevant to task goal (CAP theorem database selection)
+- 20260401-fix-val-03: scanned, not relevant to task goal (Raft leader election / QuantumDB X9)
