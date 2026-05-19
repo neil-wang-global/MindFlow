@@ -1,6 +1,6 @@
 # MindFlow
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18977748.svg)](https://doi.org/10.5281/zenodo.18977748)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18977748.svg)](https://doi.org/10.5281/zenodo.18977748) or [Paper](publication/mindflow-methodology-paper-20260311/_output/%E9%9D%A2%E5%90%91%E7%BB%84%E7%BB%87%E5%9C%BA%E6%99%AF%E7%9A%84%20AI-Native%20%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E4%B8%80%E4%BD%93%E5%8C%96%E6%A1%86%E6%9E%B6%E7%A0%94%E7%A9%B6%20%5B20260312-155831%5D.pdf)
 
 [Simplified Chinese](README-CN.md) | English
 

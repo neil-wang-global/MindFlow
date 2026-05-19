@@ -1,0 +1,68 @@
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setmainfont{Times New Roman}
+\setCJKmainfont{Songti SC}
+\setmonofont{Courier New}
+
+\usepackage{geometry}
+\geometry{a4paper,left=3cm,right=2.6cm,top=2.8cm,bottom=2.6cm}
+
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{titling}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{xurl}
+\usepackage[hidelinks,breaklinks=true]{hyperref}
+\let\oldtexttt\texttt
+\renewcommand{\texttt}[1]{{\oldtexttt{#1}}}
+
+\onehalfspacing
+\AtBeginDocument{\zihao{-4}}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.85}
+
+\captionsetup{
+  font=small,
+  labelfont=bf,
+  labelsep=space,
+  justification=centering
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\zihao{5} AI-Native 方法论框架研究}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \cfoot{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+\setlength{\droptitle}{-1.8cm}
+\pretitle{\begin{center}\bfseries\zihao{3}}
+\posttitle{\par\end{center}\vspace{0.3em}}
+\preauthor{\begin{center}\zihao{-4}}
+\postauthor{\par\end{center}\vspace{0.1em}}
+\predate{\begin{center}\zihao{-4}}
+\postdate{\par\end{center}\vspace{0.8em}}
+
+\titleformat{\section}{\centering\bfseries\zihao{4}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\bfseries\zihao{-4}}{\thesubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{1.8ex plus 0.4ex minus 0.2ex}{0.9ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus 0.4ex minus 0.2ex}{0.8ex}
