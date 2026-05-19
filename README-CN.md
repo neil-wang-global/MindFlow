@@ -1,12 +1,14 @@
 # MindFlow
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18977748.svg)](https://doi.org/10.5281/zenodo.18977748)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18977748.svg)](https://doi.org/10.5281/zenodo.18977748) or [Paper](publication/mindflow-methodology-paper-20260311/_output/%E9%9D%A2%E5%90%91%E7%BB%84%E7%BB%87%E5%9C%BA%E6%99%AF%E7%9A%84%20AI-Native%20%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E4%B8%80%E4%BD%93%E5%8C%96%E6%A1%86%E6%9E%B6%E7%A0%94%E7%A9%B6%20%5B20260312-155831%5D.pdf)
 
 [English](README.md) | 简体中文
 
 MindFlow 是一个面向知识管理、认知演化与任务执行的 AI-native 自主决策系统。
 
 它不是单纯的多智能体编排器，也不是一个普通知识库。它更像一个可被持续编辑的数字人格系统：你可以给它定义 `Soul`，让它吸收符合自身标准的方法论与工作方式，把学习内化成 `Capability`，再用这些能力去执行任务、反省结果、强化认知，并持续自我迭代。
+
+![MindFlow 简介图](images/intro-zh.png)
 
 当前这个代码仓库承载的是：
 
