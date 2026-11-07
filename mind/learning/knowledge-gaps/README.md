@@ -2,6 +2,10 @@
 
 This directory stores unresolved knowledge gap records that persist across tasks.
 
+`gap-{task-id}-{slug}.md` files are runtime artifacts: they live in this directory under the Runtime Root, and the repository contains no gap records.
+
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Purpose
 
 When a `Learning(Acquire)` event is `exhausted` (zero passed sources), the knowledge gap cannot be resolved in the current task. This directory provides a cross-task tracking mechanism so that future tasks' `Learning(Read)` can detect outstanding gaps and attempt resolution with different search strategies.

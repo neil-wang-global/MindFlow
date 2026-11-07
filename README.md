@@ -241,6 +241,48 @@ That means:
 - `_output/` is the formal internal task result location
 - `sources/` is the business material and publication location
 
+## Two Trees: Protocol and Runtime
+
+MindFlow separates what upstream maintains from what you own.
+
+```text
+Protocol Root  (git, upstream)          Runtime Root  (yours, never committed)
+MindFlow/                               runtime/   (default)
+├── README.md                           ├── mind/
+├── README-CN.md                        │   ├── soul/core.md
+├── SYSTEM.md                           │   └── learning/
+├── CLAUDE.md                           │       ├── knowledge-base/
+├── CONTRIBUTING.md                     │       │   ├── approved/
+├── mind/            module docs        │       │   ├── drafts/
+│   ├── soul/README.md                  │       │   └── archived/
+│   ├── recognition/                    │       ├── task-learning/
+│   ├── analysis/                       │       ├── reviews/
+│   ├── planning/                       │       ├── knowledge-gaps/
+│   ├── execution-control/              │       └── capability-updates/
+│   ├── reflection/                     ├── capabilities/
+│   ├── learning/                       ├── tasks/{task-id}/
+│   └── inference/                      └── sources/
+├── capabilities/   TEMPLATE only
+├── tasks/          TEMPLATE only
+├── sources/README.md
+├── templates/       seed for a new runtime
+└── runtime/         git-ignored default runtime
+```
+
+The protocol tree is read-only for you: it is maintained upstream, so `git pull` must never conflict with your own work. Everything durable and continuously edited — `Soul`, approved knowledge, reviews, task runs, capability definitions, project materials — lives in the Runtime Root instead.
+
+Names are identical in both trees. `mind/soul/core.md` means the same relative path; only the tree it resolves against changes. Runtime paths resolve against the Runtime Root, protocol paths against the Protocol Root.
+
+### Choosing a Runtime Root
+
+Resolution order, recorded in `tasks/{task-id}/state.md §Runtime Root` so recovery writes back to the same tree:
+
+1. `MINDFLOW_RUNTIME_ROOT`, when set
+2. `<Protocol Root>/runtime/` — the default
+3. an explicit path from the caller, for one runtime per project
+
+Initializing a fresh runtime is copying `templates/` into it.
+
 ## Directory Structure
 
 ```text
@@ -268,7 +310,9 @@ MindFlow/
 │   └── inference/
 ├── capabilities/
 ├── sources/
-└── tasks/
+├── tasks/
+├── templates/
+└── runtime/         (git-ignored)
 ```
 
 ## Architecture
@@ -351,12 +395,15 @@ This repository is intended for people or organizations who want to define their
 
 Typical usage:
 
-1. define `Soul` in `mind/soul/core.md`
-2. define or extend `Capability` files under `capabilities/`
-3. place project materials in `sources/`
-4. create `tasks/{task-id}/`
-5. run the task according to the formal MindFlow protocol
-6. let task-end `Learning` promote reusable knowledge and capability updates
+1. initialize a Runtime Root by copying `templates/` into it (see §Two Trees above)
+2. define `Soul` in `mind/soul/core.md` inside that Runtime Root
+3. define or extend `Capability` files under `capabilities/` in the Runtime Root
+4. place project materials in `sources/` in the Runtime Root
+5. create `tasks/{task-id}/` in the Runtime Root
+6. run the task according to the formal MindFlow protocol
+7. let task-end `Learning` promote reusable knowledge and capability updates
+
+Every path in steps 2–5 resolves against the Runtime Root, never this repository.
 
 ## Run It With One Skill (Recommended)
 
@@ -373,17 +420,18 @@ claude plugin marketplace add neil-wang-global/neil-skills
 claude plugin install neil-skills@neil-skills
 ```
 
-Then call `/mindflow <task description>` from any directory. Once installed, the skill keeps a single shared workspace at `~/.mindflow/MindFlow` and writes nothing into your current project directory.
+Then call `/mindflow <task description>` from any directory. Once installed, the skill keeps a single shared Protocol Root at `~/.mindflow/MindFlow` and writes nothing into your current project directory.
 
 ### What it does for you
 
-1. **Sync the repo**: clones `~/.mindflow/MindFlow` when missing, otherwise runs `git pull --ff-only` on latest `main`. If the pull cannot fast-forward (diverged commits or blocking local changes), it stops and tells you — it never force-pushes or wipes your data
-2. **Soul readiness check**: while `mind/soul/core.md` is still `To be defined`, it fills the eight fields together with you — that is the highest constraint layer, applying across projects and tasks
-3. **Resume instead of restart**: if `tasks/` holds a task whose state is not `completed` / `cancelled`, it continues from the recorded phase per [SYSTEM.md §Recovery Protocol](SYSTEM.md) rather than starting over
-4. **Run the whole main flow**: `Learning(Read) -> Recognition -> Analysis -> Planning -> Execution Control -> Reflection -> Learning`, including terminal `Learning` knowledge promotion, knowledge gaps, and capability updates
-5. **Dispatch subagents only where the protocol demands independence**: `Learning(Acquire)` verification and `review-*.md`, each with the full `mind/soul/core.md` injected into its prompt
+1. **Sync the protocol**: clones `~/.mindflow/MindFlow` when missing, otherwise runs `git pull --ff-only` on latest `main`. Because your state lives in a separate Runtime Root, this pull is not competing with your own edits
+2. **Resolve and initialize the Runtime Root**: picks `MINDFLOW_RUNTIME_ROOT` if set, otherwise `~/.mindflow/MindFlow/runtime/`, and seeds it from `templates/` on first use
+3. **Soul readiness check**: while the Runtime Root's `mind/soul/core.md` is still `To be defined`, it fills the eight fields together with you — that is the highest constraint layer
+4. **Resume instead of restart**: if a task's state is not `completed` / `cancelled`, it continues from the recorded phase per [SYSTEM.md §Recovery Protocol](SYSTEM.md), using the Runtime Root recorded in `state.md`, rather than starting over
+5. **Run the whole main flow**: `Learning(Read) -> Recognition -> Analysis -> Planning -> Execution Control -> Reflection -> Learning`, including terminal `Learning` knowledge promotion, knowledge gaps, and capability updates
+6. **Dispatch subagents only where the protocol demands independence**: `Learning(Acquire)` verification and `review-*.md`, each with the full `mind/soul/core.md` from that Runtime Root injected into its prompt
 
-Task artifacts land in `tasks/{task-id}/` as usual, with formal results in `tasks/{task-id}/_output/`. The skill does not create commits in this repository by default.
+Task artifacts land in `{runtime}/tasks/{task-id}/`, with formal results in `{runtime}/tasks/{task-id}/_output/`. Nothing is written back into the protocol tree; the skill does not create commits there by default.
 
 ### Without Claude Code?
 

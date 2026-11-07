@@ -4,6 +4,8 @@ This directory defines the `Learning(Acquire)` module.
 
 `Learning(Acquire)` is a mandatory acquisition stage that must be completed before any external knowledge enters the learning pipeline. It enforces that all externally sourced knowledge is grounded in original fetched content, independently verified, and fully traceable.
 
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Trigger Conditions
 
 `Learning(Acquire)` must be triggered in exactly two scenarios:

@@ -4,6 +4,8 @@ This directory defines the formal audit record of `Learning(Read)`.
 
 `Learning(Read)` is a read-only stage with respect to formal knowledge sources, but it must leave a formal record showing exactly which constraints and knowledge were loaded.
 
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Phase Entry
 
 `Learning(Read)` is the first stage of every task. It creates `state.md` with `Current Phase: learning-read`.

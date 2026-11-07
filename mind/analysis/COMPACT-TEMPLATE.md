@@ -9,6 +9,8 @@ When `Recognition` determines `Complexity: low` and `Risk: low`, the task uses c
 - all required sections from both `analysis/TEMPLATE.md` and `planning/TEMPLATE.md` must be present, except those explicitly omitted by §Compact Mode Constraints below
 - sections with no meaningful content may be written as a single line (e.g., `## Risks\n- none`)
 
+Paths in this artifact are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Compact Mode Constraints
 
 See `mind/analysis/README.md §Compact Mode` for full eligibility rules and exit conditions. Key constraints:

@@ -6,6 +6,7 @@ It is a stable action unit, not a free-form prose file.
 ## File Requirements
 
 - fixed file path: `capabilities/cap-{capability-name}.md`
+- that path resolves against the Runtime Root (see `SYSTEM.md §Runtime Layout`), so the file is written to `{runtime}/capabilities/cap-{capability-name}.md` and is never committed; this `TEMPLATE.md` stays in the repository
 - one file defines exactly one capability
 - heading order is fixed
 

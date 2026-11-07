@@ -7,6 +7,8 @@ Every task must produce it before `Analysis` may continue.
 - fixed heading order is required
 - conclusions must appear before explanation
 
+Paths in this artifact are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Formal Template
 
 ```md

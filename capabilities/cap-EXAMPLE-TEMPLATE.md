@@ -2,6 +2,8 @@
 
 This file is an example showing how to fill in a Capability definition. It is not loaded by the runtime as an actual capability.
 
+The file paths in this example (`tasks/{task-id}/...`, `cache/...`, `mind/soul/core.md`) resolve against the Runtime Root, not the repository — see `SYSTEM.md §Runtime Layout`. A real `cap-{name}.md` written in the same form lands in `{runtime}/capabilities/`.
+
 ## Purpose
 - Research a specified topic using available knowledge and external sources, then produce a structured summary
 
@@ -19,7 +21,7 @@ This file is an example showing how to fill in a Capability definition. It is no
 - input format: markdown text
 
 ## Constraints
-- `mind/soul/core.md` — respect methodology preference and learning policy
+- `mind/soul/core.md` — respect methodology preference and learning policy (resolved against the Runtime Root)
 - the current Step's declared constraints
 - must not use search summaries as knowledge sources (see `Learning(Acquire)` rules)
 

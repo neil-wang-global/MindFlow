@@ -7,6 +7,8 @@
 - file path: `tasks/{task-id}/reflection-report.md`
 - fixed heading order is required
 
+Paths in this artifact are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Formal Template
 
 ```md

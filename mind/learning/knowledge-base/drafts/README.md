@@ -2,6 +2,10 @@
 
 This is the pending knowledge area. It is not a free dumping area.
 
+`draft-{type}-{task-id}-{slug}.md` files are runtime artifacts: they live in this directory under the Runtime Root, and the repository contains no drafts.
+
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## File Naming Rule
 
 `draft-{type}-{task-id}-{slug}.md`

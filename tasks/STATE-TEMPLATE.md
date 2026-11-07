@@ -15,6 +15,9 @@ This file defines the fixed structure of the task runtime state file.
 ## Task ID
 - current task ID
 
+## Runtime Root
+- absolute path of the resolved Runtime Root for this task (see `SYSTEM.md §Runtime Layout`)
+
 ## Current Phase
 - active phases: `learning-read / recognition / analysis / planning / execution-control / learning-acquire / reflection / terminal-learning`
 - terminal states: `completed / cancelled` (set only by terminal `Learning` upon task conclusion — see `SYSTEM.md §Phase Transition Protocol` step 4)
@@ -73,6 +76,7 @@ This file defines the fixed structure of the task runtime state file.
 ### Initial Creation (by Learning(Read))
 
 - `Task ID`: the current task ID
+- `Runtime Root`: the absolute path of the Runtime Root resolved for this task per `SYSTEM.md §Runtime Layout §Runtime Root Resolution Order`, recorded verbatim — it must not be a relative path
 - `Current Phase`: `learning-read`
 - `Current Step`: `none`
 - `Overall Status`: `running`
@@ -98,6 +102,7 @@ See `SYSTEM.md §Phase Transition Protocol` for the complete transition sequence
 
 ## Validation Rules
 
+- `Runtime Root` must not be omitted; must be an absolute path; recovery uses it as the authoritative tree and must not re-resolve the Runtime Root from the default
 - `Current Phase` must not be omitted; must be one of the defined values
 - `Overall Status` must not be omitted; must be one of the defined values
 - `Step Status Map` must not be omitted

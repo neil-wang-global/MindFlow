@@ -11,7 +11,7 @@ This system is designed around **on-demand context loading**: a module's rules a
 - `SYSTEM.md` (this file) is the only file loaded at task start. It defines the flow skeleton and cross-module rules.
 - Each module's `README.md` is the self-contained authority for that module. It is loaded when the runtime **enters** that module — not at task start, not in advance.
 - `TEMPLATE.md` files are loaded when **producing** an artifact of that type — not when entering the module.
-- Directory index READMEs (`mind/README.md`, `tasks/README.md`, `sources/README.md`, `capabilities/README.md`) are navigation aids for human readers — the runtime does not load them.
+- Directory index READMEs (`mind/README.md`, `capabilities/README.md`, `sources/README.md`) are protocol-tree navigation aids for human readers — the runtime does not load them.
 - Do not pre-load, pre-scan, or pre-summarize module contents. If you have not entered a module, you do not need its rules.
 
 This principle minimizes context noise and ensures that each module's rules are read fresh when they are actually needed.
@@ -46,13 +46,57 @@ Subagent prompts should follow the **minimum context principle**:
 - **Should not include**: other modules' README/TEMPLATE files, the full `SYSTEM.md`, or unrelated historical context
 - **Exception**: if the sub-operation requires cross-module information, include only the specific file needed
 
+## Runtime Layout: Protocol Root vs Runtime Root
+
+MindFlow separates two trees that must never be confused:
+
+| Tree | Contents | Who writes it | Under git |
+|------|----------|---------------|-----------|
+| **Protocol Root** | `SYSTEM.md`, `CLAUDE.md`, `CONTRIBUTING.md`, every module `README.md` and `TEMPLATE.md` | upstream maintainers only | yes |
+| **Runtime Root** | `Soul`, knowledge base, reviews, task learning, knowledge gaps, capability updates, `capabilities/`, `tasks/`, `sources/` | the runtime and the user | **no** |
+
+The split exists because the user-owned state above is durable and continuously edited, while the protocol is maintained upstream. Keeping them in one working tree would make every `git pull` collide with local state.
+
+### Path Resolution Rule
+
+**Every path written in the protocol that names a runtime artifact is relative to the Runtime Root, not the Protocol Root.** This covers `mind/soul/core.md`, `mind/learning/knowledge-base/**`, `mind/learning/reviews/**`, `mind/learning/task-learning/**`, `mind/learning/knowledge-gaps/**`, `mind/learning/capability-updates/**`, `capabilities/**`, `tasks/**`, and `sources/**`. The relative path and file names are unchanged — only the tree they resolve against differs.
+
+Paths naming protocol files (`SYSTEM.md`, module `README.md` / `TEMPLATE.md`, `CONTRIBUTING.md`) resolve against the Protocol Root as before.
+
+### Runtime Root Resolution Order
+
+Resolve once at task start and record the result in `state.md §Runtime Root`:
+
+1. `MINDFLOW_RUNTIME_ROOT` environment variable, when set and non-empty
+2. `<Protocol Root>/runtime/` — the default, and the only location used when neither override applies
+3. an explicit path supplied by the caller (for example a portfolio directory with one runtime per project), valid for that task only
+
+If an override directory does not exist, do not create it implicitly — report and stop. A single runtime may be shared across projects, or split per project; the protocol does not care, but `state.md` must always record which one the task used so recovery, Reflection, and terminal `Learning` all write back to the same tree.
+
+### Initializing a Runtime Root
+
+`templates/` in the Protocol Root is the seed for a fresh runtime:
+
+1. copy `templates/` contents into the resolved Runtime Root, preserving structure; `.gitkeep` placeholders exist only so git can track the empty skeleton, so leave them behind and create the directories instead
+2. `templates/mind/soul/core.md` places the seed `Soul` file; fill it per §Soul Auto-Load Rule and `CLAUDE.md §First-Time Setup`
+3. never write runtime artifacts back into `templates/` or anywhere under the Protocol Root
+
+The repository's own `runtime/` path is git-ignored, so the default layout requires no extra setup.
+
+### Guardrails
+
+- do not add runtime artifacts to the Protocol Root, and do not commit them
+- do not edit protocol files to accommodate local state; use the Runtime Root instead
+- never mix runtime roots within one task; `state.md §Runtime Root` is authoritative on recovery
+
 ## Task Initialization
 
 1. Read `SYSTEM.md` (this file)
-2. Determine `task-id` (format: `YYYYMMDD-short-name`, see `CONTRIBUTING.md`)
-3. Create `tasks/{task-id}/` with subdirectories `_output/` and `cache/`
-4. Enter `Learning(Read)` — read `mind/learning/learning-read/README.md`, create `state.md` and `learning-read.md`
-5. Follow the Required Main Flow below, loading each module's `README.md` on entry
+2. Resolve the Runtime Root per §Runtime Layout and record it in `state.md §Runtime Root` when creating that file
+3. Determine `task-id` (format: `YYYYMMDD-short-name`, see `CONTRIBUTING.md`)
+4. Create `{runtime}/tasks/{task-id}/` with subdirectories `_output/` and `cache/`
+5. Enter `Learning(Read)` — read `mind/learning/learning-read/README.md`, create `state.md` and `learning-read.md`
+6. Follow the Required Main Flow below, loading each module's `README.md` on entry
 
 ## Required Main Flow
 
@@ -90,7 +134,7 @@ The main flow is the same for all task types (`delivery / learning / mixed`). Th
 
 ## Phase Transition Protocol
 
-Every phase transition must update `tasks/{task-id}/state.md`. Each module is responsible for setting its own phase upon entry (see each module's `README.md §Phase Entry`). Exceptions: `Execution Control` phase is set by `Planning` upon plan completion (or by `Analysis` in compact mode — see `mind/analysis/README.md §Compact Mode`); `Inference` does not set a separate phase (see §Inference State Rule below); `Learning(Acquire)` phase is set by the runtime (Mind) at the trigger point, not by the acquire module itself (see steps 2–3 below). Failure to update `state.md` makes the task non-recoverable.
+Every phase transition must update `{runtime}/tasks/{task-id}/state.md`. Each module is responsible for setting its own phase upon entry (see each module's `README.md §Phase Entry`). Exceptions: `Execution Control` phase is set by `Planning` upon plan completion (or by `Analysis` in compact mode — see `mind/analysis/README.md §Compact Mode`); `Inference` does not set a separate phase (see §Inference State Rule below); `Learning(Acquire)` phase is set by the runtime (Mind) at the trigger point, not by the acquire module itself (see steps 2–3 below). Failure to update `state.md` makes the task non-recoverable.
 
 The cross-module transition rules that no single module owns:
 
@@ -179,10 +223,10 @@ All `ACQ-{NNN}` labels must be consistent across `state.md §Learning(Acquire) L
 
 When a session resumes after interruption:
 
-1. Scan `tasks/` for directories containing `state.md` where `Current Phase` is not `completed` and not `cancelled` (note: when terminal `Learning` completes, `Current Phase` is always set to `completed` or `cancelled` per §Phase Transition Protocol step 4, regardless of `Overall Status`; such tasks are finished and must not be recovered)
+1. Scan `{runtime}/tasks/` (per `§Runtime Layout`) for directories containing `state.md` where `Current Phase` is not `completed` and not `cancelled` (note: when terminal `Learning` completes, `Current Phase` is always set to `completed` or `cancelled` per §Phase Transition Protocol step 4, regardless of `Overall Status`; such tasks are finished and must not be recovered)
 2. Read the `state.md` of the unfinished task to determine `Current Phase` and `Current Step`
 3. Resume execution from the recorded phase and step — do not restart from the beginning
-4. Before resuming, read the `README.md` of the module corresponding to `Current Phase`; also read `mind/soul/core.md` (Soul constraints must be reloaded on recovery regardless of phase)
+4. Before resuming, read the `README.md` of the module corresponding to `Current Phase` from the Protocol Root; also read `{runtime}/mind/soul/core.md` (Soul constraints must be reloaded on recovery regardless of phase). Read `state.md §Runtime Root` first and use that tree — never re-resolve the runtime root from the default when a task already records one
 5. **Early-phase recovery**: when `Current Phase` is `learning-read`, `recognition`, or `analysis`, check whether the phase's output artifact exists (`learning-read.md`, `task-profile.md`, or `analysis.md` / `analysis-plan.md` respectively); if the artifact exists and passes its `TEMPLATE.md §Validation Rules`, update `state.md` to the next phase and advance; if missing or incomplete, re-execute the current phase
 6. **Execution-control recovery**: when `Current Phase: execution-control`, read `Step Status Map` to find the first non-completed Step; set `Current Step` to that Step and resume execution; if the interrupted Step was `running`, re-read its Constraints and Inputs before resuming
 7. **Reflection recovery**: when `Current Phase: reflection`, check whether `reflection-report.md` exists and passes `TEMPLATE.md §Validation Rules`; verify `Overall Status` is one of `completed / failed / blocked / cancelled` (as set by Execution Control before entering Reflection; `cancelled` triggers lightweight Reflection per `mind/execution-control/README.md §Cancellation Protocol`); if complete, advance to the post-reflection ACQ check (§Phase Transition Protocol step 2) — for `cancelled` tasks, this check will yield `no` since both `Requires External Acquisition` fields must be `no`; if missing or incomplete, re-execute Reflection

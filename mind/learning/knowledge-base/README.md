@@ -2,6 +2,10 @@
 
 This directory stores the system-level knowledge assets of `Learning`.
 
+The directories below are the layout of the knowledge base inside the Runtime Root. The repository does not contain this tree: it holds only the documentation and templates of `mind/learning/knowledge-base/`.
+
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 `knowledge-base/` is fixed into three subdirectories:
 
 - `approved/` — the only formal knowledge area; only knowledge here may be read by `Learning(Read)`

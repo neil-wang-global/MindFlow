@@ -8,6 +8,8 @@ This file defines the fixed structure of `mind/learning/knowledge-base/approved/
 - `{type}` may only be `concept / method / domain / self`
 - the file name must match the knowledge type
 
+Paths in this artifact are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Fixed Structure
 
 ```md

@@ -2,9 +2,11 @@
 
 This file is a navigation aid for human readers. The runtime loads `SYSTEM.md` at task start and each module's `README.md` on demand — it does not load this file.
 
-This directory contains the runtime module definitions of `Mind`.
+This directory contains the protocol definitions of the modules of `Mind`.
 
 `Mind` is the runtime base of the entire system.
+
+This directory tree belongs to the Protocol Root: it holds module rules only. The state a task reads and writes — `Soul`, the knowledge base, reviews, task learning, knowledge gaps, capability updates, `capabilities/`, `tasks/`, and `sources/` — lives in the Runtime Root. Paths naming those artifacts resolve against the Runtime Root; paths naming module `README.md` / `TEMPLATE.md` files resolve against this tree (see `SYSTEM.md §Runtime Layout`).
 
 ## Main Flow
 
@@ -31,4 +33,4 @@ Each subdirectory owns exactly one module. Each module's `README.md` is self-con
 - `reflection/`: post-task review
 - `learning/`: `Learning(Read)`, `Learning(Acquire)`, knowledge consolidation, and `Capability Update`
 - `inference/`: on-demand inference
-- `soul/`: long-term stable constraints
+- `soul/`: long-term stable constraints (the `Soul` file itself is in the Runtime Root)

@@ -4,23 +4,26 @@ This file is a navigation aid for human readers. The runtime loads individual `c
 
 This directory stores `Capability` definitions used by `Plan` and `Step`.
 
+`capabilities/` belongs to the Runtime Root, which is not under git — see `SYSTEM.md §Runtime Layout`. `capabilities/cap-{name}.md` and `capabilities/TEMPLATE.md` are both written as bare relative paths and resolve against the Runtime Root; `mind/soul/core.md` references elsewhere in this directory resolve the same way. The repository keeps only the authoring documents below and the empty skeleton `templates/capabilities/`. Real capability definition files are written to `{runtime}/capabilities/` and must not be committed.
+
 ## Directory Structure
 
-- `TEMPLATE.md` — the formal template for capability definition files
-- `cap-EXAMPLE-TEMPLATE.md` — a worked example (not loaded by runtime)
-- `cap-{name}.md` — individual capability definitions (created as needed)
+- `TEMPLATE.md` — the formal template for capability definition files (Protocol Root)
+- `cap-EXAMPLE-TEMPLATE.md` — a worked example (not loaded by runtime, Protocol Root)
+- `cap-{name}.md` — individual capability definitions (created as needed, Runtime Root)
 
 ## Current Status
 
 The definition structure is ready (see `TEMPLATE.md`), but no individual capability definition files have been instantiated yet. Capabilities are currently referenced by label name in `Step` declarations (e.g. `Capability: cap-research`).
 
-When a `Step` references a capability label that has a corresponding `cap-{name}.md` file, the runtime must read that file as part of the `Step`'s constraint loading. When no file exists for the label, the `Step` proceeds with the label as a classification identifier only — constraint loading from `capabilities/` is skipped for that Step.
+When a `Step` references a capability label that has a corresponding `cap-{name}.md` file in the Runtime Root, the runtime must read that file as part of the `Step`'s constraint loading. When no file exists for the label, the `Step` proceeds with the label as a classification identifier only — constraint loading from `capabilities/` is skipped for that Step.
 
 ## Rules
 
 - a `Step` must declare exactly one `Capability` label
 - if a `Step` needs multiple capabilities, split it into multiple `Step`s
 - `Capability` labels should be stable across tasks for traceability
+- a `cap-{name}.md` file is a runtime artifact and must not be committed to the repository
 - see `TEMPLATE.md` for the full authoring rules when creating a new capability definition
 
 ## Skill Rule
@@ -33,7 +36,7 @@ When a `Step` references a capability label that has a corresponding `cap-{name}
 
 ## Bootstrap
 
-During bootstrap (before any `cap-{name}.md` files exist):
+During bootstrap (before any `cap-{name}.md` files exist in the Runtime Root):
 
 - capability labels in `Step` declarations serve as classification identifiers only
 - constraint loading from `capabilities/` is skipped for Steps whose label has no corresponding file

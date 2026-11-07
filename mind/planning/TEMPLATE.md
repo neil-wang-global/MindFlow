@@ -8,6 +8,8 @@ The runtime recognizes only `plan.md`, not scattered `Step` notes.
 - every `Step` must have an explicit number
 - every `Step` must explicitly declare inputs and outputs
 
+Paths in this artifact are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Formal Template
 
 ```md

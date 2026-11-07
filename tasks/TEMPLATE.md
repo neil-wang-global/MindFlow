@@ -2,6 +2,8 @@
 
 Every task directory must use the fixed structure below.
 
+`tasks/` is a Runtime Root directory (see `SYSTEM.md §Runtime Layout`). The paths below are relative to the Runtime Root; `templates/tasks/` in the Protocol Root carries the same structure as an empty skeleton, and no task instance directory is created in the repository.
+
 ## Fixed Structure
 
 ```text
@@ -37,6 +39,7 @@ tasks/{task-id}/
 ## Constraints
 
 - `{task-id}` format is defined in `CONTRIBUTING.md §Task ID Format`
+- `state.md` must record the absolute Runtime Root path in `§Runtime Root`
 - each task directory serves exactly one task
 - task caches must not be shared with other tasks
 - formal artifacts must preferentially remain inside the task directory

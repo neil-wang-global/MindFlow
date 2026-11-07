@@ -4,6 +4,10 @@ This directory stores `Capability Update` records.
 
 These files are not direct capability definitions. They are formal change records derived from learning.
 
+`cu-{task-id}-{capability-name}.md` files are runtime artifacts: they live in this directory under the Runtime Root, and the repository contains no capability update records.
+
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## File Naming Rule
 
 `cu-{task-id}-{capability-name}.md`

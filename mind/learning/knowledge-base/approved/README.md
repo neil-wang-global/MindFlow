@@ -2,6 +2,10 @@
 
 This is the formal knowledge area. Only knowledge files here may be read by `Learning(Read)`.
 
+`INDEX.md`, `kb-{type}-{slug}.md`, and `fragments/index-fragment-{task-id}.md` are all runtime artifacts. They live under `mind/learning/knowledge-base/approved/` in the Runtime Root; the repository contains none of them. This directory in the Protocol Root holds only `README.md`, `TEMPLATE.md`, and `fragments/README.md`.
+
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## File Naming Rule
 
 `kb-{type}-{slug}.md`

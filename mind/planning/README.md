@@ -2,6 +2,8 @@
 
 This directory defines the `Planning` module.
 
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Responsibilities
 
 - materialize `Analysis Output` into formal `Plan`

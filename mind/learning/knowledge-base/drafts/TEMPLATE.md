@@ -9,6 +9,8 @@ This file defines the fixed structure of `mind/learning/knowledge-base/drafts/`.
 - `{task-id}` must match the source task
 - `{slug}` must match the candidate knowledge topic
 
+Paths in this artifact are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Fixed Structure
 
 ```md

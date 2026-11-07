@@ -8,6 +8,8 @@ This file defines the fixed structure of `Capability Update Record`.
 - `{task-id}` must match the source task
 - `{capability-name}` must match the affected capability
 
+Paths in this artifact are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Fixed Structure
 
 ```md

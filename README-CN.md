@@ -237,6 +237,48 @@ MindFlow 的执行层本质上是 MAS。
 - `_output/` 是任务内部正式结果位
 - `sources/` 是业务资料和对外沉淀位
 
+## 两个目录树：协议与运行态
+
+MindFlow 把「上游维护的东西」和「你自己拥有的东西」分开。
+
+```text
+Protocol Root（仓库，git 管理）        Runtime Root（你的状态，永不提交）
+MindFlow/                             runtime/   （默认位置）
+├── README.md                         ├── mind/
+├── README-CN.md                      │   ├── soul/core.md
+├── SYSTEM.md                         │   └── learning/
+├── CLAUDE.md                         │       ├── knowledge-base/
+├── CONTRIBUTING.md                   │       │   ├── approved/
+├── mind/            模块说明          │       │   ├── drafts/
+│   ├── soul/README.md                │       │   └── archived/
+│   ├── recognition/                  │       ├── task-learning/
+│   ├── analysis/                     │       ├── reviews/
+│   ├── planning/                     │       ├── knowledge-gaps/
+│   ├── execution-control/            │       └── capability-updates/
+│   ├── reflection/                   ├── capabilities/
+│   ├── learning/                     ├── tasks/{task-id}/
+│   └── inference/                    └── sources/
+├── capabilities/    仅模板
+├── tasks/           仅模板
+├── sources/README.md
+├── templates/       新运行态的种子
+└── runtime/         被 git 忽略的默认运行态
+```
+
+协议树对你是只读的：它由上游维护，所以 `git pull` 永远不会和你自己的改动冲突。所有需要长期、持续编辑的东西——`Soul`、已批准知识、审核记录、任务运行、能力定义、项目素材——都放在 Runtime Root 里。
+
+两棵树里的名字完全一致。`mind/soul/core.md` 表示同一个相对路径，变的只是它解析到哪棵树：运行态路径相对 Runtime Root 解析，协议路径相对 Protocol Root 解析。
+
+### 怎么选 Runtime Root
+
+解析顺序（会记录进 `tasks/{task-id}/state.md §Runtime Root`，保证断点续跑写回同一棵树）：
+
+1. 环境变量 `MINDFLOW_RUNTIME_ROOT`（设置了就用它）
+2. `<Protocol Root>/runtime/`，默认位置
+3. 调用方显式指定的路径，用于「一个项目一个运行态」的场景
+
+初始化一个全新运行态，就是把 `templates/` 复制过去。
+
 ## 目录结构
 
 ```text
@@ -264,7 +306,9 @@ MindFlow/
 │   └── inference/
 ├── capabilities/
 ├── sources/
-└── tasks/
+├── tasks/
+├── templates/
+└── runtime/          （被 git 忽略）
 ```
 
 ## 架构图

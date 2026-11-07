@@ -16,3 +16,6 @@ node_modules/
 .cursorignore
 .cursorrules
 .windsurfrules
+
+# Runtime state — user-owned, never committed (see SYSTEM.md §Runtime Layout)
+runtime/

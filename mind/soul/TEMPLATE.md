@@ -3,7 +3,7 @@ This file does not pre-fill specific content. It defines only the formal structu
 
 ## File Requirements
 
-- fixed file path: `mind/soul/core.md`
+- fixed file path: `mind/soul/core.md`, relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); the repository holds only the seed `templates/mind/soul/core.md`
 - fixed heading order is required
 - only long-term stable constraints may be written here
 - task-level temporary strategies must not be written here
@@ -52,3 +52,7 @@ This file does not pre-fill specific content. It defines only the formal structu
 - every line must be capable of constraining at least one module in the main flow (`Recognition / Analysis / Planning / Execution Control / Reflection / Learning / Inference`)
 - avoid vague words such as “try to” or “generally”
 - `Learning Policy` must be able to directly determine which knowledge may enter `knowledge-base/approved/`
+
+## Bootstrap
+
+A Runtime Root is initialized by copying `templates/` into it, which places this template's target at `mind/soul/core.md`. Until every field is filled, the file is the seed — see `mind/soul/README.md §Bootstrap`.

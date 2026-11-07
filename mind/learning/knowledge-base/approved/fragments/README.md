@@ -2,6 +2,10 @@
 
 This directory holds per-task index fragment files that are pending merge into `approved/INDEX.md`.
 
+`index-fragment-{task-id}.md` files are runtime artifacts. They live in this directory under the Runtime Root; the repository contains only this `README.md`.
+
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Purpose
 
 When a task promotes knowledge to `approved/`, it writes `kb-*.md` files and records their index entries in a fragment file here — instead of directly editing `INDEX.md`. This eliminates concurrent write contention when multiple tasks run simultaneously.

@@ -4,6 +4,8 @@ This directory defines the `Inference` module.
 
 `Inference` is conditional, not always-on. Its output is provisional by default and does not directly become a formal capability.
 
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Trigger Conditions
 
 `Inference` may be triggered when:

@@ -2,6 +2,10 @@
 
 This directory stores learning review records. It is the formal review area.
 
+`review-{task-id}-{slug}.md` files are runtime artifacts: they live in this directory under the Runtime Root, and the repository contains no review records.
+
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## File Naming Rule
 
 `review-{task-id}-{slug}.md`

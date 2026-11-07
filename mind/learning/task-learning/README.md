@@ -2,6 +2,10 @@
 
 This directory stores task-level `Learning Record`s. It is the task-level candidate knowledge area.
 
+`tl-{task-id}.md` files are runtime artifacts: they live in this directory under the Runtime Root, and the repository contains no task learning records.
+
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## File Naming Rule
 
 `tl-{task-id}.md`

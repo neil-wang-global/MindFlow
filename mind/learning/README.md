@@ -2,6 +2,8 @@
 
 This directory defines the `Learning` module.
 
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Responsibilities
 
 - provide `Learning(Read)` before task execution
@@ -144,6 +146,8 @@ Before setting the final task state (per `SYSTEM.md §Phase Transition Protocol`
 - §Task Completion Check passes
 
 ## Subdirectory Overview
+
+The runtime-artifact directories listed below exist only in the Runtime Root; the Protocol Root keeps `README.md` / `TEMPLATE.md` files in the same relative locations.
 
 - `knowledge-base/`: system-level knowledge assets
 - `acquire/`: protocol and templates for `Learning(Acquire)`

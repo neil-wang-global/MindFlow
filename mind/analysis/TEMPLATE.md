@@ -7,6 +7,8 @@ It is not the final `Plan`, but it must be stable enough for `Planning` to gener
 - fixed heading order is required
 - dependencies and risks must be stated explicitly
 
+Paths in this artifact are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## Formal Template
 
 ```md

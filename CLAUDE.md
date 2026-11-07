@@ -9,11 +9,12 @@ You are running inside MindFlow. Your job is to execute the MindFlow workflow co
 
 ## First-Time Setup
 
-If `mind/soul/core.md` has all fields set to "To be defined":
+If `mind/soul/core.md` in the Runtime Root has all fields set to "To be defined":
 
-1. Fill `mind/soul/core.md` with your identity, values, and constraints (see `mind/soul/core-example.md` for reference)
-2. Issue your first task — the system will create all required artifacts automatically
-3. Knowledge and capabilities accumulate over successive tasks
+1. Initialize the Runtime Root first per `SYSTEM.md §Runtime Layout §Initializing a Runtime Root` — copy `templates/` into the resolved Runtime Root, which places the seed `mind/soul/core.md`
+2. Fill `mind/soul/core.md` with your identity, values, and constraints (see `mind/soul/core-example.md` in this repository for reference)
+3. Issue your first task — the system will create all required artifacts automatically
+4. Knowledge and capabilities accumulate over successive tasks
 
 ## Running MindFlow From Anywhere
 

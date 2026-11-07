@@ -2,6 +2,8 @@
 
 This file shows what a complete task directory looks like with example content for each file. It is not used by the runtime. It is a reference for first-time users.
 
+All runtime paths in this example resolve against the Runtime Root (see `SYSTEM.md §Runtime Layout`): `tasks/`, `sources/`, `capabilities/`, `mind/soul/core.md`, and `mind/learning/**` are written as bare relative paths, and the tree they resolve against is the Runtime Root rather than the repository.
+
 ## Example Task Directory
 
 ```text
@@ -111,6 +113,9 @@ tasks/20260324-api-rate-limiter/
 
 ## Task ID
 - 20260324-api-rate-limiter
+
+## Runtime Root
+- /Users/demo/MindFlow/runtime
 
 ## Current Phase
 - execution-control

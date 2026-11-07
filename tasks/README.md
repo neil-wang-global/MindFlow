@@ -4,11 +4,17 @@ This file is a navigation aid for human readers. The runtime does not load this 
 
 This directory stores task instance directories.
 
+`tasks/` belongs to the Runtime Root, which is not under git — see `SYSTEM.md §Runtime Layout`. The path is written as a bare relative path throughout the protocol and resolves against the Runtime Root, not the Protocol Root. The repository ships only the document templates in this directory (`README.md`, `TEMPLATE.md`, `STATE-TEMPLATE.md`, `EXAMPLE-TEMPLATE.md`) and the empty skeleton `templates/tasks/`; no task instance is ever created inside the Protocol Root.
+
 ## Directory Naming Rule
 
 `tasks/{task-id}/`
 
 Where `task-id` format is defined in `CONTRIBUTING.md §Task ID Format`.
+
+## Runtime Root Record
+
+Each `state.md` records the absolute Runtime Root path resolved for that task in `§Runtime Root`. Recovery, `Reflection`, and terminal `Learning` must use that record rather than the default location, so one task never writes across two runtime trees.
 
 ## Fixed Files
 

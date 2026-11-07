@@ -2,6 +2,10 @@
 
 This is the historical knowledge area. It stores knowledge files that have been replaced, retired, or kept only for traceability.
 
+The files recorded here are runtime artifacts: they live in this directory under the Runtime Root, and the repository contains no archived files.
+
+Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime Layout`); paths naming `README.md` / `TEMPLATE.md` files resolve against the Protocol Root.
+
 ## File Naming Rules
 
 This directory receives files from two scenarios:
