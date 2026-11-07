@@ -10,6 +10,7 @@ Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime 
 - task decomposition
 - identification of dependencies and constraints
 - production of `Analysis Output`
+- note whether the deliverable implies images, so `Planning` can route them — see `SYSTEM.md §Image Generation`
 
 ## Phase Entry
 

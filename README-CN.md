@@ -576,3 +576,18 @@ claude plugin install neil-skills@neil-skills
   - 面向 AI 的系统协议
 - [CLAUDE.md](CLAUDE.md)
   - 面向 AI 的运行约束
+
+## 用 MindFlow Studio 看运行
+
+技能给你的是一个终端会话。如果你想一眼看清整个运行态，
+[MindFlow Studio](https://github.com/neil-wang-global/mindflow-studio) 是一个
+DeepSeek Harness 插件，把同一个 Runtime Root 摆成一个工作台：
+
+- 每个任务连同它的实时阶段，直接读 `state.md`
+- 任务自己的对话停靠在进度旁边，提问直接进正在跑的那次运行
+- 产物预览（Markdown 渲染），以及 `Plan`——每一步的定义和实时状态并排看
+- Soul 编辑，以及只读的知识与能力视图
+
+在已经配好技能的 profile 里执行 `dsh plugin --profile web add mindflow-studio`
+即可。Studio 读的是同一个 Runtime Root，从不往协议树里写东西。
+

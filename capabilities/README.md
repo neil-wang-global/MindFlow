@@ -43,6 +43,18 @@ During bootstrap (before any `cap-{name}.md` files exist in the Runtime Root):
 - `Capability Update` records (`cu-*.md`) may still be created with `Status: proposed`; they will be applied once the target `cap-{name}.md` is created
 - the capability evolution mechanism fully activates once the first `cap-{name}.md` file is created via a `Capability Update` with `Status: applied`
 
+## Conditional capabilities
+
+Some capabilities exist only for part of a task. `cap-image-generation` is the
+one the protocol names explicitly: when a deliverable needs a picture, the
+`Step` that produces it declares `Capability: cap-image-generation` and the
+runtime generates it with the configured image model — see
+`SYSTEM.md §Image Generation`.
+
+Like every other capability, the label works before the definition file exists:
+the `Step`'s own instructions carry the work, and writing
+`capabilities/cap-image-generation.md` later only adds constraints.
+
 Create the first `cap-{name}.md` file when:
 - a `Capability Update` record (`cu-*.md`) reaches `Status: approved` and its `Target Capability File` does not yet exist
 - or when you identify a recurring capability label across multiple tasks that would benefit from formal constraints

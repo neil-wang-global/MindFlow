@@ -11,6 +11,7 @@ Paths in this module are relative to the Runtime Root (see `SYSTEM.md §Runtime 
 - define inputs, outputs, capability calls, and handoff relationships
 - define the dispatch mode of `Plan -> Steps`
 - reuse the dispatch fields already declared in `Analysis` rather than inventing a second parallelism schema
+- when `Analysis` found the deliverable implies images, place the generation in the `Step` that produces them and declare `Capability: cap-image-generation` — see `SYSTEM.md §Image Generation`
 
 ## Phase Entry
 

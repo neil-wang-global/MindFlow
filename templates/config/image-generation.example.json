@@ -1,0 +1,7 @@
+{
+  "_comment": "Copy to {...}/config/image-generation.json inside the Runtime Root. Never put a key in this file: apiKeyEnv names an environment variable the runtime reads at call time.",
+  "provider": "gemini",
+  "baseUrl": "",
+  "model": "",
+  "apiKeyEnv": "GEMINI_API_KEY"
+}

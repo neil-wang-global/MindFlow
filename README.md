@@ -440,6 +440,23 @@ The skill is just a Markdown prompt — read it and use it by hand:
 
 If your runtime supports custom agent instruction files, you can also just use this repository's `CLAUDE.md` as the entry point (`AGENTS.md`, `CODEX.md`, `GEMINI.md`, `CURSOR.md`, and others are symlinks to it) — same protocol, you just have to remember to sync the repo yourself.
 
+## Watch It With MindFlow Studio
+
+The skill gives you a terminal conversation. If you would rather see a runtime
+at a glance, [MindFlow Studio](https://github.com/neil-wang-global/mindflow-studio)
+is a DeepSeek Harness plugin that puts the same Runtime Root behind a workbench:
+
+- every task with its live phase, read straight from `state.md`
+- the task's own conversation docked beside the progress, so a question goes to
+  the run that is producing the answer
+- artifact preview with Markdown rendering, and the `Plan` with each Step's
+  definition next to its live status
+- Soul editing, plus read-only knowledge and capability views
+
+Install it with `dsh plugin --profile web add mindflow-studio` in a profile that
+already has the skill set up. Studio reads the same Runtime Root; it never writes
+into the protocol tree.
+
 ## What Makes It Different
 
 MindFlow is different from the following common systems:

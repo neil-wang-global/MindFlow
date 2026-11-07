@@ -53,13 +53,13 @@ MindFlow separates two trees that must never be confused:
 | Tree | Contents | Who writes it | Under git |
 |------|----------|---------------|-----------|
 | **Protocol Root** | `SYSTEM.md`, `CLAUDE.md`, `CONTRIBUTING.md`, every module `README.md` and `TEMPLATE.md` | upstream maintainers only | yes |
-| **Runtime Root** | `Soul`, knowledge base, reviews, task learning, knowledge gaps, capability updates, `capabilities/`, `tasks/`, `sources/` | the runtime and the user | **no** |
+| **Runtime Root** | `Soul`, knowledge base, reviews, task learning, knowledge gaps, capability updates, `capabilities/`, `tasks/`, `sources/`, `config/` | the runtime and the user | **no** |
 
 The split exists because the user-owned state above is durable and continuously edited, while the protocol is maintained upstream. Keeping them in one working tree would make every `git pull` collide with local state.
 
 ### Path Resolution Rule
 
-**Every path written in the protocol that names a runtime artifact is relative to the Runtime Root, not the Protocol Root.** This covers `mind/soul/core.md`, `mind/learning/knowledge-base/**`, `mind/learning/reviews/**`, `mind/learning/task-learning/**`, `mind/learning/knowledge-gaps/**`, `mind/learning/capability-updates/**`, `capabilities/**`, `tasks/**`, and `sources/**`. The relative path and file names are unchanged — only the tree they resolve against differs.
+**Every path written in the protocol that names a runtime artifact is relative to the Runtime Root, not the Protocol Root.** This covers `mind/soul/core.md`, `mind/learning/knowledge-base/**`, `mind/learning/reviews/**`, `mind/learning/task-learning/**`, `mind/learning/knowledge-gaps/**`, `mind/learning/capability-updates/**`, `capabilities/**`, `tasks/**`, `sources/**`, and `config/**`. The relative path and file names are unchanged — only the tree they resolve against differs.
 
 Paths naming protocol files (`SYSTEM.md`, module `README.md` / `TEMPLATE.md`, `CONTRIBUTING.md`) resolve against the Protocol Root as before.
 
@@ -156,6 +156,35 @@ The following rules span multiple modules and are therefore defined here rather 
 ### Knowledge Source Prohibition
 
 A search summary, snippet, or AI-generated overview is never a valid knowledge source. This applies across all modules.
+
+### Image Generation
+
+When a deliverable calls for a picture — an illustration, an infographic, a diagram that must look rendered rather than drawn in text, a cover image — the runtime generates it with a configured image model. It does not approximate the request with ASCII art, a text description, or an inline placeholder.
+
+This is a conditional capability, in the same sense as `Learning(Acquire)`: it activates only when the task actually needs an image, and a task that needs none is unaffected.
+
+**Where the decision is made.** `Analysis` notes whether the deliverable implies images, and `Planning` puts that in the `Step` that produces them. `Execution Control` then calls the image capability in that `Step`. A `Step` that generates images declares `Capability: cap-image-generation`.
+
+**Configuration lives outside the protocol.** The protocol declares *when* to generate, not *which vendor* does it. The provider, endpoint, model, and credentials are runtime settings, recorded in `{runtime}/config/image-generation.json`:
+
+```json
+{
+  "provider": "gemini | seedream | openai-compatible | dashscope",
+  "baseUrl": "optional; defaults to the provider's public endpoint",
+  "model": "optional; defaults to a current model for the provider",
+  "apiKeyEnv": "NAME_OF_AN_ENVIRONMENT_VARIABLE"
+}
+```
+
+- `provider` and a credential reference are required; the rest default per provider.
+- **Credentials are never written into the Runtime Root.** `apiKeyEnv` names an environment variable the runtime reads at call time. A config file carrying a literal key is a defect, and the runtime must refuse it rather than use it.
+- `openai-compatible` additionally requires `baseUrl` and `model`, because nothing identifies the vendor.
+
+**Unconfigured is a normal state.** Before any image model is configured, a task that wants an image must not fail the whole deliverable. The `Step` proceeds and records the gap: the artifact names the images it would have produced, and `Reflection` surfaces the missing configuration. The user configures it once and later tasks generate normally.
+
+**Output location.** Generated images are runtime artifacts like every other task output: `tasks/{task-id}/_output/`. The Step's declared `Outputs` must name each image file, and the artifact that references an image must name the file rather than embed it.
+
+**Do not invent a visual.** If an image cannot be generated, say so. A fabricated description presented as if it were the image, or a placeholder silently left in place, is worse than a visible gap because the reader cannot tell the difference.
 
 ### Fixed Promotion Path
 
