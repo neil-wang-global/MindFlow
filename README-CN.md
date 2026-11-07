@@ -488,6 +488,40 @@ MindFlow 不是：
    - 从 `Learning(Read)` 开始，走完整条链
    - 由你的 AI 运行环境或执行器去遵守这些协议
 
+## 用技能一键运行（推荐）
+
+手动走完上面五步，需要你自己记住每个模块的加载边界、`state.md` 的推进规则和各项自检门禁。更省事的方式是装一个 `mindflow` 技能，让 AI 运行时替你执行这套协议。
+
+技能来自 [neil-wang-global/neil-skills](https://github.com/neil-wang-global/neil-skills)，是一个**薄封装**：它不包含 MindFlow 的任何业务规则，流程、产物、门禁一律以本仓库的 [SYSTEM.md](SYSTEM.md)、[CLAUDE.md](CLAUDE.md)、[CONTRIBUTING.md](CONTRIBUTING.md) 和各模块 `README.md` 为准。所以本仓库更新后，技能自动跟着生效，不会漂移。
+
+### 安装
+
+Claude Code 插件市场：
+
+```bash
+claude plugin marketplace add neil-wang-global/neil-skills
+claude plugin install neil-skills@neil-skills
+```
+
+之后在任意目录调用 `/mindflow <任务描述>` 即可。技能安装后只在 `~/.mindflow/MindFlow` 维护一份共享工作区，不会往你当前的项目目录里写文件。
+
+### 它会自动做什么
+
+1. **同步仓库**：`~/.mindflow/MindFlow` 不存在就 clone，存在就 `git pull --ff-only` 拉最新 `main`。拉不动（本地有分叉或未提交改动）会停下来告诉你，不会强推或清空你的数据
+2. **Soul 就绪检查**：`mind/soul/core.md` 还是 `To be defined` 时，会和你一起把八个字段填好——这是跨项目、跨任务持续生效的最高约束层
+3. **断点续跑**：`tasks/` 下有没跑到 `completed` / `cancelled` 的任务时，会按 [SYSTEM.md §Recovery Protocol](SYSTEM.md) 从记录的阶段接着跑，而不是从头重开
+4. **跑完整条主流程**：`Learning(Read) -> Recognition -> Analysis -> Planning -> Execution Control -> Reflection -> Learning`，包含 terminal `Learning` 的知识晋升、knowledge gap 和能力更新
+5. **按需用子 agent**：只在协议强制要求独立性的地方（`Learning(Acquire)` 的校验、`review-*.md`）派独立子 agent，并把 `mind/soul/core.md` 全文注入进去
+
+任务产物照常落在 `tasks/{task-id}/`，正式结果在 `tasks/{task-id}/_output/`。技能默认不会在本仓库里创建 commit。
+
+### 没有 Claude Code？
+
+技能就是一个 Markdown 提示词，可以直接读过来手动使用：
+[skills/mindflow/SKILL.md](https://github.com/neil-wang-global/neil-skills/blob/main/skills/mindflow/SKILL.md)。装技能只是为了让它一句话被调用。
+
+如果你用的运行时支持自定义 Agent 指令文件，也可以只保留本仓库的 `CLAUDE.md`（`AGENTS.md`、`CODEX.md`、`GEMINI.md`、`CURSOR.md` 等都是它的软链接）作为入口，效果相同——只是每次都得自己记着去同步仓库。
+
 ## 入口文件分别做什么
 
 - [README-CN.md](README-CN.md)

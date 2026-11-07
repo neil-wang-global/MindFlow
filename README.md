@@ -358,6 +358,40 @@ Typical usage:
 5. run the task according to the formal MindFlow protocol
 6. let task-end `Learning` promote reusable knowledge and capability updates
 
+## Run It With One Skill (Recommended)
+
+Doing the six steps above by hand means remembering every module's loading boundary, the `state.md` transition rules, and every self-check gate yourself. The shortcut is a `mindflow` skill that lets your AI runtime execute this protocol for you.
+
+The skill lives in [neil-wang-global/neil-skills](https://github.com/neil-wang-global/neil-skills) and is deliberately a **thin wrapper**: it contains no MindFlow business rules. The flow, artifacts, and gates always come from this repository's [SYSTEM.md](SYSTEM.md), [CLAUDE.md](CLAUDE.md), [CONTRIBUTING.md](CONTRIBUTING.md), and each module's `README.md`. So when this repository updates, the skill follows automatically instead of drifting.
+
+### Install
+
+Claude Code plugin marketplace:
+
+```bash
+claude plugin marketplace add neil-wang-global/neil-skills
+claude plugin install neil-skills@neil-skills
+```
+
+Then call `/mindflow <task description>` from any directory. Once installed, the skill keeps a single shared workspace at `~/.mindflow/MindFlow` and writes nothing into your current project directory.
+
+### What it does for you
+
+1. **Sync the repo**: clones `~/.mindflow/MindFlow` when missing, otherwise runs `git pull --ff-only` on latest `main`. If the pull cannot fast-forward (diverged commits or blocking local changes), it stops and tells you — it never force-pushes or wipes your data
+2. **Soul readiness check**: while `mind/soul/core.md` is still `To be defined`, it fills the eight fields together with you — that is the highest constraint layer, applying across projects and tasks
+3. **Resume instead of restart**: if `tasks/` holds a task whose state is not `completed` / `cancelled`, it continues from the recorded phase per [SYSTEM.md §Recovery Protocol](SYSTEM.md) rather than starting over
+4. **Run the whole main flow**: `Learning(Read) -> Recognition -> Analysis -> Planning -> Execution Control -> Reflection -> Learning`, including terminal `Learning` knowledge promotion, knowledge gaps, and capability updates
+5. **Dispatch subagents only where the protocol demands independence**: `Learning(Acquire)` verification and `review-*.md`, each with the full `mind/soul/core.md` injected into its prompt
+
+Task artifacts land in `tasks/{task-id}/` as usual, with formal results in `tasks/{task-id}/_output/`. The skill does not create commits in this repository by default.
+
+### Without Claude Code?
+
+The skill is just a Markdown prompt — read it and use it by hand:
+[skills/mindflow/SKILL.md](https://github.com/neil-wang-global/neil-skills/blob/main/skills/mindflow/SKILL.md). Installing it only buys you one-word invocation.
+
+If your runtime supports custom agent instruction files, you can also just use this repository's `CLAUDE.md` as the entry point (`AGENTS.md`, `CODEX.md`, `GEMINI.md`, `CURSOR.md`, and others are symlinks to it) — same protocol, you just have to remember to sync the repo yourself.
+
 ## What Makes It Different
 
 MindFlow is different from the following common systems:

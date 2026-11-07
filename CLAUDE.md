@@ -14,3 +14,7 @@ If `mind/soul/core.md` has all fields set to "To be defined":
 1. Fill `mind/soul/core.md` with your identity, values, and constraints (see `mind/soul/core-example.md` for reference)
 2. Issue your first task — the system will create all required artifacts automatically
 3. Knowledge and capabilities accumulate over successive tasks
+
+## Running MindFlow From Anywhere
+
+This repository is the protocol; it deliberately ships no executor. To have an AI runtime drive the full flow for you — syncing `main`, checking `Soul`, resuming interrupted tasks, and running through terminal `Learning` — install the `mindflow` skill from [neil-wang-global/neil-skills](https://github.com/neil-wang-global/neil-skills) and invoke `/mindflow <task>`. It is a thin wrapper, so `SYSTEM.md` here always wins. See [README.md §Run It With One Skill](README.md#run-it-with-one-skill-recommended).
