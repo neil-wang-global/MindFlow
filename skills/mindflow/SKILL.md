@@ -29,29 +29,19 @@ description: Use when invoking /mindflow to run a task through the MindFlow cogn
 
 ## Phase 0: 环境准备
 
-### Step 0.1: 定位并同步协议仓库（强制第一步）
+### Step 0.1: 定位并同步协议（强制第一步）
 
 **`/mindflow` 被调用的第一个动作永远是这一步**，先于任何读取、提问、搜索、规划。
 
-本技能躺在协议仓库的 `skills/mindflow/` 里，所以先看自己身边：
+协议就在这个技能自己的目录里——`SYSTEM.md` 和本文件同级。所以没有路径要猜：
 
-1. **先看技能是否就在一个协议仓库里**。技能所在目录往上两级若有 `SYSTEM.md`，那里就是协议仓库：
+1. **协议根 = 技能所在目录**。`SYSTEM.md`、`CLAUDE.md`、`CONTRIBUTING.md`、各模块 `README.md` / `TEMPLATE.md`、`templates/` 全都在这里
+2. **确定它的绝对路径**（技能可能是软链接，要解析到真实目录）：
 
    ```bash
-   # 技能目录形如 <protocolRoot>/skills/mindflow
-   PROTOCOL_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-   test -f "$PROTOCOL_ROOT/SYSTEM.md" && echo "found: $PROTOCOL_ROOT"
+   PROTOCOL_ROOT="$(cd "$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")" && pwd)"
+   test -f "$PROTOCOL_ROOT/SYSTEM.md" || { echo "no SYSTEM.md beside the skill"; exit 1; }
    ```
-
-   - **找到了**：直接用这个 `PROTOCOL_ROOT`，跳过下面的克隆步骤，只做同步
-   - **没找到**（技能被单独拷出来、或经由别的分发渠道安装）：走下面的默认位置
-
-2. **默认位置 `~/.mindflow/MindFlow/`**（macOS/Linux 用 `$HOME`，Windows 用 `$USERPROFILE`）：
-   - **不存在**：创建目录并克隆 `main`
-     ```bash
-     mkdir -p ~/.mindflow && git clone https://github.com/neil-wang-global/MindFlow.git ~/.mindflow/MindFlow
-     ```
-   - **已存在**：用它
 
 3. **同步最新 `main`**：
 
@@ -59,20 +49,19 @@ description: Use when invoking /mindflow to run a task through the MindFlow cogn
    git -C "$PROTOCOL_ROOT" pull --ff-only origin main
    ```
 
-   - `--ff-only` 失败（本地有分叉提交、或有未提交改动挡路）时：**停下来向用户汇报**具体输出，不要 `reset --hard`、不要 `stash -u`、不要强推。
-   - 如果报错是 `not a git repository` 或目录为空：报告给用户并询问如何处理，不要擅自删除目录重克隆。
+   - 如果 `$PROTOCOL_ROOT` 不是一个 git 仓库（例如技能被单独拷贝出来）：跳过同步，继续用本地的协议，并在汇报里说明这次用的是未同步的副本
+   - `--ff-only` 失败（本地有分叉提交、或未提交改动挡路）：**停下来向用户汇报**具体输出，不要 `reset --hard`、不要 `stash -u`、不要强推
+4. **确认可用**：检查 `$PROTOCOL_ROOT/SYSTEM.md` 存在。不存在则**直接失败并报错**
 
-4. **确认同步成功**：检查 `$PROTOCOL_ROOT/SYSTEM.md` 是否存在。不存在则**直接失败并报错**，不要继续往下走。
-
-因为运行态已经和仓库分离（见 Step 0.2），同步理论上不该再因为「本地改动挡路」而失败。真失败了，说明有东西被写进了协议树，要查清原因再处理。
+因为运行态和协议已经分离（见 Step 0.2），同步理论上不该再因为「本地改动挡路」而失败。真失败了，说明有东西被写进了协议目录，要查清原因再处理。
 
 ### Step 0.2: 解析 Runtime Root（本 skill 的关键一步）
 
-MindFlow 把树分成两棵，`~/.mindflow/MindFlow/` 只是其中之一：
+MindFlow 把树分成两棵，`$PROTOCOL_ROOT`（即本技能所在目录）只是其中之一：
 
 | 树 | 内容 | 谁写 | 在 git 里 |
 |----|------|------|-----------|
-| **Protocol Root** | `~/.mindflow/MindFlow/`：`SYSTEM.md`、`CLAUDE.md`、`CONTRIBUTING.md`、各模块 `README.md` / `TEMPLATE.md`、`templates/` | 只有上游 | 是 |
+| **Protocol Root** | 本技能所在目录：`SYSTEM.md`、`CLAUDE.md`、`CONTRIBUTING.md`、各模块 `README.md` / `TEMPLATE.md`、`templates/` | 只有上游 | 是 |
 | **Runtime Root** | `Soul`、知识库、审核记录、任务学习、knowledge gaps、capability updates、`capabilities/`、`tasks/`、`sources/` | 运行时和用户 | **否** |
 
 **规则**：协议文档里凡是运行态路径（`mind/soul/core.md`、`mind/learning/knowledge-base/**`、`mind/learning/reviews/**`、`mind/learning/task-learning/**`、`mind/learning/knowledge-gaps/**`、`mind/learning/capability-updates/**`、`capabilities/**`、`tasks/**`、`sources/**`）都**相对 Runtime Root 解析**；协议文件路径仍相对 Protocol Root。相对路径和文件名一个字都没变，变的是解析到哪棵树。
@@ -80,24 +69,24 @@ MindFlow 把树分成两棵，`~/.mindflow/MindFlow/` 只是其中之一：
 按 `SYSTEM.md §Runtime Layout §Runtime Root Resolution Order` 解析，顺序是：
 
 1. 环境变量 `MINDFLOW_RUNTIME_ROOT`（已设置且非空就用它）
-2. `~/.mindflow/MindFlow/runtime/` —— 默认，**没有覆盖时用这个**
+2. `$PROTOCOL_ROOT/runtime/` —— 默认，**没有覆盖时用这个**
 3. 调用方或用户显式指定的路径（比如「一个项目一个运行态」），只在本次任务生效
 
 解析结果要记进 `tasks/{task-id}/state.md §Runtime Root`（绝对路径）。Recovery 以它为准，**不要**在已有任务已记录 Runtime Root 的情况下重新按默认值解析。
 
-**初始化**：Runtime Root 不存在或不完整时，按 `SYSTEM.md §Runtime Layout §Initializing a Runtime Root` 从 `~/.mindflow/MindFlow/templates/` 复制骨架过去：
+**初始化**：Runtime Root 不存在或不完整时，按 `SYSTEM.md §Runtime Layout §Initializing a Runtime Root` 从 `$PROTOCOL_ROOT/templates/` 复制骨架过去：
 
 ```bash
 # 以默认位置为例
-RUNTIME=~/.mindflow/MindFlow/runtime
+RUNTIME="$PROTOCOL_ROOT/runtime"
 mkdir -p "$RUNTIME"
 # 复制骨架，但去掉只为让 git 记录空目录的 .gitkeep
-(cd ~/.mindflow/MindFlow/templates && find . -type d -exec mkdir -p "$RUNTIME/{}" \; && find . -type f ! -name .gitkeep -exec cp {} "$RUNTIME/{}" \;)
+(cd "$PROTOCOL_ROOT/templates" && find . -type d -exec mkdir -p "$RUNTIME/{}" \; && find . -type f ! -name .gitkeep -exec cp {} "$RUNTIME/{}" \;)
 ```
 
 - 覆盖路径（环境变量或用户指定）若不存在，**不要**擅自创建，报告后停下来问
 - **绝不**把运行态产物写回 `templates/` 或 Protocol Root 的其它位置
-- **绝不**在 `~/.mindflow/MindFlow/` 里提交运行态
+- **绝不**在 `$PROTOCOL_ROOT` 里提交运行态
 
 ### Step 0.3: 读取运行时入口
 
@@ -240,9 +229,9 @@ MindFlow 的 runtime 就是**当前这个 agent**：模块之间用文件交接�
 
 ### 工作区纪律
 
-- **不要在 `~/.mindflow/MindFlow/` 里创建 commit**，除非用户明确要求。这是 AGPL-3.0 的上游仓库，且带 lefthook + commitlint 钩子
+- **不要在 `$PROTOCOL_ROOT` 里创建 commit**，除非用户明确要求。这是 AGPL-3.0 的上游仓库，且带 lefthook + commitlint 钩子
 - 若用户确实要求提交，先按 `CONTRIBUTING.md` 执行（conventional commits、必填 scope 与 body、不得出现 `Co-Authored-By` / `Signed-off-by` 等行、`task-id` 格式），并尊重 `lefthook.yml` 与 `commitlint.config.js`
-- **运行态一律写 Runtime Root**；不要往 Protocol Root（`~/.mindflow/MindFlow/`）写任何运行态产物，也不要改 `SYSTEM.md`、`CLAUDE.md`、`CONTRIBUTING.md`、`mind/` 下的协议文件或 `templates/`
+- **运行态一律写 Runtime Root**；不要往 Protocol Root（`$PROTOCOL_ROOT`）写任何运行态产物，也不要改 `SYSTEM.md`、`CLAUDE.md`、`CONTRIBUTING.md`、`mind/` 下的协议文件或 `templates/`
 - 产物默认落在 `{runtime}/tasks/{task-id}/_output/`；只有 `Plan` 显式声明了 publish-back 路径时，才把结果发布到 `{runtime}/sources/`
 - `{runtime}/capabilities/cap-{name}.md` 不存在是正常状态（bootstrap 阶段），此时 `Capability` 标签只作分类标识，跳过约束加载，**不要**为了"跑通"临时编一个能力文件
 
@@ -266,8 +255,8 @@ MindFlow 的 runtime 就是**当前这个 agent**：模块之间用文件交接�
 
 路径分两棵树，务必分清：
 
-- **Protocol Root** = `~/.mindflow/MindFlow/`（只读协议，git 管）
-- **Runtime Root** = `{runtime}`（用户状态，git 不管；默认 `~/.mindflow/MindFlow/runtime/`）
+- **Protocol Root** = `$PROTOCOL_ROOT`，就是本技能所在目录（只读协议，git 管）
+- **Runtime Root** = `{runtime}`（用户状态，git 不管；默认 `$PROTOCOL_ROOT/runtime/`）
 
 | 文件 | 用途 |
 |------|------|

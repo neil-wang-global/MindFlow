@@ -536,7 +536,7 @@ MindFlow 不是：
 
 手动走完上面的步骤，需要你自己记住每个模块的加载边界、`state.md` 的推进规则和各项自检门禁。更省事的方式是启用 `mindflow` 技能，让 AI 运行时替你执行这套协议。
 
-技能就随本仓库发布，在 [skills/mindflow/](skills/mindflow/SKILL.md)。它是一个**薄封装**：不包含 MindFlow 的任何业务规则，流程、产物、门禁一律以本仓库的 [SYSTEM.md](SYSTEM.md)、[CLAUDE.md](CLAUDE.md)、[CONTRIBUTING.md](CONTRIBUTING.md) 和各模块 `README.md` 为准。技能就放在这些文件旁边，所以它读的永远是自己所在的那份 checkout，不会读到过期的副本。
+协议**就是**技能本身。所有东西都在同一个目录里：[skills/mindflow/](skills/mindflow/SKILL.md) 下既有 `SKILL.md`，也有 [SYSTEM.md](skills/mindflow/SYSTEM.md)、[CLAUDE.md](skills/mindflow/CLAUDE.md)、[CONTRIBUTING.md](skills/mindflow/CONTRIBUTING.md)、各模块文档和运行态种子。装技能就等于装整套协议，而技能读的是自己所在的目录，不用去猜 checkout 在哪。
 
 ### 安装
 
@@ -549,14 +549,14 @@ ln -s ~/.mindflow/MindFlow/skills/mindflow ~/.dsh/skills/mindflow
 
 把 `~/.dsh/skills` 换成你运行时实际扫描的目录。之后在任意目录调用 `/mindflow <任务描述>` 即可。
 
-因为技能就在协议仓库里，有一件事要分清楚：在那个仓库里 `git pull` 会同时更新协议**和**技能。你自己的状态不受影响——它在独立的 Runtime Root 里。
+因为协议和技能是同一个目录，`git pull` 会同时更新两者，它们不可能不同步。你自己的状态不受影响——它在独立的 Runtime Root 里。
 
 ### 它会自动做什么
 
-1. **定位并同步协议**：优先用技能自己所在的那份 checkout，没有才退回 `~/.mindflow/MindFlow`，然后 `git pull --ff-only` 拉最新 `main`。拉不动（本地有分叉或未提交改动）会停下来告诉你，不会强推或清空你的数据
+1. **同步协议**：在技能所在目录里 `git pull --ff-only` 拉最新 `main`。如果那个目录不是 git 仓库（技能被单独拷出来），就跳过同步并说明情况。拉不动（本地有分叉或未提交改动）会停下来告诉你，不会强推或清空你的数据
 2. **解析并初始化 Runtime Root**：优先用 `MINDFLOW_RUNTIME_ROOT`，否则用那份 checkout 里的 `runtime/`，首次使用从 `templates/` 播种
 3. **Soul 就绪检查**：`mind/soul/core.md` 还是 `To be defined` 时，会和你一起把八个字段填好——这是最高约束层
-4. **断点续跑**：`tasks/` 下有没跑到 `completed` / `cancelled` 的任务时，会按 [SYSTEM.md §Recovery Protocol](SYSTEM.md) 从记录的阶段接着跑，而不是从头重开
+4. **断点续跑**：`tasks/` 下有没跑到 `completed` / `cancelled` 的任务时，会按 [SYSTEM.md §Recovery Protocol](skills/mindflow/SYSTEM.md) 从记录的阶段接着跑，而不是从头重开
 5. **跑完整条主流程**：`Learning(Read) -> Recognition -> Analysis -> Planning -> Execution Control -> Reflection -> Learning`，包含 terminal `Learning` 的知识晋升、knowledge gap 和能力更新
 6. **按需用子 agent**：只在协议强制要求独立性的地方（`Learning(Acquire)` 的校验、`review-*.md`）派独立子 agent，并把 `mind/soul/core.md` 全文注入进去
 
@@ -566,7 +566,7 @@ ln -s ~/.mindflow/MindFlow/skills/mindflow ~/.dsh/skills/mindflow
 
 技能就是一个 Markdown 提示词，可以直接读过来手动执行：[skills/mindflow/SKILL.md](skills/mindflow/SKILL.md)。
 
-如果你用的运行时支持自定义 Agent 指令文件，也可以只保留本仓库的 `CLAUDE.md`（`AGENTS.md`、`CODEX.md`、`GEMINI.md`、`CURSOR.md` 等都是它的软链接）作为入口，效果相同——只是每次都得自己记着去同步仓库。
+如果你用的运行时支持自定义 Agent 指令文件，本仓库的 `AGENTS.md`（以及 `CODEX.md`、`GEMINI.md`、`CURSOR.md` 等）都指向技能的 `CLAUDE.md`，效果相同——只是每次都得自己记着去同步仓库。
 
 ## 入口文件分别做什么
 
@@ -574,9 +574,9 @@ ln -s ~/.mindflow/MindFlow/skills/mindflow ~/.dsh/skills/mindflow
   - 面向使用者的中文总览
 - [README.md](README.md)
   - 面向使用者的英文总览
-- [SYSTEM.md](SYSTEM.md)
+- [SYSTEM.md](skills/mindflow/SYSTEM.md)
   - 面向 AI 的系统协议
-- [CLAUDE.md](CLAUDE.md)
+- [CLAUDE.md](skills/mindflow/CLAUDE.md)
   - 面向 AI 的运行约束
 
 ## 用 MindFlow Studio 看运行

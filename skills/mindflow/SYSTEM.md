@@ -52,10 +52,20 @@ MindFlow separates two trees that must never be confused:
 
 | Tree | Contents | Who writes it | Under git |
 |------|----------|---------------|-----------|
-| **Protocol Root** | `SYSTEM.md`, `CLAUDE.md`, `CONTRIBUTING.md`, every module `README.md` and `TEMPLATE.md` | upstream maintainers only | yes |
+| **Protocol Root** | `SYSTEM.md`, `CLAUDE.md`, `CONTRIBUTING.md`, every module `README.md` and `TEMPLATE.md`, `templates/` — all of it inside this skill's own directory | upstream maintainers only | yes |
 | **Runtime Root** | `Soul`, knowledge base, reviews, task learning, knowledge gaps, capability updates, `capabilities/`, `tasks/`, `sources/`, `config/` | the runtime and the user | **no** |
 
 The split exists because the user-owned state above is durable and continuously edited, while the protocol is maintained upstream. Keeping them in one working tree would make every `git pull` collide with local state.
+
+### Where the Protocol Root Actually Is
+
+The protocol ships inside this skill, so **the Protocol Root is the skill's own directory** — the one containing this `SYSTEM.md`. There is no separate location to discover and no path to guess:
+
+- the skill reads `SYSTEM.md`, `CLAUDE.md`, `CONTRIBUTING.md`, and each module's `README.md` / `TEMPLATE.md` from the very directory it sits in
+- `skills/mindflow/` at the repository root is a copy of that same directory, so the repository and the installed skill never disagree
+- a skill installed by symlink still resolves through the link to the real directory, which is why the relative paths below always work
+
+This is why the protocol can be shipped as one self-contained skill: everything it needs is beside it.
 
 ### Path Resolution Rule
 
@@ -68,7 +78,7 @@ Paths naming protocol files (`SYSTEM.md`, module `README.md` / `TEMPLATE.md`, `C
 Resolve once at task start and record the result in `state.md §Runtime Root`:
 
 1. `MINDFLOW_RUNTIME_ROOT` environment variable, when set and non-empty
-2. `<Protocol Root>/runtime/` — the default, and the only location used when neither override applies
+2. the skill directory's own `runtime/` — the default, and the only location used when neither override applies
 3. an explicit path supplied by the caller (for example a portfolio directory with one runtime per project), valid for that task only
 
 If an override directory does not exist, do not create it implicitly — report and stop. A single runtime may be shared across projects, or split per project; the protocol does not care, but `state.md` must always record which one the task used so recovery, Reflection, and terminal `Learning` all write back to the same tree.

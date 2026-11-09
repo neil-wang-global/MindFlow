@@ -1,1 +1,1 @@
-CLAUDE.md
+skills/mindflow/CLAUDE.md
