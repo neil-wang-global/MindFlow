@@ -409,23 +409,25 @@ Every path in steps 2–5 resolves against the Runtime Root, never this reposito
 
 Doing the six steps above by hand means remembering every module's loading boundary, the `state.md` transition rules, and every self-check gate yourself. The shortcut is a `mindflow` skill that lets your AI runtime execute this protocol for you.
 
-The skill lives in [neil-wang-global/neil-skills](https://github.com/neil-wang-global/neil-skills) and is deliberately a **thin wrapper**: it contains no MindFlow business rules. The flow, artifacts, and gates always come from this repository's [SYSTEM.md](SYSTEM.md), [CLAUDE.md](CLAUDE.md), [CONTRIBUTING.md](CONTRIBUTING.md), and each module's `README.md`. So when this repository updates, the skill follows automatically instead of drifting.
+The skill ships with this repository, in [skills/mindflow/](skills/mindflow/SKILL.md). It is deliberately a **thin wrapper**: it holds no MindFlow business rules. The flow, artifacts, and gates always come from [SYSTEM.md](SYSTEM.md), [CLAUDE.md](CLAUDE.md), [CONTRIBUTING.md](CONTRIBUTING.md), and each module's `README.md`, and because the skill sits beside them it always reads the checkout it came from rather than a stale copy.
 
 ### Install
 
-Claude Code plugin marketplace:
+The skill is one directory. Point your runtime's skill directory at it:
 
 ```bash
-claude plugin marketplace add neil-wang-global/neil-skills
-claude plugin install neil-skills@neil-skills
+git clone https://github.com/neil-wang-global/MindFlow.git ~/.mindflow/MindFlow
+ln -s ~/.mindflow/MindFlow/skills/mindflow ~/.dsh/skills/mindflow
 ```
 
-Then call `/mindflow <task description>` from any directory. Once installed, the skill keeps a single shared Protocol Root at `~/.mindflow/MindFlow` and writes nothing into your current project directory.
+Replace `~/.dsh/skills` with whatever directory your runtime scans. Then call `/mindflow <task description>` from any directory.
+
+Because the skill lives inside the protocol checkout, there is one thing to keep straight: `git pull` in that checkout updates the protocol **and** the skill together. Your own state is untouched by that pull — it lives in a separate Runtime Root.
 
 ### What it does for you
 
-1. **Sync the protocol**: clones `~/.mindflow/MindFlow` when missing, otherwise runs `git pull --ff-only` on latest `main`. Because your state lives in a separate Runtime Root, this pull is not competing with your own edits
-2. **Resolve and initialize the Runtime Root**: picks `MINDFLOW_RUNTIME_ROOT` if set, otherwise `~/.mindflow/MindFlow/runtime/`, and seeds it from `templates/` on first use
+1. **Find and sync the protocol**: prefers the checkout the skill itself came from, falling back to `~/.mindflow/MindFlow`. Runs `git pull --ff-only` on latest `main`. Because your state lives in a separate Runtime Root, this pull is not competing with your own edits
+2. **Resolve and initialize the Runtime Root**: picks `MINDFLOW_RUNTIME_ROOT` if set, otherwise `runtime/` inside that checkout, and seeds it from `templates/` on first use
 3. **Soul readiness check**: while the Runtime Root's `mind/soul/core.md` is still `To be defined`, it fills the eight fields together with you — that is the highest constraint layer
 4. **Resume instead of restart**: if a task's state is not `completed` / `cancelled`, it continues from the recorded phase per [SYSTEM.md §Recovery Protocol](SYSTEM.md), using the Runtime Root recorded in `state.md`, rather than starting over
 5. **Run the whole main flow**: `Learning(Read) -> Recognition -> Analysis -> Planning -> Execution Control -> Reflection -> Learning`, including terminal `Learning` knowledge promotion, knowledge gaps, and capability updates
@@ -433,10 +435,9 @@ Then call `/mindflow <task description>` from any directory. Once installed, the
 
 Task artifacts land in `{runtime}/tasks/{task-id}/`, with formal results in `{runtime}/tasks/{task-id}/_output/`. Nothing is written back into the protocol tree; the skill does not create commits there by default.
 
-### Without Claude Code?
+### Without the skill
 
-The skill is just a Markdown prompt — read it and use it by hand:
-[skills/mindflow/SKILL.md](https://github.com/neil-wang-global/neil-skills/blob/main/skills/mindflow/SKILL.md). Installing it only buys you one-word invocation.
+The skill is a Markdown prompt — read it and follow it by hand: [skills/mindflow/SKILL.md](skills/mindflow/SKILL.md).
 
 If your runtime supports custom agent instruction files, you can also just use this repository's `CLAUDE.md` as the entry point (`AGENTS.md`, `CODEX.md`, `GEMINI.md`, `CURSOR.md`, and others are symlinks to it) — same protocol, you just have to remember to sync the repo yourself.
 
